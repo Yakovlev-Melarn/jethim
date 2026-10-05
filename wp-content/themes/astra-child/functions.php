@@ -275,8 +275,113 @@ function jc_allow_svg_upload( $mimes ) {
 }
 
 /* =====================================================================
- * 6. Точки расширения для следующих этапов:
- *    - Этап 3 (калькулятор, до/после) — блоки подключают свои CSS/JS сами;
- *      общие скрипты темы лежат в assets/js/main.js (window.JC.on/emit).
+ * 6. Этап 4: хлебные крошки Astra (штатный аддон темы)
+ *
+ * Позиция — «Before Title» (astra_entry_top): крошки идут над заголовком
+ * в основной колонке контента; на главной не показываем, на вложенных
+ * страницах цепочка строится автоматически по иерархии страниц
+ * (Хаб услуг → услуга → подуслуга).
+ * ================================================================== */
+add_filter( 'astra_get_option_breadcrumb-position', 'jc_breadcrumb_position' );
+function jc_breadcrumb_position() {
+	return 'astra_entry_top';
+}
+
+add_filter( 'astra_get_option_breadcrumb-disable-home-page', 'jc_breadcrumb_disable_home' );
+function jc_breadcrumb_disable_home() {
+	return '0'; // '0' = спрятать на главной (правило Astra).
+}
+
+// Русские подписи в цепочке (у Astra по умолчанию английская «Home»).
+add_filter( 'astra_breadcrumb_trail_labels', 'jc_breadcrumb_labels' );
+function jc_breadcrumb_labels( $labels ) {
+	$labels['home']       = esc_html__( 'Главная', 'astra-child' );
+	$labels['browse']     = esc_html__( 'Вы здесь:', 'astra-child' );
+	$labels['aria_label'] = esc_html__( 'Хлебные крошки', 'astra-child' );
+
+	return $labels;
+}
+
+/* =====================================================================
+ * 7. Этап 4: единый шаблон услуги
+ *
+ * Страница услуги хранит только свой текст, а общие секции (расчёт по
+ * прайсу, список других услуг, финальный CTA) добавляются здесь же —
+ * дублирование сводится к контенту.
+ * ================================================================== */
+add_filter( 'the_content', 'jc_service_shared_sections', 20 );
+function jc_service_shared_sections( $content ) {
+	if ( is_admin() || ! is_singular( 'page' ) || 'service.php' !== get_page_template_slug() ) {
+		return $content;
+	}
+
+	$prices_url = home_url( '/tseny/' );
+	$hub_url    = home_url( '/uslugi/' );
+
+	$append  = '<section class="jc-block jc-block--calc">';
+	$append .= '<h2>' . esc_html__( 'Считаем по прайсу', 'astra-child' ) . '</h2>';
+	$append .= '<p>' . esc_html__( 'Цены на сайте — «от»: на итог влияют размер, загрязнение и выезд. Соберите расчёт в калькуляторе за минуту — покажем предварительную сумму до выезда мастера.', 'astra-child' ) . '</p>';
+	$append .= '<div class="jc-block__actions">';
+	$append .= '<a class="jc-btn jc-btn--primary" href="' . esc_url( $prices_url ) . '#calc">' . esc_html__( 'Рассчитать стоимость', 'astra-child' ) . '</a>';
+	$append .= '<a class="jc-btn jc-btn--outline" href="' . esc_url( $hub_url ) . '">' . esc_html__( 'Все услуги', 'astra-child' ) . '</a>';
+	$append .= '</div></section>';
+
+	$append .= jc_related_services_html();
+
+	$append .= do_blocks( '<!-- wp:jc/cta /-->' );
+
+	return $content . $append;
+}
+
+/**
+ * Ссылки на другие услуги той же ветки (без текущей страницы).
+ *
+ * @return string HTML-блок со списком.
+ */
+function jc_related_services_html() {
+	$current_id = get_queried_object_id();
+	$hub        = get_page_by_path( 'uslugi', OBJECT, 'page' );
+
+	if ( ! $hub ) {
+		return '';
+	}
+
+	$parent_id = wp_get_post_parent_id( $current_id );
+	$list_from  = ( $parent_id && (int) $parent_id !== (int) $hub->ID ) ? (int) $parent_id : (int) $hub->ID;
+
+	$siblings = get_pages(
+		array(
+			'parent' => $list_from,
+			'number' => 0,
+		)
+	);
+
+	if ( empty( $siblings ) ) {
+		return '';
+	}
+
+	$items = '';
+	foreach ( $siblings as $sibling ) {
+		if ( (int) $sibling->ID === (int) $current_id ) {
+			continue;
+		}
+		$items .= '<li><a href="' . esc_url( get_permalink( $sibling ) ) . '">' . esc_html( $sibling->post_title ) . '</a></li>';
+	}
+
+	if ( '' === $items ) {
+		return '';
+	}
+
+	$html  = '<section class="jc-block jc-block--related">';
+	$html .= '<h2>' . esc_html__( 'Другие услуги', 'astra-child' ) . '</h2>';
+	$html .= '<ul class="jc-related__list">' . $items . '</ul>';
+	$html .= '<p class="jc-block__note"><a href="' . esc_url( get_permalink( $hub ) ) . '">' . esc_html__( 'Все услуги →', 'astra-child' ) . '</a></p>';
+	$html .= '</section>';
+
+	return $html;
+}
+
+/* =====================================================================
+ * 8. Точки расширения для следующих этапов:
  *    - Этап 5 (формы) — контакты брать через jc_contacts() / фильтр jc_contacts.
  * ================================================================== */

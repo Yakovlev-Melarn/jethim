@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="zone-title zone-desc">
+<title id="zone-title">Зона выезда JetHim: Москва и Московская область</title>
+<desc id="zone-desc">Схема: в пределах 10 км от МКАД выезд бесплатный, основные районы выезда — ЗАО, ЮЗАО и СЗАО, дальше 45 рублей за километр.</desc>
+<rect width="800" height="600" fill="#fbf6f0" rx="16"/>
+<circle cx="400" cy="250" r="205" fill="#eef4f8" stroke="#c8d2dc" stroke-width="2"/>
+<circle cx="400" cy="250" r="160" fill="#ffffff" stroke="#0b6e99" stroke-width="3"/>
+<path d="M400,250 L324.9,108.7 324.9,108.7 L322.3,110.1 L319.8,111.6 L317.3,113.0 L314.8,114.6 L312.4,116.1 L310.0,117.7 L307.6,119.4 L305.2,121.1 L302.9,122.9 L300.6,124.6 L298.3,126.5 L296.1,128.3 L293.9,130.2 L291.7,132.2 L289.6,134.2 L287.5,136.2 L285.5,138.3 L283.5,140.4 L281.5,142.5 L279.6,144.7 L277.7,146.9 L275.8,149.1 L274.0,151.4 L272.2,153.7 L270.5,156.0 L268.8,158.4 L267.2,160.8 L265.6,163.2 L264.0,165.7 L262.5,168.2 L261.0,170.7 L259.6,173.2 L258.2,175.8 L256.9,178.4 L255.6,181.0 L254.4,183.6 L253.2,186.3 L252.1,189.0 L251.0,191.7 L250.0,194.4 L249.0,197.1 L248.0,199.9 L247.2,202.7 L246.3,205.5 L245.5,208.3 L244.8,211.1 L244.1,213.9 L243.5,216.7 Z" fill="#0b6e99" fill-opacity="0.18" stroke="#0b6e99" stroke-width="2"/>
+<text x="305.8" y="179.0" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0b6e99">СЗАО</text>
+<path d="M400,250 L243.5,216.7 243.5,216.7 L243.0,219.4 L242.5,222.0 L242.0,224.6 L241.6,227.3 L241.3,229.9 L241.0,232.6 L240.7,235.2 L240.5,237.9 L240.3,240.6 L240.1,243.3 L240.1,245.9 L240.0,248.6 L240.0,251.3 L240.0,254.0 L240.1,256.6 L240.3,259.3 L240.4,262.0 L240.7,264.6 L240.9,267.3 L241.3,270.0 L241.6,272.6 L242.0,275.3 L242.5,277.9 L242.9,280.5 L243.5,283.2 L244.0,285.8 L244.7,288.4 L245.3,291.0 L246.0,293.5 L246.8,296.1 L247.6,298.7 L248.4,301.2 L249.3,303.7 L250.2,306.3 L251.2,308.7 L252.2,311.2 L253.2,313.7 L254.3,316.1 L255.4,318.6 L256.6,321.0 L257.8,323.4 L259.1,325.7 L260.3,328.1 L261.7,330.4 L263.0,332.7 L264.4,335.0 L265.9,337.2 L267.4,339.5 Z" fill="#0b6e99" fill-opacity="0.18" stroke="#0b6e99" stroke-width="2"/>
+<text x="284.2" y="272.5" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0b6e99">ЗАО</text>
+<path d="M400,250 L267.4,339.5 267.4,339.5 L269.0,341.9 L270.7,344.2 L272.4,346.6 L274.2,348.9 L276.0,351.1 L277.9,353.4 L279.8,355.6 L281.7,357.8 L283.7,359.9 L285.7,362.0 L287.8,364.0 L289.9,366.1 L292.0,368.0 L294.2,370.0 L296.4,371.9 L298.6,373.8 L300.9,375.6 L303.2,377.4 L305.5,379.1 L307.8,380.8 L310.2,382.5 L312.7,384.1 L315.1,385.6 L317.6,387.1 L320.1,388.6 L322.6,390.1 L325.2,391.4 L327.8,392.8 L330.4,394.1 L333.0,395.3 L335.7,396.5 L338.3,397.6 L341.0,398.7 L343.7,399.8 L346.5,400.8 L349.2,401.7 L352.0,402.6 L354.8,403.5 L357.6,404.3 L360.4,405.0 L363.2,405.7 L366.1,406.4 L368.9,406.9 L371.8,407.5 L374.6,408.0 L377.5,408.4 L380.4,408.8 L383.3,409.1 Z" fill="#0b6e99" fill-opacity="0.18" stroke="#0b6e99" stroke-width="2"/>
+<text x="339.2" y="351.1" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0b6e99">ЮЗАО</text>
+<circle cx="400" cy="250" r="6" fill="#1f2a33"/>
+<text x="400" y="280" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2a33">Москва</text>
+<text x="568" y="244" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#0b6e99">МКАД</text>
+<text x="613" y="264" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#3e4854">10 км — выезд бесплатно</text>
+<text x="400" y="489" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" fill="#1f2a33">Дальше 10 км от МКАД — 45 ₽/км</text>
+<rect x="40" y="522" width="720" height="62" rx="12" fill="#ffffff" stroke="#c8d2dc"/>
+<rect x="62" y="542" width="22" height="22" rx="5" fill="#0b6e99" fill-opacity="0.18" stroke="#0b6e99" stroke-width="2"/>
+<text x="96" y="549" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a33">Основные районы выезда: ЗАО, ЮЗАО, СЗАО</text>
+<text x="96" y="569" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#3e4854">Работаем по Москве и области: ядро заказов — запад и юго-запад города.</text>
+</svg>

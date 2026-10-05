@@ -508,3 +508,305 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	.jc-topbar__phone { font-size: 14px; }
 	.site-header .custom-logo-link img { max-height: 38px; }
 }
+
+/* ==========================================================================
+   Этап 4 — страницы, хаб услуг, блог, общие секции
+   ========================================================================== */
+
+/* Хлебные крошки (штатная разметка Astra) */
+.ast-breadcrumbs {
+	margin: 14px 0 6px;
+	font-size: 14px;
+}
+
+.ast-breadcrumbs a:hover,
+.ast-breadcrumbs a:focus {
+	text-decoration: underline;
+}
+
+/* Общие секции на страницах услуги */
+.jc-block {
+	margin: 28px 0;
+	padding: 22px 24px;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 14px;
+	background-color: var(--jc-surface-2, #f6f8fa);
+}
+
+.jc-block h2 {
+	margin-top: 0;
+}
+
+.jc-block p {
+	margin-top: 0;
+}
+
+.jc-block__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 14px;
+}
+
+.jc-block__note {
+	margin: 12px 0 0;
+	font-size: 15px;
+}
+
+.jc-block__note a {
+	font-weight: 600;
+}
+
+.jc-related__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 10px 18px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.jc-related__list a {
+	display: block;
+	padding: 10px 14px;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 10px;
+	background-color: var(--jc-surface, #fff);
+	font-weight: 600;
+	font-size: 15px;
+}
+
+.jc-related__list a:hover,
+.jc-related__list a:focus {
+	border-color: var(--jc-primary, #0b6e99);
+	color: var(--jc-primary, #0b6e99);
+}
+
+/* Хаб услуг */
+.jc-hub__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 18px;
+	margin: 26px 0;
+}
+
+.jc-hub__card {
+	margin: 0;
+	padding: 20px 22px;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 14px;
+	background-color: var(--jc-surface, #fff);
+}
+
+.jc-hub__title {
+	margin: 0 0 8px;
+	font-size: 19px;
+}
+
+.jc-hub__text {
+	margin: 0;
+	font-size: 15px;
+	opacity: 0.8;
+}
+
+.jc-hub__sublist {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: 14px;
+}
+
+.jc-hub__sublist a {
+	text-decoration: underline;
+}
+
+/* Блог: рубрикатор и карточки */
+.jc-posts__header {
+	margin-bottom: 20px;
+}
+
+.jc-rubricator {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 14px;
+}
+
+.jc-rubricator__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 7px 14px;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 999px;
+	background-color: var(--jc-surface-2, #f6f8fa);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.jc-rubricator__link:hover,
+.jc-rubricator__link:focus {
+	border-color: var(--jc-primary, #0b6e99);
+	color: var(--jc-primary, #0b6e99);
+}
+
+.jc-rubricator__count {
+	padding: 1px 7px;
+	border-radius: 999px;
+	background-color: rgba(11, 110, 153, 0.12);
+	font-size: 12px;
+}
+
+.jc-posts {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 18px;
+	margin-bottom: 28px;
+}
+
+.jc-card {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 20px 22px;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 14px;
+	background-color: var(--jc-surface, #fff);
+}
+
+.jc-card__title {
+	margin: 0 0 8px;
+	font-size: 19px;
+	line-height: 1.3;
+}
+
+.jc-card__meta {
+	margin: 0 0 10px;
+	font-size: 13px;
+	opacity: 0.7;
+}
+
+.jc-card__meta a {
+	color: inherit;
+}
+
+.jc-card__excerpt {
+	flex: 1 1 auto;
+	font-size: 15px;
+	opacity: 0.85;
+}
+
+.jc-card__more {
+	margin-top: 14px;
+	font-size: 15px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.jc-card__more:hover,
+.jc-card__more:focus {
+	text-decoration: underline;
+}
+
+.navigation.pagination {
+	margin-bottom: 20px;
+}
+
+/* Запись блога */
+.jc-single__footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 26px;
+	padding-top: 18px;
+	border-top: 1px dashed var(--jc-border, #e3e8ee);
+}
+
+.jc-single__nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 22px;
+	font-size: 15px;
+}
+
+.jc-single__nav-item:empty {
+	display: none;
+}
+
+/* Главная: каркас-заглушки (тексты живут в контенте страницы) */
+.jc-hero {
+	padding: 8px 0 4px;
+}
+
+.jc-hero h1 {
+	margin-bottom: 10px;
+}
+
+.jc-trust {
+	font-size: 15px;
+	font-weight: 600;
+	opacity: 0.8;
+}
+
+.jc-numbers .wp-block-column,
+.jc-steps .wp-block-column {
+	text-align: center;
+}
+
+.jc-section-note {
+	font-size: 14px;
+	opacity: 0.7;
+}
+
+/* Зона выезда: SVG-схема */
+.jc-zone-map {
+	margin: 18px 0;
+}
+
+.jc-zone-map img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 760px;
+	margin: 0 auto;
+}
+
+/* Шапка: главное меню (10 пунктов) держим в один ряд на десктопе */
+@media (min-width: 1200px) {
+	.ast-primary-header-bar .main-navigation .menu-item > a {
+		font-size: 16px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+/* Тёмная тема — новые компоненты */
+html[data-theme="dark"] .jc-block,
+html[data-theme="dark"] .jc-hub__card,
+html[data-theme="dark"] .jc-card,
+html[data-theme="dark"] .jc-related__list a {
+	background-color: var(--jc-surface);
+	border-color: var(--jc-border);
+}
+
+@media (max-width: 782px) {
+	.jc-block {
+		padding: 18px 16px;
+	}
+
+	.jc-hub__list,
+	.jc-posts {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.jc-single__nav {
+		flex-direction: column;
+	}
+}
+
