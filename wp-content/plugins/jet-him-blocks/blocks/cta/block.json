@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "jc/cta",
+	"title": "JetHim: блок контактов / CTA",
+	"category": "jet-him",
+	"icon": "phone",
+	"description": "Призыв к действию с телефоном и мессенджерами. Контакты тянутся из functions.php дочерней темы.",
+	"keywords": [ "контакты", "звонок", "кнопка", "телефон", "призыв" ],
+	"textdomain": "jet-him-blocks",
+	"attributes": {
+		"title": { "type": "string", "default": "Рассчитаем стоимость по фото" },
+		"text": { "type": "string", "default": "Пришлите фото мебели — оценим цену и подтвердим время выезда. Расчёт бесплатный, ни к чему не обязывает." },
+		"buttonLabel": { "type": "string", "default": "Рассчитать стоимость" },
+		"showPhone": { "type": "boolean", "default": true },
+		"showSocial": { "type": "boolean", "default": true },
+		"showAddress": { "type": "boolean", "default": false }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide" ]
+	},
+	"editorScript": "jhb-cta-editor",
+	"style": "jhb-style",
+	"editorStyle": "jhb-editor-style",
+	"render": "file:./render.php"
+}

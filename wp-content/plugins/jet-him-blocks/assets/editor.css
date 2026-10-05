@@ -1,0 +1,205 @@
+/* ==========================================================================
+   JetHim Blocks — стили редактора (инспектор + превью в канвасе).
+   Фронтовые стили блоков подключаются отдельно (jhb-style).
+   ========================================================================== */
+
+/* Общие служебные классы инспектора */
+.jhb-hint {
+	font-size: 12.5px;
+	opacity: 0.7;
+	margin-top: -4px;
+}
+
+/* ---- Калькулятор: структура превью ---- */
+
+.editor-styles-wrapper .jhb-calc-editor .jc-calc {
+	pointer-events: none; /* клики в канвасе — за блоком; живой интерактив на сайте */
+}
+
+.editor-styles-wrapper .jhb-calc-editor {
+	/* фон канваса, чтобы карточка читалась */
+	background-color: transparent;
+}
+
+/* ---- Строки-инспекторы калькулятора ---- */
+
+.jhb-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 6px 8px;
+	margin-bottom: 8px;
+}
+
+.jhb-row__main {
+	flex: 1 1 140px;
+	min-width: 0;
+}
+
+.jhb-row__price {
+	width: 92px;
+	flex: 0 0 92px;
+}
+
+.jhb-row__remove {
+	flex: 0 0 auto;
+	align-self: center;
+}
+
+.jhb-subhead {
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	opacity: 0.6;
+	margin: 16px 0 6px;
+}
+
+.jhb-empty {
+	font-size: 13px;
+	opacity: 0.6;
+	margin: 4px 0 10px;
+}
+
+/* ---- Матрица цен (шторы, ковры) ----
+   Разметка: дивы .jhb-matrix (шапка + по строке на материал),
+   внутри — подписи TextControl и ячейки NumberField.                */
+
+.jhb-matrix {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	padding: 7px 8px;
+	margin-bottom: 7px;
+	background: #fff;
+}
+
+.jhb-matrix--head {
+	background: #f6f7f7;
+	border-bottom-style: dashed;
+}
+
+.jhb-matrix .components-base-control {
+	margin-bottom: 0;
+	min-width: 0;
+}
+
+.jhb-matrix .components-base-control__label {
+	font-size: 11.5px;
+}
+
+.jhb-matrix__corner {
+	flex: 0 0 148px;
+	font-size: 12px;
+	font-weight: 700;
+	opacity: 0.65;
+	line-height: 1.3;
+}
+
+.jhb-matrix__row-name {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex: 0 0 100%;
+}
+
+.jhb-matrix__row-name .components-base-control {
+	flex: 1 1 auto;
+}
+
+.jhb-matrix__col {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	flex: 1 1 118px;
+}
+
+.jhb-matrix__cell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 3px;
+	flex: 1 1 118px;
+}
+
+.jhb-matrix__cell input,
+.jhb-matrix__col input,
+.jhb-matrix__row-name input {
+	width: 100%;
+	min-width: 0;
+	height: 30px;
+	text-align: center;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+	font: inherit;
+	font-size: 12.5px;
+	-moz-appearance: textfield;
+}
+
+.jhb-matrix__row-name input {
+	text-align: left;
+}
+
+.jhb-matrix__cell input:focus,
+.jhb-matrix__col input:focus,
+.jhb-matrix__row-name input:focus {
+	border-color: #2271b1;
+}
+
+.jhb-matrix__cell input::-webkit-outer-spin-button,
+.jhb-matrix__cell input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.jhb-matrix .components-button {
+	min-width: 26px;
+	height: 30px;
+	padding: 0 6px;
+	line-height: 1;
+}
+
+/* ---- Изображения в блоке «до/после» ---- */
+
+.jhb-image {
+	margin-bottom: 14px;
+}
+
+.jhb-image__label {
+	font-size: 12.5px;
+	font-weight: 600;
+	margin: 0 0 4px;
+}
+
+.jhb-image__preview {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin-top: 8px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+}
+
+.jhb-image__empty {
+	display: inline-block;
+	margin-top: 8px;
+	padding: 10px 14px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 6px;
+	font-size: 12.5px;
+	opacity: 0.65;
+}
+
+.editor-styles-wrapper .jhb-ba-editor {
+	background-color: transparent;
+}
+
+/* ---- Калькулятор: вкладки в канвасе кликабельны не должны быть ---- */
+
+.editor-styles-wrapper .jhb-calc-editor .jc-calc__tab {
+	pointer-events: none;
+}

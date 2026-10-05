@@ -1,0 +1,564 @@
+/* ==========================================================================
+   JetHim Blocks — стили блоков (калькулятор, до/после, CTA).
+   Токены берутся из дочерней темы, fallback — на случай правки темы.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Калькулятор
+   -------------------------------------------------------------------------- */
+
+.jc-calc {
+	--calc-primary: var(--jc-primary, #0b6e99);
+	--calc-primary-dark: var(--jc-primary-dark, #08597b);
+	--calc-bg: var(--jc-surface, #ffffff);
+	--calc-bg-2: var(--jc-surface-2, #f6f8fa);
+	--calc-border: var(--jc-border, #e3e8ee);
+	--calc-text: var(--jc-text, #3e4854);
+	--calc-heading: var(--jc-heading, #1f2a33);
+
+	background-color: var(--calc-bg);
+	border: 1px solid var(--calc-border);
+	border-radius: 14px;
+	padding: 24px;
+	color: var(--calc-text);
+}
+
+/* Вкладки */
+.jc-calc__tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 20px;
+}
+
+.jc-calc .jc-calc__tab {
+	appearance: none;
+	margin: 0;
+	border: 1px solid var(--calc-border);
+	background-color: var(--calc-bg-2);
+	color: var(--calc-text);
+	font: inherit;
+	font-weight: 600;
+	font-size: 15px;
+	line-height: 1.3;
+	padding: 10px 18px;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.jc-calc .jc-calc__tab:hover,
+.jc-calc .jc-calc__tab:focus {
+	border-color: var(--calc-primary);
+	color: var(--calc-primary);
+}
+
+.jc-calc .jc-calc__tab.is-active {
+	background-color: var(--calc-primary);
+	border-color: var(--calc-primary);
+	color: #fff;
+}
+
+/* Панели */
+.jc-calc__panel[hidden] {
+	display: none;
+}
+
+.jc-calc__section + .jc-calc__section {
+	margin-top: 22px;
+}
+
+.jc-calc__section-title {
+	margin: 0 0 10px;
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--calc-heading);
+}
+
+/* Строка позиции */
+.jc-calc__row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 16px;
+	padding: 10px 12px;
+	border: 1px solid var(--calc-border);
+	border-radius: 10px;
+	margin-bottom: 8px;
+	background-color: var(--calc-bg);
+}
+
+.jc-calc__row-main {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex: 1 1 240px;
+	min-width: 0;
+}
+
+.jc-calc__row-label {
+	font-size: 15px;
+	color: var(--calc-heading);
+	line-height: 1.35;
+}
+
+.jc-calc__row-price {
+	font-size: 13px;
+	color: var(--calc-text);
+	opacity: 0.75;
+}
+
+/* Счётчик */
+.jc-calc__stepper {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.jc-calc .jc-calc__step {
+	box-sizing: border-box;
+	width: 34px;
+	min-width: 0;
+	height: 34px;
+	margin: 0;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--calc-border);
+	border-radius: 8px;
+	background-color: var(--calc-bg-2);
+	color: var(--calc-heading);
+	font-family: inherit;
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+	transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.jc-calc .jc-calc__step:hover,
+.jc-calc .jc-calc__step:focus {
+	border-color: var(--calc-primary);
+	color: var(--calc-primary);
+}
+
+.jc-calc .jc-calc__qty {
+	box-sizing: border-box;
+	width: 62px;
+	min-width: 0;
+	height: 34px;
+	margin: 0;
+	padding: 0 6px;
+	text-align: center;
+	border: 1px solid var(--calc-border);
+	border-radius: 8px;
+	background-color: var(--calc-bg);
+	color: var(--calc-heading);
+	font-family: inherit;
+	font-size: 15px;
+	line-height: 1.2;
+	-moz-appearance: textfield;
+}
+
+.jc-calc .jc-calc__qty::-webkit-outer-spin-button,
+.jc-calc .jc-calc__qty::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.jc-calc__both {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.jc-calc .jc-calc__both input,
+.jc-calc .jc-calc__flag input,
+.jc-calc .jc-calc__trip input[type="checkbox"] {
+	box-sizing: border-box;
+	width: 18px;
+	min-width: 0;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	accent-color: var(--calc-primary);
+}
+
+/* Поля: шторы и ковры */
+.jc-calc__fields {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px 18px;
+	align-items: flex-end;
+	margin-bottom: 12px;
+}
+
+.jc-calc__field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 160px;
+	flex: 1 1 160px;
+}
+
+.jc-calc__field > span:first-child {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--calc-text);
+	opacity: 0.85;
+}
+
+.jc-calc .jc-calc__field select,
+.jc-calc .jc-calc__field input {
+	box-sizing: border-box;
+	min-width: 0;
+	margin: 0;
+	height: 42px;
+	padding: 0 12px;
+	border: 1px solid var(--calc-border);
+	border-radius: 8px;
+	background-color: var(--calc-bg);
+	color: var(--calc-heading);
+	font: inherit;
+	font-size: 15px;
+}
+
+.jc-calc .jc-calc__field select:disabled {
+	opacity: 0.45;
+}
+
+.jc-calc__field--rate {
+	flex: 0 0 auto;
+	min-width: 0;
+	flex-direction: row;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.jc-calc__field--rate strong {
+	font-size: 22px;
+	font-weight: 700;
+	color: var(--calc-primary);
+}
+
+.jc-calc__hint {
+	margin: 6px 0 0;
+	font-size: 13px;
+	opacity: 0.72;
+}
+
+/* Допы и выезд */
+.jc-calc__extras,
+.jc-calc__trip {
+	margin-top: 22px;
+	padding-top: 18px;
+	border-top: 1px solid var(--calc-border);
+}
+
+.jc-calc__flag {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 9px 12px;
+	border: 1px dashed var(--calc-border);
+	border-radius: 10px;
+	margin-bottom: 8px;
+	font-size: 14.5px;
+	cursor: pointer;
+}
+
+.jc-calc__flag em {
+	display: block;
+	font-style: normal;
+	font-size: 12.5px;
+	opacity: 0.65;
+}
+
+/* Итог */
+.jc-calc__result {
+	margin-top: 22px;
+	padding-top: 18px;
+	border-top: 2px solid var(--calc-border);
+}
+
+.jc-calc__total {
+	margin: 0 0 12px;
+	font-size: 18px;
+	color: var(--calc-heading);
+}
+
+.jc-calc__total strong {
+	font-size: 30px;
+	font-weight: 800;
+	color: var(--calc-primary);
+	margin-left: 6px;
+}
+
+.jc-calc__lines {
+	list-style: none;
+	margin: 0 0 14px;
+	padding: 0;
+	font-size: 14.5px;
+}
+
+.jc-calc__lines li {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 6px 0;
+	border-bottom: 1px dashed var(--calc-border);
+}
+
+.jc-calc__line-sum {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.jc-calc__note {
+	margin: 0 0 8px;
+	font-size: 14px;
+	line-height: 1.55;
+	opacity: 0.85;
+}
+
+.jc-calc__note--muted {
+	opacity: 0.65;
+	font-size: 13.5px;
+}
+
+.jc-calc__submit {
+	margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Слайдер «до / после»
+   -------------------------------------------------------------------------- */
+
+.jc-ba {
+	margin: 0;
+}
+
+.jc-ba__frame {
+	position: relative;
+	overflow: hidden;
+	border-radius: 14px;
+	background-color: var(--jc-surface-2, #f3f3f3);
+	--pos: 50%;
+	--divider: var(--jc-primary, #0b6e99);
+	touch-action: pan-y;
+}
+
+.jc-ba__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	vertical-align: top;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.jc-ba__img--before {
+	position: absolute;
+	inset: 0;
+	clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
+
+.jc-ba__tag {
+	position: absolute;
+	top: 12px;
+	z-index: 3;
+	padding: 5px 12px;
+	border-radius: 999px;
+	background-color: rgba(12, 16, 20, 0.72);
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	pointer-events: none;
+}
+
+.jc-ba__tag--before { left: 12px; }
+.jc-ba__tag--after { right: 12px; }
+
+.jc-ba__divider {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--pos);
+	z-index: 2;
+	width: 3px;
+	margin-left: -1.5px;
+	background-color: var(--divider);
+	pointer-events: none;
+}
+
+.jc-ba__handle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 42px;
+	height: 42px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	border-radius: 50%;
+	background-color: var(--divider);
+	color: #fff;
+	font-size: 17px;
+	font-weight: 700;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.jc-ba__range {
+	position: absolute;
+	inset: 0;
+	z-index: 4;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	opacity: 0;
+	cursor: ew-resize;
+}
+
+.jc-ba__frame:focus-within {
+	outline: 3px solid var(--divider);
+	outline-offset: 3px;
+}
+
+.jc-ba__frame--empty {
+	padding: 46px 20px;
+	text-align: center;
+}
+
+.jc-ba__empty {
+	margin: 0;
+	opacity: 0.7;
+}
+
+.jc-ba__caption {
+	margin-top: 10px;
+	font-size: 14px;
+	opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   CTA / контакты
+   -------------------------------------------------------------------------- */
+
+.jc-cta {
+	background: linear-gradient(135deg, var(--jc-surface, #fff) 0%, var(--jc-surface-2, #f6f8fa) 100%);
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: 16px;
+	padding: 28px;
+}
+
+.jc-cta__inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 22px;
+}
+
+.jc-cta__text {
+	flex: 1 1 320px;
+	min-width: 0;
+}
+
+.jc-cta__title {
+	margin: 0 0 8px;
+	font-size: clamp(21px, 2.4vw, 27px);
+	line-height: 1.25;
+	color: var(--jc-heading, #1f2a33);
+}
+
+.jc-cta__lead {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--jc-text, #3e4854);
+}
+
+.jc-cta__address {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 0 0;
+	font-size: 14.5px;
+	opacity: 0.8;
+}
+
+.jc-cta__address svg {
+	width: 17px;
+	height: 17px;
+}
+
+.jc-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+
+.jc-cta__phone {
+	font-size: 19px;
+	font-weight: 700;
+	color: var(--jc-heading, #1f2a33);
+	white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Адаптив
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 782px) {
+	.jc-calc {
+		padding: 16px;
+		border-radius: 12px;
+	}
+
+	.jc-calc__row {
+		padding: 10px;
+	}
+
+	.jc-calc__total strong {
+		font-size: 26px;
+		display: block;
+		margin-left: 0;
+	}
+
+	.jc-cta {
+		padding: 20px;
+	}
+
+	.jc-cta__actions {
+		width: 100%;
+	}
+
+	.jc-cta__actions .jc-btn {
+		flex: 1 1 auto;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 480px) {
+	.jc-calc .jc-calc__tab {
+		flex: 1 1 auto;
+		text-align: center;
+		padding: 10px 12px;
+	}
+
+	.jc-calc__field {
+		min-width: 100%;
+	}
+
+	.jc-ba__handle {
+		width: 36px;
+		height: 36px;
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "jc/before-after",
+	"title": "JetHim: до / после",
+	"category": "jet-him",
+	"icon": "format-image",
+	"description": "Слайдер «до/после» с перетаскиванием мышью, пальцем и клавиатурой.",
+	"keywords": [ "до", "после", "слайдер", "сравнение", "работа" ],
+	"textdomain": "jet-him-blocks",
+	"attributes": {
+		"beforeUrl": { "type": "string", "default": "" },
+		"beforeId": { "type": "number", "default": 0 },
+		"afterUrl": { "type": "string", "default": "" },
+		"afterId": { "type": "number", "default": 0 },
+		"beforeLabel": { "type": "string", "default": "До" },
+		"afterLabel": { "type": "string", "default": "После" },
+		"caption": { "type": "string", "default": "" },
+		"start": { "type": "number", "default": 50 }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "center" ]
+	},
+	"editorScript": "jhb-ba-editor",
+	"viewScript": "jhb-view",
+	"style": "jhb-style",
+	"editorStyle": "jhb-editor-style",
+	"render": "file:./render.php"
+}

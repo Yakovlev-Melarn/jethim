@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "jc/calc",
+	"title": "JetHim: калькулятор стоимости",
+	"category": "jet-him",
+	"icon": "calculator",
+	"description": "Калькулятор по прайсу: мебель, шторы, ковры, допы, выезд и скидка. Цены правятся в инспекторе.",
+	"keywords": [ "калькулятор", "расчёт", "цена", "прайс", "стоимость" ],
+	"textdomain": "jet-him-blocks",
+	"attributes": {
+		"data": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide" ],
+		"spacing": { "padding": true, "margin": true }
+	},
+	"editorScript": "jhb-calc-editor",
+	"viewScript": "jhb-view",
+	"style": "jhb-style",
+	"editorStyle": "jhb-editor-style",
+	"render": "file:./render.php"
+}
