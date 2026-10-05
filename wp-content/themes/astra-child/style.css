@@ -1,0 +1,16 @@
+/*
+Theme Name:   JetHim (Astra Child)
+Theme URI:    https://jethim.ru/
+Description:  Дочерняя тема Astra для сайта клининговой компании JetHim. Все правки стилей и логики — только в этой теме.
+Template:     astra
+Version:      1.0.0
+Author:       JetHim
+License:      GPL-2.0-or-later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  astra-child
+*/
+
+/*
+ * Базовые стилевые токены и компоненты — в assets/css/main.css.
+ * Этот файл нужен только как маркер дочерней темы (WP требует style.css).
+ */

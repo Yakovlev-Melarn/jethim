@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48" role="img" aria-labelledby="jc-logo-title">
+  <title id="jc-logo-title">JetHim — химчистка</title>
+  <g fill="#0b6e99">
+    <path d="M20 6c5.5 7.6 9 12.7 9 17.2A9 9 0 0 1 20 32a9 9 0 0 1-9-8.8C11 18.7 14.5 13.6 20 6z"/>
+    <path d="M31.5 20.5c2.6 3.6 4.2 6 4.2 8.1A4.2 4.2 0 0 1 31.5 33a4.2 4.2 0 0 1-4.2-4.4c0-2.1 1.6-4.5 4.2-8.1z" opacity=".55"/>
+  </g>
+  <text x="52" y="34" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" fill="#1f2a33" letter-spacing="-0.5">Jet<tspan fill="#0b6e99">Him</tspan></text>
+</svg>
