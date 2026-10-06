@@ -48,6 +48,25 @@ function jc_contacts() {
 }
 
 /* =====================================================================
+ * Этап 5: формы Fluent Forms
+ *
+ * Ключи форм лежат в опции jc_forms (заполняется .scripts/e5_setup.php),
+ * поэтому здесь нет жёстко зашитых id — форма меняется в админке FF.
+ * ================================================================== */
+function jc_fluentform( $key ) {
+	if ( ! class_exists( 'FluentForm\App\Services\Form\FormService' ) ) {
+		return '';
+	}
+
+	$forms = get_option( 'jc_forms', array() );
+	if ( empty( $forms[ $key ] ) ) {
+		return '';
+	}
+
+	return do_shortcode( '[fluentform id="' . (int) $forms[ $key ] . '"]' );
+}
+
+/* =====================================================================
  * 1. Подключение ресурсов дочерней темы
  * ================================================================== */
 add_action( 'wp_enqueue_scripts', 'jc_enqueue_assets', 20 );
@@ -131,6 +150,9 @@ function jc_header_topbar() {
 				<span class="jc-topbar__muted">Химчистка с выездом по Москве и МО</span>
 			</div>
 			<div class="jc-topbar__actions">
+				<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>">
+					<span class="jc-btn__label">Записаться</span>
+				</a>
 				<a class="jc-btn jc-btn--tg" href="<?php echo esc_url( $c['telegram'] ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php echo jc_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<span class="jc-btn__label">Telegram</span>
@@ -213,13 +235,12 @@ function jc_footer_columns() {
 				</ul>
 			</div>
 
-			<div class="jc-footer__col">
+			<div class="jc-footer__col jc-footer__col--form">
 				<h3 class="jc-footer__title"><?php esc_html_e( 'Записаться', 'astra-child' ); ?></h3>
-				<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( $c['phone_href'] ); ?>">
-					<?php echo jc_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<span><?php esc_html_e( 'Заказать звонок', 'astra-child' ); ?></span>
-				</a>
-				<p class="jc-footer__text"><?php esc_html_e( 'Пришлите фото мебели — оценим стоимость и подтвердим время.', 'astra-child' ); ?></p>
+				<?php echo jc_fluentform( 'callback' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — рендер формы Fluent Forms ?>
+				<p class="jc-footer__text">
+					<a href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>"><?php esc_html_e( 'Запись на выезд по дате →', 'astra-child' ); ?></a>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -318,7 +339,14 @@ function jc_service_shared_sections( $content ) {
 	$prices_url = home_url( '/tseny/' );
 	$hub_url    = home_url( '/uslugi/' );
 
-	$append  = '<section class="jc-block jc-block--calc">';
+	// Этап 5: заявка по услуге — сразу после текста страницы.
+	$append  = '<section class="jc-block jc-block--form">';
+	$append .= '<h2>' . esc_html__( 'Оставить заявку по этой услуге', 'astra-child' ) . '</h2>';
+	$append .= '<p>' . esc_html__( 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену.', 'astra-child' ) . '</p>';
+	$append .= jc_fluentform( 'service' );
+	$append .= '</section>';
+
+	$append .= '<section class="jc-block jc-block--calc">';
 	$append .= '<h2>' . esc_html__( 'Считаем по прайсу', 'astra-child' ) . '</h2>';
 	$append .= '<p>' . esc_html__( 'Цены на сайте — «от»: на итог влияют размер, загрязнение и выезд. Соберите расчёт в калькуляторе за минуту — покажем предварительную сумму до выезда мастера.', 'astra-child' ) . '</p>';
 	$append .= '<div class="jc-block__actions">';

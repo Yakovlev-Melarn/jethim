@@ -61,4 +61,56 @@
 			jcSetTheme( jcGetTheme() === 'dark' ? 'light' : 'dark' );
 		} );
 	}
+
+	/* ------------------------------------------------------------------
+	   Этап 5: калькулятор → скрытые поля формы Fluent Forms.
+	   Блок calc рисует свои поля jc_calc_total[<id>], а форма заявки
+	   несёт скрытые jc_calc_total / jc_calc_details — копируем значение,
+	   чтобы в заявке уехала сумма и разбивка.
+	------------------------------------------------------------------ */
+	function jcSyncCalcToForm() {
+		var calc = document.querySelector( '[data-jc-calc]' );
+		if ( ! calc ) {
+			return;
+		}
+		var totalField = calc.querySelector( '[data-jc-total-field]' );
+		var detailsField = calc.querySelector( '[data-jc-details-field]' );
+		if ( ! totalField ) {
+			return;
+		}
+		var total = totalField.value;
+		var details = detailsField ? detailsField.value : '';
+
+		Array.prototype.forEach.call(
+			document.querySelectorAll( 'form [name="jc_calc_total"]' ),
+			function ( el ) { el.value = total; }
+		);
+		Array.prototype.forEach.call(
+			document.querySelectorAll( 'form [name="jc_calc_details"]' ),
+			function ( el ) { el.value = details; }
+		);
+	}
+
+	[ 'input', 'change', 'click' ].forEach( function ( type ) {
+		document.addEventListener( type, function ( e ) {
+			var t = e.target;
+			if ( t && t.closest && t.closest( '[data-jc-calc]' ) ) {
+				jcSyncCalcToForm();
+			}
+		}, true );
+	} );
+
+	if ( window.JC && window.JC.on ) {
+		window.JC.on( 'calc:submit', jcSyncCalcToForm );
+	}
+	jcSyncCalcToForm();
+
+	/* Имя услуги в скрытое поле формы (страница услуги). */
+	var serviceField = document.querySelector( 'form [name="service"]' );
+	if ( serviceField && ! serviceField.value ) {
+		var h1 = document.querySelector( 'h1' );
+		if ( h1 ) {
+			serviceField.value = h1.textContent.replace( /\s+/g, ' ' ).trim();
+		}
+	}
 } )();

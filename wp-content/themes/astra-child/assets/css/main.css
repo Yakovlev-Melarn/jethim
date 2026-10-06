@@ -810,3 +810,162 @@ html[data-theme="dark"] .jc-related__list a {
 	}
 }
 
+
+/* =====================================================================
+   Этап 5: формы Fluent Forms — в стиле сайта
+   ================================================================== */
+.jc-block--form .fluentform,
+.jc-footer__col--form .fluentform {
+	margin-top: 14px;
+}
+
+.fluentform .ff-el-input--label > label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--jc-heading);
+}
+
+.fluentform .ff-el-form-control {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 46px;
+	padding: 10px 14px;
+	border: 1px solid var(--jc-border);
+	border-radius: var(--jc-radius-sm);
+	background: var(--jc-bg);
+	color: var(--jc-text);
+	font: inherit;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fluentform textarea.ff-el-form-control {
+	min-height: 92px;
+	resize: vertical;
+}
+
+.fluentform .ff-el-form-control:focus {
+	outline: none;
+	border-color: var(--jc-primary);
+	box-shadow: 0 0 0 3px rgba(11, 110, 153, 0.15);
+}
+
+.fluentform .ff-el-form-control.ff-el-form-has-error,
+.fluentform .ff-el-form-control.ff-invalid {
+	border-color: #d64545;
+}
+
+.fluentform .ff_msg_error,
+.fluentform .error-message,
+.fluentform .ff_el_error_msg {
+	display: block;
+	margin-top: 4px;
+	font-size: 13px;
+	color: #d64545;
+}
+
+.fluentform button[type="submit"],
+.fluentform .ff-btn-submit {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	min-height: 46px;
+	padding: 10px 24px;
+	border: 1px solid var(--jc-primary);
+	border-radius: var(--jc-radius);
+	background: var(--jc-primary);
+	color: var(--jc-white);
+	font-family: inherit;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.fluentform button[type="submit"]:hover,
+.fluentform button[type="submit"]:focus,
+.fluentform .ff-btn-submit:hover {
+	background: var(--jc-primary-dark);
+	border-color: var(--jc-primary-dark);
+}
+
+.fluentform .ff-errors-in-stack {
+	margin-bottom: 14px;
+	padding: 10px 14px;
+	border: 1px solid #f2c4c4;
+	border-radius: var(--jc-radius-sm);
+	background: #fdf3f3;
+	color: #a33;
+	font-size: 14px;
+}
+
+.fluentform .ff-message-success,
+.fluentform .ff-success-message {
+	padding: 14px 16px;
+	border: 1px solid var(--jc-border);
+	border-radius: var(--jc-radius);
+	background: var(--jc-surface);
+	color: var(--jc-heading);
+	font-size: 15px;
+}
+
+.fluentform .ff-el-html-content,
+.fluentform .ff-tnc-checkbox-content {
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--jc-text);
+}
+
+.fluentform .ff-el-tnc label,
+.fluentform .ff-el-is-checkable label {
+	font-size: 14px;
+	color: var(--jc-text);
+}
+
+.fluentform .ff-el-input--help {
+	margin-top: 4px;
+	font-size: 13px;
+	color: var(--jc-text);
+	opacity: 0.8;
+}
+
+.fluentform .ff-el-form-check-input {
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	accent-color: var(--jc-primary);
+}
+
+.fluentform .ff-el-form-check label {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	cursor: pointer;
+}
+
+/* Компактная форма в футере */
+.jc-footer__col--form .ff-el-form-control {
+	min-height: 40px;
+	padding: 8px 12px;
+	font-size: 14px;
+}
+
+.jc-footer__col--form button[type="submit"] {
+	min-height: 40px;
+	width: 100%;
+	font-size: 15px;
+}
+
+.jc-footer__col--form .ff-el-input--label > label {
+	margin-bottom: 4px;
+	font-size: 13px;
+}
+
+@media (max-width: 782px) {
+	.fluentform button[type="submit"] {
+		width: 100%;
+	}
+}
