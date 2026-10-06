@@ -37,30 +37,105 @@
 	};
 
 	/* ------------------------------------------------------------------
-	   Тема: по умолчанию светлая, тёмная — по кнопке в верхней панели.
-	   Атрибут data-theme уже стоит (скрипт в <head>), здесь — только
-	   переключение и сохранение выбора.
+	   Календарь дат (Fluent Forms → flatpickr v4): русская локаль.
+	   FF инициализирует flatpickr лениво — ждём появления инстанса,
+	   локализуем глобально (для новых) и доправляем уже созданный.
 	------------------------------------------------------------------ */
-	var THEME_KEY = 'jc-theme';
+	( function jcCalendarLocale() {
+		var RU = {
+			weekdays: {
+				shorthand: [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ],
+				longhand: [ 'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ]
+			},
+			months: {
+				shorthand: [ 'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек' ],
+				longhand: [ 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь' ]
+			},
+			firstDayOfWeek: 1,
+			rangeSeparator: ' — ',
+			weekAbbreviation: 'Нед',
+			scrollTitle: 'Прокрутите, чтобы увеличить',
+			toggleTitle: 'Переключить',
+			amPM: [ 'ДП', 'ПП' ],
+			yearAriaLabel: 'Год',
+			time_24hr: true
+		};
+		var EN_MONTHS = [ 'January', 'February', 'March', 'April', 'May', 'June',
+			'July', 'August', 'September', 'October', 'November', 'December' ];
+		var EN2RU = { Mon: 'Пн', Tue: 'Вт', Wed: 'Ср', Thu: 'Чт', Fri: 'Пт', Sat: 'Сб', Sun: 'Вс' };
+		var localized = false;
 
-	function jcGetTheme() {
-		var saved = null;
-		try { saved = window.localStorage.getItem( THEME_KEY ); } catch ( e ) {}
-		return saved === 'dark' ? 'dark' : 'light';
-	}
+		function localizeGlobal() {
+			if ( localized || ! window.flatpickr ) {
+				return;
+			}
+			try {
+				if ( window.flatpickr.localize ) {
+					window.flatpickr.localize( RU );
+				}
+				if ( window.flatpickr.l10ns ) {
+					window.flatpickr.l10ns.ru = RU;
+				}
+				localized = true;
+			} catch ( e ) {}
+		}
 
-	function jcSetTheme( theme ) {
-		document.documentElement.setAttribute( 'data-theme', theme );
-		try { window.localStorage.setItem( THEME_KEY, theme ); } catch ( e ) {}
-		window.JC.emit( 'theme:change', theme );
-	}
+		function patchInstance( el ) {
+			var inst = el._flatpickr;
+			if ( ! inst || el.__jcRu ) {
+				return;
+			}
+			el.__jcRu = true;
+			try {
+				inst.l10n = Object.assign( {}, inst.l10n, RU );
+				if ( inst.redraw ) {
+					inst.redraw();
+				}
+			} catch ( e ) {}
+		}
 
-	var themeToggle = document.querySelector( '[data-jc-theme-toggle]' );
-	if ( themeToggle ) {
-		themeToggle.addEventListener( 'click', function () {
-			jcSetTheme( jcGetTheme() === 'dark' ? 'light' : 'dark' );
-		} );
-	}
+		function patchCalendarDom() {
+			var cal = document.querySelector( '.flatpickr-calendar' );
+			if ( ! cal ) {
+				return;
+			}
+			// Месяцы в дропдауне (v4: monthDropdown) — опции строятся один раз.
+			var sel = cal.querySelector( '.flatpickr-monthDropdown-months' );
+			if ( sel && sel.options ) {
+				Array.prototype.forEach.call( sel.options, function ( o, i ) {
+					if ( EN_MONTHS.indexOf( ( o.textContent || '' ).trim() ) >= 0 && RU.months.longhand[ i ] ) {
+						o.textContent = RU.months.longhand[ i ];
+					}
+				} );
+			}
+			// Заголовок месяца (тип static).
+			var cm = cal.querySelector( '.cur-month' );
+			if ( cm && ! cm.options ) {
+				var idx = EN_MONTHS.indexOf( ( cm.textContent || '' ).trim() );
+				if ( idx >= 0 ) {
+					cm.textContent = RU.months.longhand[ idx ];
+				}
+			}
+			// Подписи дней недели.
+			Array.prototype.forEach.call( cal.querySelectorAll( '.flatpickr-weekday' ), function ( w ) {
+				var t = ( w.textContent || '' ).trim().slice( 0, 3 );
+				if ( EN2RU[ t ] ) {
+					w.textContent = EN2RU[ t ];
+				}
+			} );
+		}
+
+		var tries = 0;
+		var timer = setInterval( function () {
+			++tries;
+			localizeGlobal();
+			Array.prototype.forEach.call( document.querySelectorAll( '.flatpickr-input' ), patchInstance );
+			patchCalendarDom();
+			if ( tries > 60 ) {
+				clearInterval( timer );
+			}
+		}, 500 );
+	} )();
 
 	/* ------------------------------------------------------------------
 	   Этап 5: калькулятор → скрытые поля формы Fluent Forms.

@@ -1,90 +1,76 @@
 /* ==========================================================================
    JetHim — основные стили дочерней темы (astra-child)
+   РЕДИЗАЙН: стилизация по референсу клиента himchistka-kaplya.ru.
+   Палитра: синий #1b88d8 + красный #e23936, фон #f9f9f9, белые карточки.
+   Шрифты: Montserrat (заголовки) + Inter (текст), Google Fonts.
    Правки только здесь. Файлы Astra не изменяются.
-
-   ПАЛИТРА ЗАГЛУШКА: значения совпадают с глобальной палитрой Astra
-   (Customizer → Global → Palette). Заменить вместе с логотипом,
-   когда заказчик пришлёт фирменные цвета.
    ========================================================================== */
 
 :root {
-	/* Бренд */
-	--jc-primary: #0b6e99;        /* color-1 Brand  */
-	--jc-primary-dark: #08597b;   /* color-2 Alternate brand */
-	--jc-accent: #e4803c;         /* тёплый акцент (домашний тон) */
+	/* Палитра референса */
+	--jc-primary: #1b88d8;          /* акцент-синий */
+	--jc-primary-dark: #1776bd;
+	--jc-red: #e23936;              /* калькулятор / отправка формы */
+	--jc-red-dark: #c73331;
+	--jc-soft: #d1e8fa;             /* светло-синий блок в герое */
 
 	/* Текст и фоны */
-	--jc-heading: #1f2a33;        /* color-3 Headings */
-	--jc-text: #3e4854;           /* color-4 Text */
-	--jc-bg: #ffffff;             /* color-5 Primary background */
-	--jc-surface: #fbf6f0;        /* color-6 Secondary background */
-	--jc-surface-2: #f3ebe1;      /* color-7 Alternate background */
-	--jc-border: #e7ded3;         /* color-8 Subtle background */
-	--jc-dark: #1e242b;           /* color-9 Other supporting */
+	--jc-heading: #444b54;          /* заголовки */
+	--jc-dark: #1b2025;             /* тёмный акцентный текст */
+	--jc-text: #3c3d41;             /* основной текст */
+	--jc-bg: #f9f9f9;               /* фон страницы */
 	--jc-white: #ffffff;
+	--jc-gray: #f2f2f2;             /* серые полосы (топбар, футер) */
+	--jc-border: #ededee;
+	--jc-border-2: #e4e4e6;
+	--jc-muted: #bec1c5;
 
 	--jc-link: var(--jc-primary);
 	--jc-link-hover: var(--jc-primary-dark);
 
 	--jc-radius: 10px;
 	--jc-radius-sm: 6px;
-	--jc-container: 1200px;
+	--jc-pill: 42px;
+	--jc-container: 1260px;
 	--jc-gap: 24px;
 
-	--jc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-		"Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji";
-	--jc-font-display: var(--jc-font);
-}
+	--jc-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
+	--jc-font-display: "Montserrat", var(--jc-font);
 
-/* --------------------------------------------------------------------------
-   Тёмная тема — по кнопке в верхней панели.
-   По умолчанию всегда светлая (сайт про чистоту и белизну).
-   Атрибут data-theme ставит маленький скрипт в <head> (functions.php),
-   поэтому «мигания» при загрузке нет.
-   -------------------------------------------------------------------------- */
-
-html[data-theme="dark"] {
-	--jc-primary: #58aede;
-	--jc-primary-dark: #7cc5ea;
-	--jc-accent: #f2a25c;
-
-	--jc-heading: #e9ecef;
-	--jc-text: #c4cbd3;
-	--jc-bg: #12151a;
-	--jc-surface: #191e25;
-	--jc-surface-2: #212830;
-	--jc-border: #2c333c;
-	--jc-dark: #0d1014;
-
-	--jc-link: var(--jc-primary);
-	--jc-link-hover: var(--jc-primary-dark);
-
-	/* Astra читает бренд-цвета отсюда — переключается вся тема.
-	   Селектор html[...] надёжнее, чем :root, порядок загрузки стилей
-	   (динамический CSS Astra печатается позже) не важен. */
-	--ast-global-color-0: #58aede;
-	--ast-global-color-1: #7cc5ea;
-	--ast-global-color-2: #e9ecef;
-	--ast-global-color-3: #c4cbd3;
-	--ast-global-color-4: #12151a;
-	--ast-global-color-5: #191e25;
-	--ast-global-color-6: #212830;
-	--ast-global-color-7: #2c333c;
-	--ast-global-color-8: #e9ecef;
+	/* Глобальные цвета Astra (меняем бренд-палитру темы) */
+	--ast-global-color-0: #1b88d8;
+	--ast-global-color-1: #1776bd;
+	--ast-global-color-2: #444b54;
+	--ast-global-color-3: #3c3d41;
+	--ast-global-color-4: #ffffff;
+	--ast-global-color-5: #f9f9f9;
+	--ast-global-color-6: #f2f2f2;
+	--ast-global-color-7: #ededee;
+	--ast-global-color-8: #1b2025;
 }
 
 /* --------------------------------------------------------------------------
    База
    -------------------------------------------------------------------------- */
 
-body {
+body,
+body.ast-plain-container,
+.ast-plain-container,
+.ast-page-builder-template {
 	font-family: var(--jc-font);
-	font-size: 17px;
+	font-size: 16.5px;
 	line-height: 1.65;
 	color: var(--jc-text);
 	background-color: var(--jc-bg);
 	-webkit-font-smoothing: antialiased;
+}
+
+/* Контентные колонки Astra — прозрачные, чтобы виден был фон #f9f9f9 */
+.ast-separate-container .article-content,
+.ast-separate-container .entry-content,
+.ast-separate-container .ast-article-inner {
+	background-color: transparent;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -112,66 +98,222 @@ a:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Кнопки
+   Заголовки секций: по центру с короткой линией сверху (как в референсе)
    -------------------------------------------------------------------------- */
 
-.jc-btn {
+.entry-content > h2,
+.entry-content > .wp-block-group > h2 {
+	position: relative;
+	margin: 0 auto 34px;
+	padding-top: 26px;
+	font-size: 34px;
+	font-weight: 800;
+	line-height: 1.2;
+	text-align: center;
+}
+
+/* Плоские страницы (услуги, цены): верхний отступ перед секцией */
+.entry-content > h2 {
+	margin-top: 46px;
+}
+
+.entry-content > h2::before,
+.entry-content > .wp-block-group > h2::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 96px;
+	height: 2px;
+	background: #ccc;
+}
+
+h3 {
+	font-weight: 700;
+	font-size: 21px;
+	line-height: 1.35;
+	color: var(--jc-heading);
+}
+
+.entry-content {
+	font-size: 16.5px;
+	line-height: 1.65;
+}
+
+.entry-content p {
+	margin: 0 0 16px;
+}
+
+/* Списки: тонкая черта-маркер вместо маркеров WP */
+.entry-content ul,
+.entry-content ol {
+	margin: 0 0 20px;
+	padding: 0;
+	list-style: none;
+}
+
+.entry-content ul li,
+.entry-content ol li {
+	position: relative;
+	padding-left: 45px;
+	margin-bottom: 10px;
+}
+
+.entry-content ul li::before {
+	content: "";
+	position: absolute;
+	top: 0.75em;
+	left: 0;
+	width: 40px;
+	height: 1px;
+	background: var(--jc-text);
+}
+
+.entry-content ol {
+	counter-reset: jc-ol;
+}
+
+.entry-content ol li {
+	counter-increment: jc-ol;
+}
+
+.entry-content ol li::before {
+	content: counter(jc-ol) ".";
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-weight: 700;
+	color: var(--jc-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Кнопки: pill, капс, letter-spacing (фирменный приём референса)
+   -------------------------------------------------------------------------- */
+
+.jc-btn,
+.wp-block-button__link,
+.entry-content .wp-block-button__link,
+.is-style-outline.wp-element-button,
+button[type="submit"] {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
-	min-height: 44px;
-	padding: 10px 20px;
+	min-height: 48px;
+	padding: 13px 30px;
 	border: 1px solid transparent;
-	border-radius: var(--jc-radius-sm);
-	font-size: 15px;
+	border-radius: var(--jc-pill);
+	font-family: var(--jc-font);
+	font-size: 12.5px;
 	font-weight: 600;
-	line-height: 1.2;
-	white-space: nowrap;
-	transition: background-color 0.15s ease, border-color 0.15s ease,
-		color 0.15s ease;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	line-height: 1.3;
+	text-align: center;
+	white-space: normal;
+	cursor: pointer;
+	transition: box-shadow 0.25s ease, background-color 0.2s ease,
+		border-color 0.2s ease, color 0.2s ease;
 }
 
 .jc-btn svg {
-	width: 18px;
-	height: 18px;
+	width: 17px;
+	height: 17px;
 	flex: 0 0 auto;
 }
 
-.jc-btn--primary {
-	background-color: var(--jc-primary);
-	color: var(--jc-white);
-}
-
-.jc-btn--primary:hover,
-.jc-btn--primary:focus {
-	background-color: var(--jc-primary-dark);
-	color: var(--jc-white);
-}
-
-.jc-btn--outline {
-	border-color: currentColor;
-	color: var(--jc-primary);
-	background-color: transparent;
-}
-
-.jc-btn--outline:hover,
-.jc-btn--outline:focus {
+/* Синий — основной CTA */
+.jc-btn--primary,
+.entry-content .wp-block-button__link {
 	background-color: var(--jc-primary);
 	border-color: var(--jc-primary);
 	color: var(--jc-white);
 }
 
-.jc-btn--tg svg { color: #229ed9; }
-.jc-btn--vk svg { color: #5181b8; }
+.jc-btn--primary:hover,
+.jc-btn--primary:focus,
+.entry-content .wp-block-button__link:hover,
+.entry-content .wp-block-button__link:focus {
+	background-color: var(--jc-primary);
+	border-color: var(--jc-primary);
+	color: var(--jc-white);
+	box-shadow: 0 10px 15px rgba(27, 136, 216, 0.22);
+}
+
+/* Красный — всё, что ведёт в калькулятор (как на референсе) */
+.entry-content .wp-block-button__link[href*="#calc"],
+a.jc-btn--red {
+	background-color: var(--jc-red);
+	border-color: var(--jc-red);
+	color: var(--jc-white);
+}
+
+.entry-content .wp-block-button__link[href*="#calc"]:hover,
+.entry-content .wp-block-button__link[href*="#calc"]:focus,
+a.jc-btn--red:hover,
+a.jc-btn--red:focus {
+	background-color: var(--jc-red);
+	border-color: var(--jc-red);
+	color: var(--jc-white);
+	box-shadow: 0 10px 15px rgba(226, 57, 54, 0.22);
+}
+
+/* Контурная */
+.jc-btn--outline,
+.is-style-outline .wp-block-button__link,
+.wp-block-button__link.is-style-outline,
+.entry-content .is-style-outline .wp-block-button__link,
+.wp-block-button.is-style-outline .wp-block-button__link {
+	background-color: transparent;
+	border-color: var(--jc-primary);
+	color: var(--jc-primary);
+}
+
+.jc-btn--outline:hover,
+.jc-btn--outline:focus,
+.wp-block-button__link.is-style-outline:hover,
+.wp-block-button__link.is-style-outline:focus,
+.wp-block-button.is-style-outline .wp-block-button__link:hover,
+.wp-block-button.is-style-outline .wp-block-button__link:focus {
+	background-color: var(--jc-primary);
+	border-color: var(--jc-primary);
+	color: var(--jc-white);
+	box-shadow: 0 10px 15px rgba(27, 136, 216, 0.22);
+}
+
+/* Контурная, ведущая в калькулятор — красная */
+.wp-block-button__link.is-style-outline[href*="#calc"],
+.wp-block-button.is-style-outline .wp-block-button__link[href*="#calc"] {
+	background: transparent;
+	border-color: var(--jc-red);
+	color: var(--jc-red);
+}
+
+.wp-block-button__link.is-style-outline[href*="#calc"]:hover,
+.wp-block-button.is-style-outline .wp-block-button__link[href*="#calc"]:hover {
+	background: var(--jc-red);
+	color: var(--jc-white);
+}
+
+.jc-btn--sm {
+	min-height: 38px;
+	padding: 8px 22px;
+	font-size: 12px;
+}
+
+.jc-btn--tg svg,
+.jc-btn--vk svg {
+	color: currentColor;
+}
 
 /* --------------------------------------------------------------------------
-   Верхняя панель: телефон + мессенджеры
+   Верхняя полоса: телефон + соцсети + запись (светлая, как у референса)
    -------------------------------------------------------------------------- */
 
 .jc-topbar {
-	background-color: var(--jc-dark);
-	color: var(--jc-white);
+	background-color: var(--jc-gray);
+	border-bottom: 1px solid var(--jc-border);
 	font-size: 14px;
 }
 
@@ -182,7 +324,7 @@ a:focus {
 	gap: 16px;
 	max-width: var(--jc-container);
 	margin: 0 auto;
-	padding: 8px 24px;
+	padding: 9px 24px;
 }
 
 .jc-topbar__contacts {
@@ -193,19 +335,21 @@ a:focus {
 }
 
 .jc-topbar__phone {
-	color: var(--jc-white);
+	color: var(--jc-dark);
 	font-weight: 700;
 	font-size: 16px;
-	letter-spacing: 0.01em;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
 }
 
 .jc-topbar__phone:hover,
 .jc-topbar__phone:focus {
-	color: #9fd8f5;
+	color: var(--jc-primary);
 }
 
 .jc-topbar__muted {
-	color: rgba(255, 255, 255, 0.7);
+	color: #7d858d;
+	font-size: 13px;
 }
 
 .jc-topbar__actions {
@@ -214,327 +358,426 @@ a:focus {
 	gap: 10px;
 }
 
-.jc-topbar__actions .jc-btn {
-	min-height: 34px;
-	padding: 5px 14px;
-	font-size: 14px;
-	border-color: rgba(255, 255, 255, 0.25);
-	color: var(--jc-white);
-	background-color: rgba(255, 255, 255, 0.06);
-}
-
-.jc-topbar__actions .jc-btn:hover,
-.jc-topbar__actions .jc-btn:focus {
-	background-color: var(--jc-white);
-	border-color: var(--jc-white);
-	color: var(--jc-dark);
-}
-
-/* Переключатель «светлая / тёмная» тема */
-.jc-theme-toggle {
+/* Круглые кнопки соцсетей */
+.jc-circle {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	width: 36px;
 	height: 36px;
 	flex: 0 0 auto;
-	padding: 0;
-	border: 1px solid rgba(255, 255, 255, 0.25);
 	border-radius: 50%;
-	background-color: rgba(255, 255, 255, 0.06);
+	background: var(--jc-white);
+	color: var(--jc-primary);
+	box-shadow: 0 2px 6px rgba(69, 75, 84, 0.1);
+	transition: background-color 0.2s ease, color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.jc-circle svg {
+	width: 17px;
+	height: 17px;
+}
+
+.jc-circle:hover,
+.jc-circle:focus {
+	background: var(--jc-primary);
 	color: var(--jc-white);
-	cursor: pointer;
-	transition: background-color 0.15s ease, border-color 0.15s ease,
-		color 0.15s ease;
+	box-shadow: 0 6px 12px rgba(27, 136, 216, 0.25);
 }
-
-.jc-theme-toggle:hover,
-.jc-theme-toggle:focus {
-	background-color: var(--jc-white);
-	border-color: var(--jc-white);
-	color: var(--jc-dark);
-}
-
-.jc-theme-toggle svg {
-	width: 18px;
-	height: 18px;
-}
-
-.jc-theme-toggle .jc-icon-moon { display: none; }
-
-html[data-theme="dark"] .jc-theme-toggle .jc-icon-sun { display: none; }
-html[data-theme="dark"] .jc-theme-toggle .jc-icon-moon { display: block; }
 
 /* --------------------------------------------------------------------------
-   Шапка
+   Шапка: логотип + меню
    -------------------------------------------------------------------------- */
+
+.site-header {
+	background-color: var(--jc-white);
+	border-bottom: 1px solid var(--jc-border);
+}
 
 .site-header .custom-logo-link img,
 .site-header .site-logo-img img {
-	max-height: 46px;
+	max-height: 52px;
 	width: auto;
 	height: auto;
 }
 
-/* Если в шапке есть логотип — дублирующее название сайта скрываем. */
 .site-branding:has(.custom-logo-link) .ast-site-title-wrap {
 	display: none;
 }
 
 .site-header .site-title {
+	font-family: var(--jc-font-display);
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 800;
 	margin: 0;
 }
 
-.site-header .site-description {
-	font-size: 13px;
-	color: var(--jc-text);
-	margin-top: 2px;
+.main-header-bar {
+	padding-top: 14px;
+	padding-bottom: 14px;
 }
 
 .main-header-bar .main-navigation a {
+	font-family: var(--jc-font-display);
+	font-size: 14px;
 	font-weight: 600;
+	color: var(--jc-text);
+	letter-spacing: 0.01em;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+.main-header-bar .main-navigation a:hover,
+.main-header-bar .main-navigation a:focus,
+.main-header-bar .main-header-menu > .current-menu-item > a,
+.main-header-bar .main-header-menu > .current-menu-item > a:hover {
+	color: var(--jc-primary);
 }
 
 .main-header-bar .main-navigation .sub-menu .menu-item > a {
 	font-weight: 500;
 }
 
+.main-header-bar .main-header-menu > .menu-item > a {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.ast-primary-header-bar .ast-builder-menu .main-header-menu .menu-item > a {
+	border-bottom: 2px solid transparent;
+}
+
+.ast-primary-header-bar .ast-builder-menu .main-header-menu .menu-item:hover > a,
+.ast-primary-header-bar .ast-builder-menu .main-header-menu .current-menu-item > a {
+	border-bottom-color: var(--jc-primary);
+}
+
 /* --------------------------------------------------------------------------
-   Подвал
+   Герой: заголовок с подсветкой, буллеты, правая панель
    -------------------------------------------------------------------------- */
 
-.jc-footer {
-	background-color: var(--jc-dark);
-	color: rgba(255, 255, 255, 0.78);
+.jc-hero {
+	padding: 10px 0 4px;
 }
 
-.jc-footer__inner {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: var(--jc-gap);
-	max-width: var(--jc-container);
-	margin: 0 auto;
-	padding: 44px 24px 32px;
-}
-
-.jc-footer__col { min-width: 0; }
-
-.jc-footer__title {
-	margin: 0 0 14px;
-	font-size: 15px;
-	font-weight: 700;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	color: var(--jc-white);
-}
-
-.jc-footer__text { margin: 12px 0 0; font-size: 15px; }
-
-.jc-footer__brand { display: inline-block; }
-.jc-footer__brand img { height: 40px; width: auto; }
-
-.jc-footer .widget,
-.jc-footer .menu,
-.jc-footer ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.jc-footer .menu li + li { margin-top: 8px; }
-
-.jc-footer .menu a,
-.jc-footer a {
-	color: rgba(255, 255, 255, 0.78);
-}
-
-.jc-footer .menu a:hover,
-.jc-footer .menu a:focus,
-.jc-footer a:hover,
-.jc-footer a:focus {
-	color: var(--jc-white);
-}
-
-.jc-footer__phone {
-	display: inline-block;
-	font-size: 19px;
-	font-weight: 700;
-	color: var(--jc-white) !important;
-	margin-bottom: 10px;
-}
-
-.jc-footer__address {
-	display: flex;
+.jc-hero__cols {
+	gap: 40px;
 	align-items: center;
-	gap: 8px;
-	margin: 0 0 6px;
+}
+
+.jc-hero h1 {
+	margin: 0 0 18px;
+	font-size: 42px;
+	font-weight: 800;
+	line-height: 1.18;
+	color: var(--jc-heading);
+	/* Подсветка нижней половины текста, как в референсе */
+	width: fit-content;
+	background-image: linear-gradient(transparent 58%, var(--jc-soft) 58%);
+}
+
+.jc-hero__lead {
+	font-size: 18px;
+	line-height: 1.6;
+	margin-bottom: 22px !important;
+}
+
+.jc-hero__list {
+	margin: 0 0 26px !important;
+}
+
+.jc-hero__list li {
+	padding-left: 45px;
+	margin-bottom: 6px;
+	font-size: 20px;
+	line-height: 1.6;
+}
+
+.jc-hero__list li::before {
+	top: 0.72em;
+	width: 40px;
+	height: 1px;
+	background: var(--jc-text);
+}
+
+.jc-hero .wp-block-buttons {
+	margin-top: 26px;
+	gap: 14px;
+}
+
+.jc-hero__panel {
+	background: var(--jc-soft);
+	border-radius: var(--jc-radius);
+	padding: 34px 30px;
+}
+
+.jc-hero__card {
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	padding: 26px 28px;
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.08);
+}
+
+.jc-hero__stat {
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	padding: 12px 0;
+	border-bottom: 1px dashed var(--jc-border-2);
+}
+
+.jc-hero__stat:last-child {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+.jc-hero__stat:first-child {
+	padding-top: 0;
+}
+
+.jc-hero__stat b {
+	font-family: var(--jc-font-display);
+	font-size: 26px;
+	font-weight: 800;
+	color: var(--jc-primary);
+	white-space: nowrap;
+}
+
+.jc-hero__stat span {
+	font-size: 14.5px;
+	color: var(--jc-text);
+	line-height: 1.45;
+}
+
+.jc-trust {
+	margin-top: 26px !important;
 	font-size: 14px;
-	color: rgba(255, 255, 255, 0.72);
+	font-weight: 600;
+	color: #8a919a;
 }
 
-.jc-footer__address svg {
-	width: 16px;
-	height: 16px;
-	flex: 0 0 auto;
-	opacity: 0.85;
+/* --------------------------------------------------------------------------
+   Секции: карточки и колонки
+   -------------------------------------------------------------------------- */
+
+.jc-sec {
+	margin-top: 54px;
 }
 
-.jc-contacts-list {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	margin: 8px 0 0;
-	padding: 0;
-	list-style: none;
+.jc-sec + .jc-sec {
+	margin-top: 54px;
+}
+
+/* Колонки-карточки (цифры, шаги, услуги) */
+.jc-numbers .wp-block-column,
+.jc-steps .wp-block-column,
+.jc-services .wp-block-column {
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	padding: 26px 24px;
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	text-align: center;
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.jc-numbers .wp-block-column:hover,
+.jc-steps .wp-block-column:hover,
+.jc-services .wp-block-column:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.1);
+	transform: translateY(-2px);
+}
+
+.jc-numbers h3,
+.jc-steps h3,
+.jc-services h3 {
+	margin: 0 0 8px;
+	font-size: 20px;
+	font-weight: 800;
+	color: var(--jc-heading);
+}
+
+.jc-numbers h3 {
+	font-size: 30px;
+	color: var(--jc-primary);
+}
+
+.jc-steps h3 {
+	font-size: 17px;
+}
+
+.jc-steps h3::first-letter {
+	color: var(--jc-primary);
+}
+
+.jc-numbers p,
+.jc-steps p,
+.jc-services p {
+	margin-bottom: 14px !important;
 	font-size: 15px;
-}
-
-.jc-contacts-list a {
-	display: inline-flex;
-	align-items: center;
-	gap: 9px;
-	color: rgba(255, 255, 255, 0.82);
-}
-
-.jc-contacts-list a:hover,
-.jc-contacts-list a:focus {
-	color: var(--jc-white);
-}
-
-.jc-contacts-list svg {
-	width: 17px;
-	height: 17px;
-	flex: 0 0 auto;
+	line-height: 1.55;
 	opacity: 0.9;
 }
 
-.jc-copyright {
-	border-top: 1px solid rgba(255, 255, 255, 0.12);
-	font-size: 14px;
+.jc-services .wp-block-column .wp-block-buttons {
+	margin-top: auto;
 }
 
-.jc-copyright__inner {
+.jc-services .wp-block-buttons .wp-block-button__link {
+	min-height: 42px;
+	padding: 10px 22px;
+	font-size: 11.5px;
+}
+
+/* Калькулятор: белая панель */
+.jc-calc {
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+}
+
+/* Финальный CTA-блок: синяя панель */
+.jc-cta {
+	background: var(--jc-primary);
+	color: var(--jc-white);
+	border-radius: var(--jc-radius);
+}
+
+.jc-cta__title,
+.jc-cta .jc-cta__title {
+	color: var(--jc-white);
+}
+
+.jc-cta__lead {
+	color: rgba(255, 255, 255, 0.92);
+}
+
+.jc-cta .jc-btn--primary {
+	background: var(--jc-red);
+	border-color: var(--jc-red);
+}
+
+.jc-cta .jc-btn--primary:hover {
+	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.jc-cta__phone {
+	color: var(--jc-white) !important;
+	font-weight: 700;
+	font-size: 19px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.jc-cta .jc-btn--tg,
+.jc-cta .jc-btn--vk {
+	background: rgba(255, 255, 255, 0.14);
+	border-color: rgba(255, 255, 255, 0.5);
+	color: var(--jc-white);
+}
+
+.jc-cta .jc-btn--tg:hover,
+.jc-cta .jc-btn--vk:hover {
+	background: var(--jc-white);
+	color: var(--jc-primary);
+}
+
+/* --------------------------------------------------------------------------
+   FAQ: белые строки с синим знаком «?» (как в референсе)
+   -------------------------------------------------------------------------- */
+
+.jc-faq {
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.jc-faq .jc-faq__item {
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	overflow: hidden;
+}
+
+.jc-faq h3 {
+	position: relative;
+	margin: 0;
+	padding: 15px 46px 15px 56px;
+	font-family: var(--jc-font);
+	font-size: 15.5px;
+	font-weight: 700;
+	color: var(--jc-dark);
+	background: var(--jc-white);
+}
+
+.jc-faq h3::before {
+	content: "?";
+	position: absolute;
+	left: 16px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	max-width: var(--jc-container);
-	margin: 0 auto;
-	padding: 18px 24px;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: var(--jc-primary);
+	color: var(--jc-white);
+	font-size: 13px;
+	font-weight: 700;
 }
 
-.jc-copyright a { text-decoration: underline; }
+.jc-faq h3::after {
+	content: "";
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	width: 8px;
+	height: 8px;
+	margin-top: -6px;
+	border-right: 2px solid var(--jc-muted);
+	border-bottom: 2px solid var(--jc-muted);
+	transform: rotate(45deg);
+}
 
-/* --------------------------------------------------------------------------
-   Тёмная тема — правки поверх Astra (включается кнопкой в шапке)
-   -------------------------------------------------------------------------- */
-
-html[data-theme="dark"] body,
-html[data-theme="dark"] .ast-separate-container .article-content,
-html[data-theme="dark"] .ast-separate-container .entry-content {
-	background-color: var(--jc-bg);
+.jc-faq p {
+	margin: 0 !important;
+	padding: 0 24px 16px 56px;
+	font-size: 15px;
+	line-height: 1.6;
 	color: var(--jc-text);
 }
 
-html[data-theme="dark"] .jc-footer {
-	background-color: #0d1014;
-}
-
-html[data-theme="dark"] .ast-breadcrumbs .trail-browse,
-html[data-theme="dark"] .ast-breadcrumbs .trail-items a,
-html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
-	color: var(--jc-text);
-}
-
 /* --------------------------------------------------------------------------
-   Адаптив
+   Общие секции на страницах услуги
    -------------------------------------------------------------------------- */
 
-@media (max-width: 1024px) {
-	.jc-footer__inner {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-@media (max-width: 782px) {
-	body { font-size: 16px; }
-
-	.jc-topbar__inner {
-		padding: 6px 16px;
-		gap: 10px;
-	}
-
-	.jc-topbar__muted { display: none; }
-
-	.jc-topbar__actions .jc-btn {
-		min-height: 36px;
-		padding: 6px 10px;
-		gap: 6px;
-	}
-
-	.jc-topbar__actions .jc-btn .jc-btn__label {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0 0 0 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
-	.jc-topbar__phone { font-size: 15px; }
-
-	.jc-footer__inner {
-		grid-template-columns: minmax(0, 1fr);
-		padding: 32px 16px 24px;
-		gap: 26px;
-	}
-
-	.jc-copyright__inner {
-		flex-direction: column;
-		align-items: flex-start;
-		padding: 16px;
-	}
-}
-
-@media (max-width: 400px) {
-	.jc-topbar__actions { gap: 6px; }
-	.jc-topbar__actions .jc-btn { padding: 6px 8px; }
-	.jc-topbar__phone { font-size: 14px; }
-	.site-header .custom-logo-link img { max-height: 38px; }
-}
-
-/* ==========================================================================
-   Этап 4 — страницы, хаб услуг, блог, общие секции
-   ========================================================================== */
-
-/* Хлебные крошки (штатная разметка Astra) */
-.ast-breadcrumbs {
-	margin: 14px 0 6px;
-	font-size: 14px;
-}
-
-.ast-breadcrumbs a:hover,
-.ast-breadcrumbs a:focus {
-	text-decoration: underline;
-}
-
-/* Общие секции на страницах услуги */
 .jc-block {
 	margin: 28px 0;
-	padding: 22px 24px;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: 14px;
-	background-color: var(--jc-surface-2, #f6f8fa);
+	padding: 26px 28px;
+	border: 1px solid var(--jc-border);
+	border-radius: var(--jc-radius);
+	background-color: var(--jc-white);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.05);
 }
 
 .jc-block h2 {
+	position: static;
 	margin-top: 0;
+	padding-top: 0;
+	text-align: left;
+	font-size: 26px;
+	font-weight: 800;
+}
+
+.jc-block h2::before {
+	display: none;
 }
 
 .jc-block p {
@@ -545,7 +788,7 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
-	margin-top: 14px;
+	margin-top: 16px;
 }
 
 .jc-block__note {
@@ -566,20 +809,32 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	list-style: none;
 }
 
+.jc-related__list li {
+	padding-left: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.jc-related__list li::before {
+	display: none;
+}
+
 .jc-related__list a {
 	display: block;
-	padding: 10px 14px;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: 10px;
-	background-color: var(--jc-surface, #fff);
+	padding: 12px 16px;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-radius-sm);
+	background-color: var(--jc-white);
 	font-weight: 600;
 	font-size: 15px;
+	transition: border-color 0.2s ease, color 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 .jc-related__list a:hover,
 .jc-related__list a:focus {
-	border-color: var(--jc-primary, #0b6e99);
-	color: var(--jc-primary, #0b6e99);
+	border-color: var(--jc-primary);
+	color: var(--jc-primary);
+	box-shadow: 0 6px 14px rgba(27, 136, 216, 0.12);
 }
 
 /* Хаб услуг */
@@ -592,21 +847,30 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 
 .jc-hub__card {
 	margin: 0;
-	padding: 20px 22px;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: 14px;
-	background-color: var(--jc-surface, #fff);
+	padding: 24px 26px;
+	border: 0;
+	border-radius: var(--jc-radius);
+	background-color: var(--jc-white);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.jc-hub__card:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.1);
+	transform: translateY(-2px);
 }
 
 .jc-hub__title {
 	margin: 0 0 8px;
 	font-size: 19px;
+	font-weight: 800;
 }
 
 .jc-hub__text {
 	margin: 0;
 	font-size: 15px;
-	opacity: 0.8;
+	color: var(--jc-text);
+	opacity: 0.85;
 }
 
 .jc-hub__sublist {
@@ -619,11 +883,23 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	font-size: 14px;
 }
 
+.jc-hub__sublist li {
+	padding-left: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.jc-hub__sublist li::before {
+	display: none;
+}
+
 .jc-hub__sublist a {
 	text-decoration: underline;
 }
 
-/* Блог: рубрикатор и карточки */
+/* --------------------------------------------------------------------------
+   Блог: рубрикатор и карточки
+   -------------------------------------------------------------------------- */
+
 .jc-posts__header {
 	margin-bottom: 20px;
 }
@@ -639,32 +915,33 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	padding: 7px 14px;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: 999px;
-	background-color: var(--jc-surface-2, #f6f8fa);
+	padding: 7px 16px;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-pill);
+	background: var(--jc-white);
 	font-size: 14px;
 	font-weight: 600;
 	text-decoration: none;
+	transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .jc-rubricator__link:hover,
 .jc-rubricator__link:focus {
-	border-color: var(--jc-primary, #0b6e99);
-	color: var(--jc-primary, #0b6e99);
+	border-color: var(--jc-primary);
+	color: var(--jc-primary);
 }
 
 .jc-rubricator__count {
-	padding: 1px 7px;
-	border-radius: 999px;
-	background-color: rgba(11, 110, 153, 0.12);
+	padding: 1px 8px;
+	border-radius: var(--jc-pill);
+	background: rgba(27, 136, 216, 0.12);
 	font-size: 12px;
 }
 
 .jc-posts {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	gap: 18px;
+	gap: 22px;
 	margin-bottom: 28px;
 }
 
@@ -672,17 +949,25 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	display: flex;
 	flex-direction: column;
 	margin: 0;
-	padding: 20px 22px;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: 14px;
-	background-color: var(--jc-surface, #fff);
+	padding: 0;
+	border: 0;
+	border-radius: var(--jc-radius);
+	background-color: var(--jc-white);
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.jc-card:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.1);
+	transform: translateY(-2px);
 }
 
 .jc-card__thumb {
 	display: block;
-	overflow: hidden;
-	margin: -20px -22px 14px;
-	border-bottom: 1px solid var(--jc-border, #e3e8ee);
+	overflow: margin;
+	margin: 0;
+	border-bottom: 0;
 }
 
 .jc-card__thumb img {
@@ -692,11 +977,19 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	object-fit: cover;
 }
 
+.jc-card__body {
+	padding: 18px 22px 22px;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+}
+
 .jc-single__thumb {
 	overflow: hidden;
 	margin: 18px 0;
-	border: 1px solid var(--jc-border, #e3e8ee);
-	border-radius: var(--jc-radius, 10px);
+	border: 0;
+	border-radius: var(--jc-radius);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.08);
 }
 
 .jc-single__thumb img {
@@ -707,14 +1000,23 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 
 .jc-card__title {
 	margin: 0 0 8px;
-	font-size: 19px;
-	line-height: 1.3;
+	font-size: 18px;
+	font-weight: 800;
+	line-height: 1.35;
+}
+
+.jc-card__title a {
+	color: var(--jc-heading);
+}
+
+.jc-card__title a:hover {
+	color: var(--jc-primary);
 }
 
 .jc-card__meta {
 	margin: 0 0 10px;
 	font-size: 13px;
-	opacity: 0.7;
+	color: var(--jc-muted);
 }
 
 .jc-card__meta a {
@@ -724,19 +1026,83 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 .jc-card__excerpt {
 	flex: 1 1 auto;
 	font-size: 15px;
-	opacity: 0.85;
+	color: var(--jc-text);
+	opacity: 0.9;
 }
 
 .jc-card__more {
 	margin-top: 14px;
-	font-size: 15px;
+	font-size: 12.5px;
 	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--jc-primary);
 	text-decoration: none;
 }
 
-.jc-card__more:hover,
-.jc-card__more:focus {
+.jc-card__more:hover {
 	text-decoration: underline;
+}
+
+/* Лента «последние записи» на главной */
+.entry-content .wp-block-latest-posts {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 22px;
+	margin: 0 0 10px;
+	padding: 0;
+	list-style: none;
+}
+
+.entry-content .wp-block-latest-posts li {
+	display: flex;
+	flex-direction: column;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.entry-content .wp-block-latest-posts li:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.1);
+	transform: translateY(-2px);
+}
+
+.entry-content .wp-block-latest-posts li::before {
+	display: none;
+}
+
+.entry-content .wp-block-latest-posts img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1200 / 630;
+	object-fit: cover;
+	margin: 0;
+}
+
+.entry-content .wp-block-latest-posts .wp-block-latest-posts__post-title {
+	margin: 14px 20px 6px;
+	font-family: var(--jc-font-display);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.entry-content .wp-block-latest-posts .wp-block-latest-posts__post-title a {
+	color: var(--jc-heading);
+}
+
+.entry-content .wp-block-latest-posts .wp-block-latest-posts__post-title a:hover {
+	color: var(--jc-primary);
+}
+
+.entry-content .wp-block-latest-posts__post-date {
+	margin: auto 20px 14px;
+	font-size: 13px;
+	color: var(--jc-muted);
 }
 
 .navigation.pagination {
@@ -750,7 +1116,7 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	gap: 12px;
 	margin-top: 26px;
 	padding-top: 18px;
-	border-top: 1px dashed var(--jc-border, #e3e8ee);
+	border-top: 1px dashed var(--jc-border-2);
 }
 
 .jc-single__nav {
@@ -766,32 +1132,10 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	display: none;
 }
 
-/* Главная: каркас-заглушки (тексты живут в контенте страницы) */
-.jc-hero {
-	padding: 8px 0 4px;
-}
+/* --------------------------------------------------------------------------
+   Зона выезда: SVG-схема
+   -------------------------------------------------------------------------- */
 
-.jc-hero h1 {
-	margin-bottom: 10px;
-}
-
-.jc-trust {
-	font-size: 15px;
-	font-weight: 600;
-	opacity: 0.8;
-}
-
-.jc-numbers .wp-block-column,
-.jc-steps .wp-block-column {
-	text-align: center;
-}
-
-.jc-section-note {
-	font-size: 14px;
-	opacity: 0.7;
-}
-
-/* Зона выезда: SVG-схема */
 .jc-zone-map {
 	margin: 18px 0;
 }
@@ -804,43 +1148,290 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	margin: 0 auto;
 }
 
-/* Шапка: главное меню (10 пунктов) держим в один ряд на десктопе */
-@media (min-width: 1200px) {
-	.ast-primary-header-bar .main-navigation .menu-item > a {
-		font-size: 16px;
-		padding-left: 10px;
-		padding-right: 10px;
-	}
+.jc-section-note {
+	font-size: 14px;
+	color: #8a919a;
 }
 
-/* Тёмная тема — новые компоненты */
-html[data-theme="dark"] .jc-block,
-html[data-theme="dark"] .jc-hub__card,
-html[data-theme="dark"] .jc-card,
-html[data-theme="dark"] .jc-related__list a {
-	background-color: var(--jc-surface);
-	border-color: var(--jc-border);
+.jc-anchor {
+	scroll-margin-top: 110px;
 }
 
-@media (max-width: 782px) {
-	.jc-block {
-		padding: 18px 16px;
-	}
+/* --------------------------------------------------------------------------
+   Таблицы прайса и пакеты
+   -------------------------------------------------------------------------- */
 
-	.jc-hub__list,
-	.jc-posts {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.jc-single__nav {
-		flex-direction: column;
-	}
+.jc-table-wrap {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	margin: 18px 0 26px;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-radius);
+	background: var(--jc-white);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.05);
 }
 
+.jc-price-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 15px;
+	background: var(--jc-white);
+}
 
-/* =====================================================================
-   Этап 5: формы Fluent Forms — в стиле сайта
-   ================================================================== */
+.jc-price-table th,
+.jc-price-table td {
+	padding: 11px 16px;
+	border-bottom: 1px solid var(--jc-border);
+	text-align: left;
+	vertical-align: top;
+}
+
+.jc-price-table th {
+	background: var(--jc-gray);
+	color: var(--jc-dark);
+	font-weight: 700;
+	font-size: 13.5px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.jc-price-table tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+.jc-price-table tbody tr:nth-child(even) {
+	background: #fafbfc;
+}
+
+.jc-price-table tbody tr:hover {
+	background: rgba(27, 136, 216, 0.05);
+}
+
+.jc-packages .wp-block-column {
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	padding: 24px 26px;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-radius);
+	background: var(--jc-white);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+}
+
+.jc-packages .wp-block-column:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.1);
+}
+
+.jc-packages h3 {
+	margin-top: 0;
+	font-weight: 800;
+}
+
+.jc-packages .wp-block-buttons {
+	margin-top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Хлебные крошки
+   -------------------------------------------------------------------------- */
+
+.ast-breadcrumbs {
+	margin: 16px 0 8px;
+	font-size: 14px;
+	color: var(--jc-muted);
+}
+
+.ast-breadcrumbs a {
+	color: var(--jc-text);
+}
+
+.ast-breadcrumbs a:hover,
+.ast-breadcrumbs a:focus {
+	color: var(--jc-primary);
+	text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Подвал: светлый, как в референсе (серая полоса + белый копирайт)
+   -------------------------------------------------------------------------- */
+
+.jc-footer {
+	background-color: var(--jc-gray);
+	color: var(--jc-text);
+	border-top: 1px solid var(--jc-border);
+}
+
+.jc-footer__inner {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--jc-gap);
+	max-width: var(--jc-container);
+	margin: 0 auto;
+	padding: 46px 24px 38px;
+}
+
+.jc-footer__col {
+	min-width: 0;
+}
+
+.jc-footer__title {
+	margin: 0 0 16px;
+	font-family: var(--jc-font-display);
+	font-size: 15px;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: var(--jc-dark);
+}
+
+.jc-footer__text {
+	margin: 12px 0 0;
+	font-size: 14.5px;
+	color: var(--jc-text);
+}
+
+.jc-footer__brand {
+	display: inline-block;
+	margin-bottom: 4px;
+}
+
+.jc-footer__brand img {
+	height: 44px;
+	width: auto;
+}
+
+.jc-footer .widget,
+.jc-footer .menu,
+.jc-footer ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.jc-footer .menu li {
+	padding-left: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.jc-footer .menu li::before {
+	display: none;
+}
+
+.jc-footer .menu li + li {
+	margin-top: 9px;
+}
+
+.jc-footer .menu a,
+.jc-footer a {
+	color: var(--jc-text);
+}
+
+.jc-footer .menu a:hover,
+.jc-footer .menu a:focus,
+.jc-footer a:hover,
+.jc-footer a:focus {
+	color: var(--jc-primary);
+}
+
+.jc-footer__phone {
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--jc-dark) !important;
+	margin-bottom: 10px;
+}
+
+.jc-footer__phone:hover {
+	color: var(--jc-primary) !important;
+}
+
+.jc-footer__address {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 6px;
+	font-size: 14px;
+	color: #7d858d;
+}
+
+.jc-footer__address svg {
+	width: 16px;
+	height: 16px;
+	flex: 0 0 auto;
+	color: var(--jc-primary);
+}
+
+.jc-contacts-list {
+	display: flex;
+	flex-direction: column;
+	gap: 9px;
+	margin: 8px 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: 15px;
+}
+
+.jc-contacts-list li {
+	padding-left: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.jc-contacts-list li::before {
+	display: none;
+}
+
+.jc-contacts-list a {
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	color: var(--jc-text);
+}
+
+.jc-contacts-list a:hover,
+.jc-contacts-list a:focus {
+	color: var(--jc-primary);
+}
+
+.jc-contacts-list svg {
+	width: 17px;
+	height: 17px;
+	flex: 0 0 auto;
+	color: var(--jc-primary);
+}
+
+.jc-copyright {
+	background: var(--jc-white);
+	border-top: 1px solid var(--jc-border);
+	font-size: 14px;
+	color: #7d858d;
+}
+
+.jc-copyright__inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	max-width: var(--jc-container);
+	margin: 0 auto;
+	padding: 18px 24px;
+}
+
+.jc-copyright a {
+	color: var(--jc-text);
+	text-decoration: underline;
+}
+
+.jc-copyright a:hover {
+	color: var(--jc-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Формы Fluent Forms: светлые, кнопка-отправка красная (как в референсе)
+   -------------------------------------------------------------------------- */
+
 .jc-block--form .fluentform,
 .jc-footer__col--form .fluentform {
 	margin-top: 14px;
@@ -859,9 +1450,9 @@ html[data-theme="dark"] .jc-related__list a {
 	width: 100%;
 	min-height: 46px;
 	padding: 10px 14px;
-	border: 1px solid var(--jc-border);
+	border: 1px solid var(--jc-border-2);
 	border-radius: var(--jc-radius-sm);
-	background: var(--jc-bg);
+	background: var(--jc-white);
 	color: var(--jc-text);
 	font: inherit;
 	transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -875,12 +1466,12 @@ html[data-theme="dark"] .jc-related__list a {
 .fluentform .ff-el-form-control:focus {
 	outline: none;
 	border-color: var(--jc-primary);
-	box-shadow: 0 0 0 3px rgba(11, 110, 153, 0.15);
+	box-shadow: 0 0 0 3px rgba(27, 136, 216, 0.15);
 }
 
 .fluentform .ff-el-form-control.ff-el-form-has-error,
 .fluentform .ff-el-form-control.ff-invalid {
-	border-color: #d64545;
+	border-color: var(--jc-red);
 }
 
 .fluentform .ff_msg_error,
@@ -889,7 +1480,7 @@ html[data-theme="dark"] .jc-related__list a {
 	display: block;
 	margin-top: 4px;
 	font-size: 13px;
-	color: #d64545;
+	color: var(--jc-red);
 }
 
 .fluentform button[type="submit"],
@@ -898,25 +1489,28 @@ html[data-theme="dark"] .jc-related__list a {
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
-	min-height: 46px;
-	padding: 10px 24px;
-	border: 1px solid var(--jc-primary);
-	border-radius: var(--jc-radius);
-	background: var(--jc-primary);
+	min-height: 48px;
+	padding: 13px 30px;
+	border: 1px solid var(--jc-red);
+	border-radius: var(--jc-pill);
+	background: var(--jc-red);
 	color: var(--jc-white);
-	font-family: inherit;
-	font-size: 16px;
+	font-family: var(--jc-font);
+	font-size: 12.5px;
 	font-weight: 600;
-	line-height: 1.2;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	line-height: 1.3;
 	cursor: pointer;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: box-shadow 0.25s ease, background-color 0.2s ease;
 }
 
 .fluentform button[type="submit"]:hover,
 .fluentform button[type="submit"]:focus,
 .fluentform .ff-btn-submit:hover {
-	background: var(--jc-primary-dark);
-	border-color: var(--jc-primary-dark);
+	background: var(--jc-red);
+	border-color: var(--jc-red);
+	box-shadow: 0 10px 15px rgba(226, 57, 54, 0.22);
 }
 
 .fluentform .ff-errors-in-stack {
@@ -932,9 +1526,9 @@ html[data-theme="dark"] .jc-related__list a {
 .fluentform .ff-message-success,
 .fluentform .ff-success-message {
 	padding: 14px 16px;
-	border: 1px solid var(--jc-border);
+	border: 1px solid var(--jc-border-2);
 	border-radius: var(--jc-radius);
-	background: var(--jc-surface);
+	background: var(--jc-white);
 	color: var(--jc-heading);
 	font-size: 15px;
 }
@@ -981,9 +1575,9 @@ html[data-theme="dark"] .jc-related__list a {
 }
 
 .jc-footer__col--form button[type="submit"] {
-	min-height: 40px;
+	min-height: 42px;
 	width: 100%;
-	font-size: 15px;
+	font-size: 12px;
 }
 
 .jc-footer__col--form .ff-el-input--label > label {
@@ -991,76 +1585,231 @@ html[data-theme="dark"] .jc-related__list a {
 	font-size: 13px;
 }
 
+/* --------------------------------------------------------------------------
+   Календарь дат (flatpickr): светлая тема
+   -------------------------------------------------------------------------- */
+
+.flatpickr-calendar {
+	background: var(--jc-white) !important;
+	border: 1px solid var(--jc-border-2) !important;
+	border-radius: var(--jc-radius) !important;
+	box-shadow: 0 12px 30px rgba(69, 75, 84, 0.14) !important;
+	font-family: var(--jc-font);
+}
+
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+	color: var(--jc-heading) !important;
+	background: transparent !important;
+	font-weight: 600;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months option {
+	background: var(--jc-white);
+	color: var(--jc-text);
+}
+
+.flatpickr-day {
+	border-radius: 6px !important;
+	color: var(--jc-text) !important;
+	max-width: none;
+}
+
+.flatpickr-day:hover,
+.flatpickr-day:focus,
+.flatpickr-day.flatpickr-startDay,
+.flatpickr-day.flatpickr-endDay {
+	background: var(--jc-soft) !important;
+	border-color: var(--jc-soft) !important;
+	color: var(--jc-dark) !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected:focus {
+	background: var(--jc-primary) !important;
+	border-color: var(--jc-primary) !important;
+	color: var(--jc-white) !important;
+}
+
+.flatpickr-weekday {
+	color: var(--jc-muted) !important;
+	font-weight: 600;
+}
+
+.flatpickr-weekdaygap .flatpickr-weekday {
+	color: var(--jc-muted) !important;
+}
+
+span.flatpickr-weekday {
+	color: var(--jc-muted) !important;
+}
+
+.flatpickr-day.flatpickr-disabled {
+	color: #cfd3d7 !important;
+}
+
+.numInputWrapper span:hover,
+.numInputWrapper input:hover {
+	background: var(--jc-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Слайдер «до/после»: синий разделитель и ручка (фирменный приём)
+   -------------------------------------------------------------------------- */
+
+.jc-ba__handle,
+.jc-ba__divider {
+	border-color: var(--jc-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Адаптив
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+	.main-header-bar .main-navigation .menu-item > a {
+		font-size: 13.5px;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.jc-hero h1 {
+		font-size: 34px;
+	}
+
+	.jc-footer__inner {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
 @media (max-width: 782px) {
+	body {
+		font-size: 16px;
+	}
+
+	.entry-content {
+		font-size: 16px;
+	}
+
+	.entry-content > h2,
+	.entry-content > .wp-block-group > h2 {
+		font-size: 26px;
+		margin-bottom: 26px;
+	}
+
+	.jc-topbar__inner {
+		padding: 7px 16px;
+		gap: 10px;
+	}
+
+	.jc-topbar__muted {
+		display: none;
+	}
+
+	.jc-topbar__phone {
+		font-size: 14.5px;
+	}
+
+	.jc-hero h1 {
+		font-size: 28px;
+		background-image: linear-gradient(transparent 60%, var(--jc-soft) 60%);
+	}
+
+	.jc-hero__lead {
+		font-size: 16.5px;
+	}
+
+	.jc-hero__list li {
+		font-size: 17px;
+		padding-left: 34px;
+	}
+
+	.jc-hero__list li::before {
+		width: 26px;
+	}
+
+	.jc-hero .wp-block-buttons {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.jc-hero .wp-block-buttons .wp-block-button,
+	.jc-hero .wp-block-buttons .wp-block-button__link {
+		width: 100%;
+	}
+
+	.jc-hero__panel {
+		padding: 24px 20px;
+	}
+
+	.jc-sec {
+		margin-top: 42px;
+	}
+
+	.jc-numbers .wp-block-column,
+	.jc-steps .wp-block-column,
+	.jc-services .wp-block-column {
+		text-align: left;
+	}
+
+	.entry-content .wp-block-latest-posts {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.jc-footer__inner {
+		grid-template-columns: minmax(0, 1fr);
+		padding: 34px 16px 26px;
+		gap: 28px;
+	}
+
+	.jc-copyright__inner {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 16px;
+	}
+
+	.jc-block {
+		padding: 20px 18px;
+	}
+
+	.jc-hub__list,
+	.jc-posts {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.jc-single__nav {
+		flex-direction: column;
+	}
+
+	.jc-price-table th,
+	.jc-price-table td {
+		padding: 8px 10px;
+		font-size: 14px;
+	}
+
+	.jc-faq h3 {
+		padding: 14px 40px 14px 50px;
+	}
+
+	.jc-faq p {
+		padding: 0 18px 14px 50px;
+	}
+
 	.fluentform button[type="submit"] {
 		width: 100%;
 	}
 }
 
-/* =====================================================================
-   Этап 6: контент — таблицы прайса, пакеты, якоря
-   ================================================================== */
+@media (max-width: 400px) {
+	.jc-topbar__actions {
+		gap: 6px;
+	}
 
-.jc-anchor {
-	scroll-margin-top: 110px;
-}
-
-.jc-table-wrap {
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
-	margin: 14px 0 24px;
-}
-
-.jc-price-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 15px;
-	background: var(--jc-bg);
-}
-
-.jc-price-table th,
-.jc-price-table td {
-	padding: 10px 14px;
-	border: 1px solid var(--jc-border);
-	text-align: left;
-	vertical-align: top;
-}
-
-.jc-price-table th {
-	background: var(--jc-surface);
-	color: var(--jc-heading);
-	font-weight: 600;
-	white-space: nowrap;
-}
-
-.jc-price-table tbody tr:nth-child(even) {
-	background: rgba(31, 42, 51, 0.03);
-}
-
-html[data-theme="dark"] .jc-price-table tbody tr:nth-child(even) {
-	background: rgba(255, 255, 255, 0.04);
-}
-
-.jc-packages .wp-block-column {
-	box-sizing: border-box;
-	padding: 18px 20px;
-	border: 1px solid var(--jc-border);
-	border-radius: var(--jc-radius);
-	background: var(--jc-surface);
-}
-
-.jc-packages h3 {
-	margin-top: 0;
-}
-
-.jc-packages .wp-block-buttons {
-	margin-top: 14px;
-}
-
-@media (max-width: 782px) {
-	.jc-price-table th,
-	.jc-price-table td {
-		padding: 8px 10px;
-		font-size: 14px;
+	.site-header .custom-logo-link img {
+		max-height: 40px;
 	}
 }

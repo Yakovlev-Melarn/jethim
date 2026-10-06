@@ -71,6 +71,14 @@ function jc_fluentform( $key ) {
  * ================================================================== */
 add_action( 'wp_enqueue_scripts', 'jc_enqueue_assets', 20 );
 function jc_enqueue_assets() {
+	// Редизайн: Google Fonts — Montserrat (заголовки) + Inter (текст).
+	wp_enqueue_style(
+		'jc-fonts',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700;800&display=swap',
+		array(),
+		null
+	);
+
 	$css = get_stylesheet_directory() . '/assets/css/main.css';
 	if ( file_exists( $css ) ) {
 		$deps = wp_style_is( 'astra-theme-css', 'registered' ) ? array( 'astra-theme-css' ) : array();
@@ -96,22 +104,8 @@ function jc_enqueue_assets() {
 }
 
 /* =====================================================================
- * Тема: по умолчанию всегда светлая, тёмная — только по кнопке в
- * верхней панели. Атрибут data-theme ставим сразу в <head> (раньше
- * рендера и стилей), чтобы страница не «мигала» при загрузке.
+ * Тема: всегда светлая (референс клиента — himchistka-kaplya.ru).
  * ================================================================== */
-add_action( 'wp_head', 'jc_theme_bootstrap', 1 );
-function jc_theme_bootstrap() {
-	?>
-	<script>
-	( function () {
-		var t = null;
-		try { t = window.localStorage.getItem( 'jc-theme' ); } catch ( e ) {}
-		document.documentElement.setAttribute( 'data-theme', t === 'dark' ? 'dark' : 'light' );
-	} )();
-	</script>
-	<?php
-}
 
 /* =====================================================================
  * 2. Иконки (инлайновый SVG, без внешних запросов)
@@ -137,40 +131,33 @@ function jc_icon( $name ) {
 /* =====================================================================
  * 3. Верхняя панель: телефон + кнопки мессенджеров
  * ================================================================== */
-add_action( 'astra_header_before', 'jc_header_topbar', 5 );
-function jc_header_topbar() {
-	$c = jc_contacts();
-	?>
-	<div class="jc-topbar">
-		<div class="jc-topbar__inner">
-			<div class="jc-topbar__contacts">
-				<a class="jc-topbar__phone" href="<?php echo esc_url( $c['phone_href'] ); ?>">
-					<?php echo esc_html( $c['phone_display'] ); ?>
-				</a>
-				<span class="jc-topbar__muted">Химчистка с выездом по Москве и МО</span>
-			</div>
-			<div class="jc-topbar__actions">
-				<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>">
-					<span class="jc-btn__label">Записаться</span>
-				</a>
-				<a class="jc-btn jc-btn--tg" href="<?php echo esc_url( $c['telegram'] ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php echo jc_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<span class="jc-btn__label">Telegram</span>
-				</a>
-				<a class="jc-btn jc-btn--vk" href="<?php echo esc_url( $c['vk'] ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php echo jc_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<span class="jc-btn__label">ВКонтакте</span>
-				</a>
-				<button type="button" class="jc-theme-toggle" data-jc-theme-toggle
-					aria-label="Переключить тёмную тему" title="Тёмная тема">
-					<?php echo jc_icon( 'sun' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<?php echo jc_icon( 'moon' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</button>
+	add_action( 'astra_header_before', 'jc_header_topbar', 5 );
+	function jc_header_topbar() {
+		$c = jc_contacts();
+		?>
+		<div class="jc-topbar">
+			<div class="jc-topbar__inner">
+				<div class="jc-topbar__contacts">
+					<a class="jc-topbar__phone" href="<?php echo esc_url( $c['phone_href'] ); ?>">
+						<?php echo esc_html( $c['phone_display'] ); ?>
+					</a>
+					<span class="jc-topbar__muted">Химчистка с выездом по Москве и МО · Пн–Вс 9:00–21:00</span>
+				</div>
+				<div class="jc-topbar__actions">
+					<a class="jc-circle" href="<?php echo esc_url( $c['telegram'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+						<?php echo jc_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</a>
+					<a class="jc-circle" href="<?php echo esc_url( $c['vk'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
+						<?php echo jc_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</a>
+					<a class="jc-btn jc-btn--primary jc-btn--sm" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>">
+						Записаться
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-	<?php
-}
+		<?php
+	}
 
 /* =====================================================================
  * 4. Подвал: навигация, контакты, соцсети, политика
