@@ -678,6 +678,33 @@ html[data-theme="dark"] .ast-breadcrumbs .trail-items span {
 	background-color: var(--jc-surface, #fff);
 }
 
+.jc-card__thumb {
+	display: block;
+	overflow: hidden;
+	margin: -20px -22px 14px;
+	border-bottom: 1px solid var(--jc-border, #e3e8ee);
+}
+
+.jc-card__thumb img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1200 / 630;
+	object-fit: cover;
+}
+
+.jc-single__thumb {
+	overflow: hidden;
+	margin: 18px 0;
+	border: 1px solid var(--jc-border, #e3e8ee);
+	border-radius: var(--jc-radius, 10px);
+}
+
+.jc-single__thumb img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
 .jc-card__title {
 	margin: 0 0 8px;
 	font-size: 19px;
@@ -967,5 +994,73 @@ html[data-theme="dark"] .jc-related__list a {
 @media (max-width: 782px) {
 	.fluentform button[type="submit"] {
 		width: 100%;
+	}
+}
+
+/* =====================================================================
+   Этап 6: контент — таблицы прайса, пакеты, якоря
+   ================================================================== */
+
+.jc-anchor {
+	scroll-margin-top: 110px;
+}
+
+.jc-table-wrap {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	margin: 14px 0 24px;
+}
+
+.jc-price-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 15px;
+	background: var(--jc-bg);
+}
+
+.jc-price-table th,
+.jc-price-table td {
+	padding: 10px 14px;
+	border: 1px solid var(--jc-border);
+	text-align: left;
+	vertical-align: top;
+}
+
+.jc-price-table th {
+	background: var(--jc-surface);
+	color: var(--jc-heading);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.jc-price-table tbody tr:nth-child(even) {
+	background: rgba(31, 42, 51, 0.03);
+}
+
+html[data-theme="dark"] .jc-price-table tbody tr:nth-child(even) {
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.jc-packages .wp-block-column {
+	box-sizing: border-box;
+	padding: 18px 20px;
+	border: 1px solid var(--jc-border);
+	border-radius: var(--jc-radius);
+	background: var(--jc-surface);
+}
+
+.jc-packages h3 {
+	margin-top: 0;
+}
+
+.jc-packages .wp-block-buttons {
+	margin-top: 14px;
+}
+
+@media (max-width: 782px) {
+	.jc-price-table th,
+	.jc-price-table td {
+		padding: 8px 10px;
+		font-size: 14px;
 	}
 }

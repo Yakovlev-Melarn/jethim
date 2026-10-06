@@ -28,11 +28,17 @@ get_header();
 							}
 							?>
 						</p>
-					</header>
+				</header>
 
-					<div class="entry-content clear">
-						<?php the_content(); ?>
-					</div>
+				<?php if ( has_post_thumbnail() ) : ?>
+					<figure class="jc-single__thumb">
+						<?php the_post_thumbnail( 'full' ); ?>
+					</figure>
+				<?php endif; ?>
+
+				<div class="entry-content clear">
+					<?php the_content(); ?>
+				</div>
 
 					<footer class="entry-footer jc-single__footer">
 						<a class="jc-btn jc-btn--outline" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">
