@@ -88,6 +88,13 @@
 			el.__jcRu = true;
 			try {
 				inst.l10n = Object.assign( {}, inst.l10n, RU );
+				// Выезд не раньше послезавтра — ближайший возможный день.
+				var min = new Date();
+				min.setHours( 0, 0, 0, 0 );
+				min.setDate( min.getDate() + 2 );
+				if ( inst.set ) {
+					inst.set( 'minDate', min );
+				}
 				if ( inst.redraw ) {
 					inst.redraw();
 				}
@@ -188,4 +195,222 @@
 			serviceField.value = h1.textContent.replace( /\s+/g, ' ' ).trim();
 		}
 	}
+
+	/* ------------------------------------------------------------------
+	   Модальные окна с формами: [data-jc-modal-open="ключ"] открывает
+	   #jc-modal-ключ (рендерятся темой в подвале), закрытие — по крестику,
+	   фону и Esc.
+	------------------------------------------------------------------ */
+	( function jcModals() {
+		var lastFocus = null;
+
+		function open( key ) {
+			var m = document.getElementById( 'jc-modal-' + key );
+			if ( ! m ) {
+				return false;
+			}
+			lastFocus = document.activeElement;
+			m.classList.add( 'is-open' );
+			m.setAttribute( 'aria-hidden', 'false' );
+			document.body.classList.add( 'jc-modal-open' );
+			// Фокус — на карточку окна (tabindex="-1"): Esc/Tab работают сразу,
+			// крестик остаётся «тихим». Откладываем на кадр — окно должно показаться.
+			var card = m.querySelector( '.jc-modal__card' );
+			if ( card && card.focus ) {
+				window.requestAnimationFrame( function () {
+					card.focus();
+				} );
+			}
+			return true;
+		}
+
+		function close( m ) {
+			m.classList.remove( 'is-open' );
+			m.setAttribute( 'aria-hidden', 'true' );
+			document.body.classList.remove( 'jc-modal-open' );
+			if ( lastFocus && lastFocus.focus ) {
+				lastFocus.focus();
+			}
+		}
+
+		document.addEventListener( 'click', function ( e ) {
+			var t = e.target;
+			if ( ! t || ! t.closest ) {
+				return;
+			}
+
+			var opener = t.closest( '[data-jc-modal-open]' );
+			if ( opener ) {
+				if ( open( opener.getAttribute( 'data-jc-modal-open' ) ) ) {
+					e.preventDefault();
+				}
+				return;
+			}
+
+			var closer = t.closest( '[data-jc-modal-close]' );
+			if ( closer ) {
+				var m = closer.closest( '.jc-modal' );
+				if ( m ) {
+					close( m );
+				}
+			}
+		} );
+
+		document.addEventListener( 'keydown', function ( e ) {
+			if ( e.key === 'Escape' || e.keyCode === 27 ) {
+				var opened = document.querySelector( '.jc-modal.is-open' );
+				if ( opened ) {
+					close( opened );
+				}
+			}
+		} );
+	} )();
+
+	/* ------------------------------------------------------------------
+	   FAQ-аккордеон: первый вопрос открыт, остальные свёрнуты.
+	------------------------------------------------------------------ */
+	( function jcFaqAccordion() {
+		Array.prototype.forEach.call( document.querySelectorAll( '.jc-faq' ), function ( faq ) {
+			var items = faq.querySelectorAll( '.jc-faq__item' );
+			if ( ! items.length ) {
+				return;
+			}
+			faq.classList.add( 'is-js' );
+			Array.prototype.forEach.call( items, function ( item, i ) {
+				var h = item.querySelector( 'h3' );
+				if ( ! h ) {
+					return;
+				}
+				h.setAttribute( 'role', 'button' );
+				h.setAttribute( 'tabindex', '0' );
+				if ( i === 0 ) {
+					item.classList.add( 'is-open' );
+				}
+				h.setAttribute( 'aria-expanded', item.classList.contains( 'is-open' ) ? 'true' : 'false' );
+
+				var toggle = function () {
+					var isOpen = item.classList.toggle( 'is-open' );
+					h.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
+				};
+				h.addEventListener( 'click', toggle );
+				h.addEventListener( 'keydown', function ( e ) {
+					if ( e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32 ) {
+						e.preventDefault();
+						toggle();
+					}
+				} );
+			} );
+		} );
+	} )();
+
+	/* ------------------------------------------------------------------
+	   Загрузка фото к заявке: Fluent Forms free без загрузки файлов,
+	   поэтому свой file-контрол → REST jc/v1/photo → URL в скрытое
+	   поле photo_url формы.
+	------------------------------------------------------------------ */
+	( function jcPhotoUpload() {
+		if ( ! window.JC_REST || ! window.JC_REST.root ) {
+			return;
+		}
+
+		var ALLOWED = [ 'image/jpeg', 'image/png', 'image/webp' ];
+		var MAX = 10 * 1024 * 1024;
+
+		Array.prototype.forEach.call( document.querySelectorAll( 'form [name="photo_url"]' ), function ( field ) {
+			var group = field.closest( '.ff-el-group' ) || field.parentNode;
+			if ( ! group || ! group.parentNode ) {
+				return;
+			}
+
+			var box = document.createElement( 'div' );
+			box.className = 'jc-photo';
+			box.innerHTML =
+				'<span class="jc-photo__label">Фото загрязнения</span>' +
+				'<button type="button" class="jc-photo__btn">Загрузить фото…</button>' +
+				'<input type="file" accept="image/jpeg,image/png,image/webp" hidden>' +
+				'<div class="jc-photo__preview"><img alt=""><span class="jc-photo__name"></span>' +
+				'<button type="button" class="jc-photo__remove">Убрать</button></div>' +
+				'<div class="jc-photo__hint">До 10 МБ: JPG, PNG или WebP. Можно и вручную вставить ссылку в поле ниже.</div>' +
+				'<div class="jc-photo__status" role="status"></div>';
+			group.parentNode.insertBefore( box, group );
+
+			var btn = box.querySelector( '.jc-photo__btn' );
+			var input = box.querySelector( 'input[type="file"]' );
+			var preview = box.querySelector( '.jc-photo__preview' );
+			var img = box.querySelector( '.jc-photo__preview img' );
+			var name = box.querySelector( '.jc-photo__name' );
+			var remove = box.querySelector( '.jc-photo__remove' );
+			var status = box.querySelector( '.jc-photo__status' );
+
+			var setStatus = function ( text, cls ) {
+				status.textContent = text || '';
+				status.className = 'jc-photo__status' + ( cls ? ' ' + cls : '' );
+			};
+
+			var clear = function () {
+				field.value = '';
+				input.value = '';
+				preview.classList.remove( 'is-visible' );
+				setStatus( '' );
+			};
+
+			btn.addEventListener( 'click', function () {
+				input.click();
+			} );
+			remove.addEventListener( 'click', clear );
+
+			input.addEventListener( 'change', function () {
+				var file = input.files && input.files[ 0 ];
+				if ( ! file ) {
+					return;
+				}
+				if ( file.size > MAX ) {
+					setStatus( 'Файл больше 10 МБ — выберите фото поменьше.', 'is-error' );
+					input.value = '';
+					return;
+				}
+				if ( file.type && ALLOWED.indexOf( file.type ) < 0 ) {
+					setStatus( 'Нужен JPG, PNG или WebP.', 'is-error' );
+					input.value = '';
+					return;
+				}
+
+				setStatus( 'Загружаем…' );
+				var data = new FormData();
+				data.append( 'photo', file, file.name );
+
+				fetch( window.JC_REST.root + '/photo', {
+					method: 'POST',
+					headers: { 'X-WP-Nonce': window.JC_REST.nonce },
+					body: data
+				} )
+					.then( function ( r ) {
+						return r.json().catch( function () {
+							return null;
+						} );
+					} )
+					.then( function ( res ) {
+						if ( ! res || ! res.url ) {
+							setStatus(
+								( res && res.message ) ||
+									'Не удалось загрузить фото — вставьте ссылку ниже или отправьте без фото.',
+								'is-error'
+							);
+							return;
+						}
+						field.value = res.url;
+						img.src = res.url;
+						name.textContent = res.name || file.name;
+						preview.classList.add( 'is-visible' );
+						setStatus( 'Фото загружено — приложим к заявке.', 'is-ok' );
+					} )
+					.catch( function () {
+						setStatus(
+							'Ошибка сети — фото не загрузилось. Вставьте ссылку ниже или отправьте без фото.',
+							'is-error'
+						);
+					} );
+			} );
+		} );
+	} )();
 } )();

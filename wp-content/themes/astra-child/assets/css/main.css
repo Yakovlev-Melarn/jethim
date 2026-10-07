@@ -296,6 +296,43 @@ a.jc-btn--red:focus {
 	color: var(--jc-white);
 }
 
+/* Outline: астра-инлайн задаёт .wp-block-button__link.is-style-outline:not(.has-background)
+   background-color: transparent со спецификацией (0,5,0) — он перебивал наши :hover (0,3,0)
+   и оставлял белый текст на прозрачном фоне. Ниже — правило с большим приоритетом. */
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background),
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background) {
+	background-color: transparent;
+	border-color: var(--jc-primary);
+	color: var(--jc-primary);
+}
+
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background):hover,
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background):focus,
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background):hover,
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background):focus {
+	background-color: var(--jc-primary);
+	border-color: var(--jc-primary);
+	color: var(--jc-white);
+	box-shadow: 0 10px 15px rgba(27, 136, 216, 0.22);
+}
+
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"],
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"] {
+	background-color: transparent;
+	border-color: var(--jc-red);
+	color: var(--jc-red);
+}
+
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"]:hover,
+.wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"]:focus,
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"]:hover,
+.entry-content .wp-block-button .wp-block-button__link.wp-element-button.is-style-outline:not(.has-background)[href*="#calc"]:focus {
+	background-color: var(--jc-red);
+	border-color: var(--jc-red);
+	color: var(--jc-white);
+	box-shadow: 0 10px 15px rgba(226, 57, 54, 0.22);
+}
+
 .jc-btn--sm {
 	min-height: 38px;
 	padding: 8px 22px;
@@ -754,6 +791,35 @@ a.jc-btn--red:focus {
 	color: var(--jc-text);
 }
 
+/* Аккордеон: включается JS-ом классом .is-js (без JS всё раскрыто — контент доступен) */
+.jc-faq.is-js .jc-faq__item > p {
+	max-height: 0;
+	overflow: hidden;
+	padding-top: 0;
+	padding-bottom: 0;
+	opacity: 0;
+	transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+}
+
+.jc-faq.is-js .jc-faq__item.is-open > p {
+	max-height: 600px;
+	opacity: 1;
+	padding: 0 24px 16px 56px;
+}
+
+.jc-faq.is-js h3 {
+	cursor: pointer;
+	user-select: none;
+}
+
+.jc-faq.is-js h3::after {
+	transition: transform 0.25s ease;
+}
+
+.jc-faq.is-js .jc-faq__item.is-open h3::after {
+	transform: rotate(225deg);
+}
+
 /* --------------------------------------------------------------------------
    Общие секции на страницах услуги
    -------------------------------------------------------------------------- */
@@ -1133,19 +1199,33 @@ a.jc-btn--red:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Зона выезда: SVG-схема
+   Зона выезда: карточки-факты (карту убрали — читалась как «только по западу»)
    -------------------------------------------------------------------------- */
 
-.jc-zone-map {
-	margin: 18px 0;
+.jc-geo {
+	gap: var(--jc-gap);
+	margin-top: 4px;
 }
 
-.jc-zone-map img {
-	display: block;
-	width: 100%;
-	height: auto;
-	max-width: 760px;
-	margin: 0 auto;
+.jc-geo .wp-block-column {
+	padding: 22px 22px 18px;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-radius);
+	background: var(--jc-white);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.05);
+}
+
+.jc-geo h3 {
+	margin-top: 0;
+	font-size: 17px;
+	font-weight: 800;
+}
+
+.jc-geo p {
+	margin: 8px 0 0 !important;
+	font-size: 14.5px;
+	line-height: 1.55;
+	color: var(--jc-text);
 }
 
 .jc-section-note {
@@ -1231,6 +1311,14 @@ a.jc-btn--red:focus {
 	margin-top: 16px;
 }
 
+.jc-packages__price {
+	margin: 14px 0 0 !important;
+	font-size: 20px;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	color: var(--jc-dark);
+}
+
 /* --------------------------------------------------------------------------
    Хлебные крошки
    -------------------------------------------------------------------------- */
@@ -1290,6 +1378,13 @@ a.jc-btn--red:focus {
 	color: var(--jc-text);
 }
 
+.jc-footer__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 2px;
+}
+
 .jc-footer__brand {
 	display: inline-block;
 	margin-bottom: 4px;
@@ -1319,6 +1414,17 @@ a.jc-btn--red:focus {
 
 .jc-footer .menu li + li {
 	margin-top: 9px;
+}
+
+/* Навигация подвала — в две колонки (10 пунктов иначе тянутся вниз) */
+.jc-footer__col--nav .menu {
+	columns: 2;
+	column-gap: 18px;
+}
+
+.jc-footer__col--nav .menu li {
+	margin-bottom: 9px;
+	break-inside: avoid;
 }
 
 .jc-footer .menu a,
@@ -1665,6 +1771,189 @@ span.flatpickr-weekday {
 }
 
 /* --------------------------------------------------------------------------
+   Модальные окна с формами (заявка / запись / консультация)
+   -------------------------------------------------------------------------- */
+
+.jc-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.jc-modal.is-open {
+	display: flex;
+}
+
+.jc-modal__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(24, 30, 36, 0.55);
+}
+
+.jc-modal__card {
+	position: relative;
+	width: 100%;
+	max-width: 560px;
+	max-height: calc(100vh - 40px);
+	overflow-y: auto;
+	padding: 30px 30px 28px;
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	box-shadow: 0 30px 60px rgba(0, 0, 0, 0.28);
+	animation: jc-modal-in 0.18s ease;
+}
+
+.jc-modal__card:focus {
+	outline: none;
+}
+
+@keyframes jc-modal-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.jc-modal__card .jc-modal__close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+	border: 0 !important;
+	border-radius: 50%;
+	background: #eef1f4 !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	color: var(--jc-dark) !important;
+	font-size: 26px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.jc-modal__card .jc-modal__close:hover,
+.jc-modal__card .jc-modal__close:focus-visible {
+	background: var(--jc-primary) !important;
+	color: var(--jc-white) !important;
+}
+
+.jc-modal__title {
+	margin: 0 34px 8px 0;
+	font-size: 24px;
+	font-weight: 800;
+}
+
+.jc-modal__text {
+	margin: 0 0 16px;
+	font-size: 15.5px;
+	line-height: 1.55;
+	color: var(--jc-text);
+}
+
+body.jc-modal-open {
+	overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Загрузка фото к заявке (свой file-контрол, т.к. FF free — без загрузки)
+   -------------------------------------------------------------------------- */
+
+.jc-photo {
+	margin-bottom: 16px;
+}
+
+.jc-photo__label {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 13.5px;
+	font-weight: 600;
+	color: var(--jc-dark);
+}
+
+.jc-photo__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 11px 24px;
+	border: 1px dashed var(--jc-primary);
+	border-radius: var(--jc-pill);
+	background: rgba(27, 136, 216, 0.05);
+	color: var(--jc-primary);
+	font-family: var(--jc-font);
+	font-size: 12.5px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.jc-photo__btn:hover {
+	background: var(--jc-primary);
+	color: var(--jc-white);
+}
+
+.jc-photo__hint,
+.jc-photo__status {
+	margin-top: 7px;
+	font-size: 13.5px;
+	line-height: 1.45;
+	color: var(--jc-muted);
+}
+
+.jc-photo__status.is-error {
+	color: var(--jc-red);
+}
+
+.jc-photo__status.is-ok {
+	color: var(--jc-primary);
+}
+
+.jc-photo__preview {
+	display: none;
+	align-items: center;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.jc-photo__preview.is-visible {
+	display: flex;
+}
+
+.jc-photo__preview img {
+	width: 64px;
+	height: 64px;
+	object-fit: cover;
+	border-radius: 8px;
+	border: 1px solid var(--jc-border);
+}
+
+.jc-photo__name {
+	font-size: 14px;
+	color: var(--jc-text);
+}
+
+.jc-photo__remove {
+	border: 0;
+	background: none;
+	color: var(--jc-red);
+	font-size: 13.5px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
    Адаптив
    -------------------------------------------------------------------------- */
 
@@ -1764,6 +2053,19 @@ span.flatpickr-weekday {
 		grid-template-columns: minmax(0, 1fr);
 		padding: 34px 16px 26px;
 		gap: 28px;
+	}
+
+	.jc-footer__col--nav .menu {
+		columns: 1;
+	}
+
+	.jc-modal {
+		padding: 12px;
+	}
+
+	.jc-modal__card {
+		max-height: calc(100vh - 24px);
+		padding: 24px 18px 22px;
 	}
 
 	.jc-copyright__inner {

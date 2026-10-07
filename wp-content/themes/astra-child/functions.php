@@ -150,8 +150,8 @@ function jc_icon( $name ) {
 					<a class="jc-circle" href="<?php echo esc_url( $c['vk'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
 						<?php echo jc_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
-					<a class="jc-btn jc-btn--primary jc-btn--sm" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>">
-						Записаться
+					<a class="jc-btn jc-btn--primary jc-btn--sm" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>" data-jc-modal-open="visit">
+						Вызвать мастера
 					</a>
 				</div>
 			</div>
@@ -173,7 +173,7 @@ function jc_footer_columns() {
 				<p class="jc-footer__text"><?php esc_html_e( 'Химчистка мебели, штор и ковров с выездом по Москве и области. Работаем с 2010 года.', 'astra-child' ); ?></p>
 			</div>
 
-			<div class="jc-footer__col">
+			<div class="jc-footer__col jc-footer__col--nav">
 				<h3 class="jc-footer__title"><?php esc_html_e( 'Навигация', 'astra-child' ); ?></h3>
 				<?php
 				wp_nav_menu(
@@ -222,12 +222,17 @@ function jc_footer_columns() {
 				</ul>
 			</div>
 
-			<div class="jc-footer__col jc-footer__col--form">
-				<h3 class="jc-footer__title"><?php esc_html_e( 'Записаться', 'astra-child' ); ?></h3>
-				<?php echo jc_fluentform( 'callback' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — рендер формы Fluent Forms ?>
-				<p class="jc-footer__text">
-					<a href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>"><?php esc_html_e( 'Запись на выезд по дате →', 'astra-child' ); ?></a>
-				</p>
+			<div class="jc-footer__col jc-footer__col--actions">
+				<h3 class="jc-footer__title"><?php esc_html_e( 'Связаться', 'astra-child' ); ?></h3>
+				<div class="jc-footer__actions">
+					<a class="jc-btn jc-btn--outline" href="<?php echo esc_url( home_url( '/kontakty/' ) ); ?>" data-jc-modal-open="callback">
+						<?php esc_html_e( 'Консультация', 'astra-child' ); ?>
+					</a>
+					<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>" data-jc-modal-open="visit">
+						<?php esc_html_e( 'Вызов мастера', 'astra-child' ); ?>
+					</a>
+				</div>
+				<p class="jc-footer__text"><?php esc_html_e( 'Отвечаем ежедневно с 9:00 до 21:00.', 'astra-child' ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -323,21 +328,23 @@ function jc_service_shared_sections( $content ) {
 		return $content;
 	}
 
-	$prices_url = home_url( '/tseny/' );
-	$hub_url    = home_url( '/uslugi/' );
+	$prices_url  = home_url( '/kalkulyator/#calc' );
+	$hub_url     = home_url( '/uslugi/' );
 
-	// Этап 5: заявка по услуге — сразу после текста страницы.
+	// Заявка по услуге — модальное окно (форма живёт в подвале страницы).
 	$append  = '<section class="jc-block jc-block--form">';
 	$append .= '<h2>' . esc_html__( 'Оставить заявку по этой услуге', 'astra-child' ) . '</h2>';
-	$append .= '<p>' . esc_html__( 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену.', 'astra-child' ) . '</p>';
-	$append .= jc_fluentform( 'service' );
-	$append .= '</section>';
+	$append .= '<p>' . esc_html__( 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену. Форма откроется в окне.', 'astra-child' ) . '</p>';
+	$append .= '<div class="jc-block__actions">';
+	$append .= '<a class="jc-btn jc-btn--primary" href="#" data-jc-modal-open="service">' . esc_html__( 'Оставить заявку', 'astra-child' ) . '</a>';
+	$append .= '<a class="jc-btn jc-btn--outline" href="' . esc_url( $hub_url ) . '">' . esc_html__( 'Все услуги', 'astra-child' ) . '</a>';
+	$append .= '</div></section>';
 
 	$append .= '<section class="jc-block jc-block--calc">';
 	$append .= '<h2>' . esc_html__( 'Считаем по прайсу', 'astra-child' ) . '</h2>';
 	$append .= '<p>' . esc_html__( 'Цены на сайте — «от»: на итог влияют размер, загрязнение и выезд. Соберите расчёт в калькуляторе за минуту — покажем предварительную сумму до выезда мастера.', 'astra-child' ) . '</p>';
 	$append .= '<div class="jc-block__actions">';
-	$append .= '<a class="jc-btn jc-btn--primary" href="' . esc_url( $prices_url ) . '#calc">' . esc_html__( 'Рассчитать стоимость', 'astra-child' ) . '</a>';
+	$append .= '<a class="jc-btn jc-btn--primary" href="' . esc_url( $prices_url ) . '">' . esc_html__( 'Рассчитать стоимость', 'astra-child' ) . '</a>';
 	$append .= '<a class="jc-btn jc-btn--outline" href="' . esc_url( $hub_url ) . '">' . esc_html__( 'Все услуги', 'astra-child' ) . '</a>';
 	$append .= '</div></section>';
 
@@ -397,6 +404,145 @@ function jc_related_services_html() {
 }
 
 /* =====================================================================
- * 8. Точки расширения для следующих этапов:
+ * 8. Модальные окна с формами (заявка / запись / консультация)
+ *
+ * Формы Fluent Forms рендерятся в подвале страницы один раз и
+ * показываются по клику на [data-jc-modal-open="ключ"] (main.js).
+ * ================================================================== */
+add_action( 'wp_footer', 'jc_modals', 5 );
+function jc_modals() {
+	$modals = array(
+		'visit'    => array(
+			'form' => 'visit',
+			'title' => 'Вызвать мастера',
+			'text'  => 'Выберите дату и время — мастер приедет в указанный интервал. Ближайший возможный выезд — послезавтра.',
+		),
+		'service'  => array(
+			'form' => 'service',
+			'title' => 'Оставить заявку',
+			'text'  => 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену.',
+		),
+		'callback' => array(
+			'form' => 'callback',
+			'title' => 'Консультация',
+			'text'  => 'Оставьте номер — перезвоним в рабочее время и ответим на вопросы.',
+		),
+	);
+
+	foreach ( $modals as $key => $m ) {
+		$form = jc_fluentform( $m['form'] );
+		if ( ! $form ) {
+			continue;
+		}
+		?>
+		<div class="jc-modal" id="jc-modal-<?php echo esc_attr( $key ); ?>" role="dialog"
+			aria-modal="true" aria-hidden="true" aria-label="<?php echo esc_attr( $m['title'] ); ?>">
+			<div class="jc-modal__backdrop" data-jc-modal-close></div>
+			<div class="jc-modal__card" role="document" tabindex="-1">
+				<button class="jc-modal__close" type="button" data-jc-modal-close aria-label="<?php esc_attr_e( 'Закрыть', 'astra-child' ); ?>">
+					&times;
+				</button>
+				<h3 class="jc-modal__title"><?php echo esc_html( $m['title'] ); ?></h3>
+				<p class="jc-modal__text"><?php echo esc_html( $m['text'] ); ?></p>
+				<?php echo $form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — рендер формы Fluent Forms ?>
+			</div>
+		</div>
+		<?php
+	}
+}
+
+/* =====================================================================
+ * 9. Загрузка фото к заявке (REST jc/v1/photo)
+ *
+ * Fluent Forms free не умеет загрузку файлов (PRO), поэтому фото
+ * грузим своим endpoint'ом (main.js), а ссылку кладём в скрытое поле
+ * формы photo_url.
+ * ================================================================== */
+add_action( 'wp_enqueue_scripts', 'jc_enqueue_rest_nonce', 30 );
+function jc_enqueue_rest_nonce() {
+	if ( wp_script_is( 'jc-main', 'enqueued' ) ) {
+		wp_localize_script(
+			'jc-main',
+			'JC_REST',
+			array(
+				'root'  => esc_url_raw( rest_url( 'jc/v1' ) ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+			)
+		);
+	}
+}
+
+add_action( 'rest_api_init', 'jc_photo_route' );
+function jc_photo_route() {
+	register_rest_route(
+		'jc/v1',
+		'/photo',
+		array(
+			'methods'             => 'POST',
+			'callback'            => 'jc_photo_upload',
+			'permission_callback' => 'jc_photo_permission',
+		)
+	);
+}
+
+function jc_photo_permission( $request ) {
+	$nonce = (string) $request->get_header( 'X-WP-Nonce' );
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+		return false;
+	}
+
+	// Простейший rate-limit: не больше 10 загрузок в час с одного IP.
+	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : 'na';
+	$key = 'jc_photo_' . md5( $ip );
+	$n   = (int) get_transient( $key );
+	if ( $n >= 10 ) {
+		return false;
+	}
+	set_transient( $key, $n + 1, HOUR_IN_SECONDS );
+
+	return true;
+}
+
+function jc_photo_upload() {
+	if ( empty( $_FILES['photo'] ) ) {
+		return new WP_Error( 'jc_no_file', 'Файл не получен', array( 'status' => 400 ) );
+	}
+
+	$file = $_FILES['photo']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+
+	if ( ! empty( $file['error'] ) ) {
+		return new WP_Error( 'jc_upload_error', 'Ошибка загрузки файла', array( 'status' => 400 ) );
+	}
+
+	if ( (int) $file['size'] > 10 * 1024 * 1024 ) {
+		return new WP_Error( 'jc_too_big', 'Фото больше 10 МБ', array( 'status' => 400 ) );
+	}
+
+	$check = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+	$ok    = array( 'image/jpeg', 'image/png', 'image/webp' );
+	if ( empty( $check['type'] ) || ! in_array( $check['type'], $ok, true ) ) {
+		return new WP_Error( 'jc_bad_type', 'Нужен JPG, PNG или WebP', array( 'status' => 400 ) );
+	}
+
+	$upload = wp_handle_upload(
+		$file,
+		array(
+			'test_form' => false,
+			'test_size' => false,
+		)
+	);
+
+	if ( isset( $upload['error'] ) ) {
+		return new WP_Error( 'jc_upload_failed', $upload['error'], array( 'status' => 500 ) );
+	}
+
+	return array(
+		'url'  => $upload['url'],
+		'name' => sanitize_file_name( $file['name'] ),
+	);
+}
+
+/* =====================================================================
+ * 10. Точки расширения для следующих этапов:
  *    - Этап 5 (формы) — контакты брать через jc_contacts() / фильтр jc_contacts.
  * ================================================================== */
