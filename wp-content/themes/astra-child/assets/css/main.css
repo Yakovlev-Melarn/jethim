@@ -345,54 +345,130 @@ a.jc-btn--red:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Верхняя полоса: телефон + соцсети + запись (светлая, как у референса)
+   Шапка: полоса меню во всю ширину + строка логотип/телефон/кнопки/мессенджеры
+   (Astra-шапка скрыта, см. .site-header ниже)
    -------------------------------------------------------------------------- */
 
-.jc-topbar {
+.jc-menubar {
 	background-color: var(--jc-gray);
 	border-bottom: 1px solid var(--jc-border);
-	font-size: 14px;
 }
 
-.jc-topbar__inner {
+.jc-menubar__inner {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: var(--jc-container);
+	margin: 0 auto;
+	padding: 0 12px;
+}
+
+.jc-menubar__nav ul {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.jc-menubar__nav li {
+	margin: 0;
+	padding: 0;
+}
+
+.jc-menubar__nav a {
+	display: block;
+	padding: 12px 11px;
+	font-size: 14.5px;
+	font-weight: 600;
+	color: var(--jc-dark);
+}
+
+.jc-menubar__nav a:hover,
+.jc-menubar__nav a:focus {
+	color: var(--jc-primary);
+}
+
+.jc-menubar__nav .current-menu-item > a,
+.jc-menubar__nav .current-menu-ancestor > a {
+	color: var(--jc-primary);
+}
+
+/* Гамбургер (только мобильные) */
+.jc-menubar__toggle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 4px;
+	width: 42px;
+	height: 38px;
+	margin: 4px 0;
+	padding: 0;
+	border: 1px solid var(--jc-border-2);
+	border-radius: var(--jc-radius-sm);
+	background: var(--jc-white);
+	cursor: pointer;
+}
+
+.jc-menubar__toggle span {
+	display: block;
+	width: 18px;
+	height: 2px;
+	background: var(--jc-dark);
+}
+
+.jc-header {
+	background-color: var(--jc-white);
+	border-bottom: 1px solid var(--jc-border);
+}
+
+.jc-header__inner {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 16px;
+	gap: 18px;
 	max-width: var(--jc-container);
 	margin: 0 auto;
-	padding: 9px 24px;
+	padding: 13px 24px;
 }
 
-.jc-topbar__contacts {
+.jc-header__inner img {
+	display: block;
+	max-height: 46px;
+	width: auto;
+	height: auto;
+}
+
+.jc-header__actions {
 	display: flex;
 	align-items: center;
-	gap: 18px;
-	min-width: 0;
+	gap: 14px;
 }
 
-.jc-topbar__phone {
+.jc-header__phone {
 	color: var(--jc-dark);
 	font-weight: 700;
 	font-size: 16px;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
+	white-space: nowrap;
 }
 
-.jc-topbar__phone:hover,
-.jc-topbar__phone:focus {
+.jc-header__phone:hover,
+.jc-header__phone:focus {
 	color: var(--jc-primary);
 }
 
-.jc-topbar__muted {
-	color: #7d858d;
-	font-size: 13px;
+/* На белом фоне кружкам соцсетей нужен фон — иначе сливаются */
+.jc-header .jc-circle {
+	background: var(--jc-gray);
 }
 
-.jc-topbar__actions {
-	display: flex;
-	align-items: center;
-	gap: 10px;
+/* Шапка Astra больше не используется: меню, логотип, телефон, кнопка
+   и мессенджеры выведены jc_header_bars() до .site-header. */
+.site-header {
+	display: none;
 }
 
 /* Круглые кнопки соцсетей */
@@ -495,6 +571,12 @@ a.jc-btn--red:focus {
 /* --------------------------------------------------------------------------
    Герой: заголовок с подсветкой, буллеты, правая панель
    -------------------------------------------------------------------------- */
+
+/* На главной своя H1 в герое — служебный заголовок страницы («Главная»)
+   не показываем. Пункт меню с тем же словом удалён из базы. */
+body.home .entry-header {
+	display: none;
+}
 
 .jc-hero {
 	padding: 10px 0 4px;
@@ -1864,6 +1946,17 @@ body.jc-modal-open {
 	overflow: hidden;
 }
 
+/* Оверлеи Fluent Forms должны жить поверх модалки (z-index 100000):
+   календарь дат рендерится в body (z 99999), пузырь подсказки — в body
+   (z 9999), иначе они уходят под затемнение и становятся некликабельны. */
+.flatpickr-calendar {
+	z-index: 100010 !important;
+}
+
+.ff-el-pop-content {
+	z-index: 100020 !important;
+}
+
 /* --------------------------------------------------------------------------
    Загрузка фото к заявке (свой file-контрол, т.к. FF free — без загрузки)
    -------------------------------------------------------------------------- */
@@ -1990,16 +2083,47 @@ body.jc-modal-open {
 		margin-bottom: 26px;
 	}
 
-	.jc-topbar__inner {
-		padding: 7px 16px;
+	.jc-menubar__inner {
+		padding: 0 12px;
+	}
+
+	.jc-menubar__toggle {
+		display: inline-flex;
+	}
+
+	.jc-menubar__nav {
+		display: none;
+		width: 100%;
+	}
+
+	.jc-menubar.is-open .jc-menubar__nav {
+		display: block;
+	}
+
+	.jc-menubar__nav ul {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.jc-menubar__nav a {
+		padding: 11px 4px;
+		border-top: 1px dashed var(--jc-border);
+	}
+
+	.jc-header__inner {
+		flex-wrap: wrap;
+		padding: 10px 16px;
 		gap: 10px;
 	}
 
-	.jc-topbar__muted {
-		display: none;
+	.jc-header__actions {
+		flex: 1 1 auto;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 10px;
 	}
 
-	.jc-topbar__phone {
+	.jc-header__phone {
 		font-size: 14.5px;
 	}
 

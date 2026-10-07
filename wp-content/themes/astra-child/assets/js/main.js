@@ -304,6 +304,25 @@
 	} )();
 
 	/* ------------------------------------------------------------------
+	   Гамбургер полосы меню (.jc-menubar): на мобильных список пунктов
+	   сворачивается, раскрывается кнопкой.
+	------------------------------------------------------------------ */
+	( function jcMenuBar() {
+		var toggle = document.querySelector( '.jc-menubar__toggle' );
+		if ( ! toggle ) {
+			return;
+		}
+		toggle.addEventListener( 'click', function () {
+			var bar = toggle.closest( '.jc-menubar' );
+			if ( ! bar ) {
+				return;
+			}
+			var isOpen = bar.classList.toggle( 'is-open' );
+			toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
+		} );
+	} )();
+
+	/* ------------------------------------------------------------------
 	   Загрузка фото к заявке: Fluent Forms free без загрузки файлов,
 	   поэтому свой file-контрол → REST jc/v1/photo → URL в скрытое
 	   поле photo_url формы.

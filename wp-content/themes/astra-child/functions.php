@@ -129,29 +129,54 @@ function jc_icon( $name ) {
 }
 
 /* =====================================================================
- * 3. Верхняя панель: телефон + кнопки мессенджеров
+ * 3. Шапка: полоса меню во всю ширину + строка логотипа/контактов
+ *
+ * Порядок сверху вниз (обе — astra_header_before, Astra-шапка скрыта
+ * CSS-правилом .site-header { display:none }):
+ *   1. .jc-menubar  — меню сайта на всю ширину экрана;
+ *   2. .jc-header   — логотип, телефон, «Вызвать мастера», мессенджеры.
  * ================================================================== */
-	add_action( 'astra_header_before', 'jc_header_topbar', 5 );
-	function jc_header_topbar() {
+	add_action( 'astra_header_before', 'jc_header_bars', 5 );
+	function jc_header_bars() {
 		$c = jc_contacts();
 		?>
-		<div class="jc-topbar">
-			<div class="jc-topbar__inner">
-				<div class="jc-topbar__contacts">
-					<a class="jc-topbar__phone" href="<?php echo esc_url( $c['phone_href'] ); ?>">
+		<div class="jc-menubar">
+			<div class="jc-menubar__inner">
+				<button class="jc-menubar__toggle" type="button" aria-expanded="false"
+					aria-label="<?php esc_attr_e( 'Меню', 'astra-child' ); ?>">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<nav class="jc-menubar__nav" aria-label="<?php esc_attr_e( 'Основное меню', 'astra-child' ); ?>">
+					<?php
+					wp_nav_menu(
+						array(
+							'theme_location' => 'primary',
+							'container'      => false,
+							'depth'          => 1,
+							'fallback_cb'    => false,
+						)
+					);
+					?>
+				</nav>
+			</div>
+		</div>
+		<div class="jc-header">
+			<div class="jc-header__inner">
+				<?php jc_logo(); ?>
+				<div class="jc-header__actions">
+					<a class="jc-header__phone" href="<?php echo esc_url( $c['phone_href'] ); ?>">
 						<?php echo esc_html( $c['phone_display'] ); ?>
 					</a>
-					<span class="jc-topbar__muted">Химчистка с выездом по Москве и МО · Пн–Вс 9:00–21:00</span>
-				</div>
-				<div class="jc-topbar__actions">
+					<a class="jc-btn jc-btn--primary jc-btn--sm" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>" data-jc-modal-open="visit">
+						<?php esc_html_e( 'Вызвать мастера', 'astra-child' ); ?>
+					</a>
 					<a class="jc-circle" href="<?php echo esc_url( $c['telegram'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
 						<?php echo jc_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
 					<a class="jc-circle" href="<?php echo esc_url( $c['vk'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
 						<?php echo jc_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					</a>
-					<a class="jc-btn jc-btn--primary jc-btn--sm" href="<?php echo esc_url( home_url( '/zapis-na-vyezd/' ) ); ?>" data-jc-modal-open="visit">
-						Вызвать мастера
 					</a>
 				</div>
 			</div>
@@ -225,6 +250,9 @@ function jc_footer_columns() {
 			<div class="jc-footer__col jc-footer__col--actions">
 				<h3 class="jc-footer__title"><?php esc_html_e( 'Связаться', 'astra-child' ); ?></h3>
 				<div class="jc-footer__actions">
+					<a class="jc-btn jc-btn--outline" href="<?php echo esc_url( home_url( '/kontakty/' ) ); ?>" data-jc-modal-open="photo">
+						<?php esc_html_e( 'Отправить фото', 'astra-child' ); ?>
+					</a>
 					<a class="jc-btn jc-btn--outline" href="<?php echo esc_url( home_url( '/kontakty/' ) ); ?>" data-jc-modal-open="callback">
 						<?php esc_html_e( 'Консультация', 'astra-child' ); ?>
 					</a>
@@ -270,7 +298,8 @@ function jc_logo() {
 	}
 	$logo = get_stylesheet_directory_uri() . '/assets/logo.svg';
 	printf(
-		'<img src="%s" alt="%s" width="220" height="48" loading="lazy" />',
+		'<a class="jc-logo-link" href="%s"><img src="%s" alt="%s" width="220" height="48" loading="lazy" /></a>',
+		esc_url( home_url( '/' ) ),
 		esc_url( $logo ),
 		esc_attr( get_bloginfo( 'name' ) )
 	);
@@ -426,6 +455,11 @@ function jc_modals() {
 			'form' => 'callback',
 			'title' => 'Консультация',
 			'text'  => 'Оставьте номер — перезвоним в рабочее время и ответим на вопросы.',
+		),
+		'photo'    => array(
+			'form' => 'photo',
+			'title' => 'Отправить фото для расчёта',
+			'text'  => 'Приложите фото загрязнения — по ним назовём предварительную цену до выезда мастера.',
 		),
 	);
 
