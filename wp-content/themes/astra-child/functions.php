@@ -154,7 +154,7 @@ function jc_icon( $name ) {
 						array(
 							'theme_location' => 'primary',
 							'container'      => false,
-							'depth'          => 1,
+							'depth'          => 3,
 							'fallback_cb'    => false,
 						)
 					);

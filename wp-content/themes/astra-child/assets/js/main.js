@@ -320,6 +320,25 @@
 			var isOpen = bar.classList.toggle( 'is-open' );
 			toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
 		} );
+
+		/* На мобильных пункт с подменю раскрывается аккордеоном (сама
+		   ссылка при первом тапе не открывается — раскрытие приоритетнее). */
+		document.addEventListener( 'click', function ( e ) {
+			if ( window.innerWidth > 782 ) {
+				return;
+			}
+			var a = e.target.closest ? e.target.closest( '.jc-menubar__nav > ul > li > a' ) : null;
+			if ( ! a ) {
+				return;
+			}
+			var li = a.parentElement;
+			if ( ! li.querySelector( ':scope > .sub-menu' ) ) {
+				return;
+			}
+			e.preventDefault();
+			var open = li.classList.toggle( 'is-sub-open' );
+			a.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+		} );
 	} )();
 
 	/* ------------------------------------------------------------------

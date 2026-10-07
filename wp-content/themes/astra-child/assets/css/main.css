@@ -31,7 +31,7 @@
 	--jc-radius: 10px;
 	--jc-radius-sm: 6px;
 	--jc-pill: 42px;
-	--jc-container: 1260px;
+	--jc-container: 1248px;
 	--jc-gap: 24px;
 
 	--jc-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -352,6 +352,8 @@ a.jc-btn--red:focus {
 .jc-menubar {
 	background-color: var(--jc-gray);
 	border-bottom: 1px solid var(--jc-border);
+	position: relative;
+	z-index: 60;
 }
 
 .jc-menubar__inner {
@@ -360,12 +362,20 @@ a.jc-btn--red:focus {
 	flex-wrap: wrap;
 	max-width: var(--jc-container);
 	margin: 0 auto;
-	padding: 0 12px;
+	padding: 0 24px;
 }
 
-.jc-menubar__nav ul {
+.jc-menubar__nav {
+	flex: 1 1 auto;
+}
+
+/* Верхний уровень: во всю ширину контейнера (первый и последний пункты
+   — на общей оси контента, 120px на 1440) */
+.jc-menubar__nav > ul {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -374,6 +384,7 @@ a.jc-btn--red:focus {
 .jc-menubar__nav li {
 	margin: 0;
 	padding: 0;
+	position: relative;
 }
 
 .jc-menubar__nav a {
@@ -384,6 +395,14 @@ a.jc-btn--red:focus {
 	color: var(--jc-dark);
 }
 
+.jc-menubar__nav > ul > li:last-child a {
+	padding-right: 0;
+}
+
+.jc-menubar__nav > ul > li:first-child a {
+	padding-left: 0;
+}
+
 .jc-menubar__nav a:hover,
 .jc-menubar__nav a:focus {
 	color: var(--jc-primary);
@@ -392,6 +411,43 @@ a.jc-btn--red:focus {
 .jc-menubar__nav .current-menu-item > a,
 .jc-menubar__nav .current-menu-ancestor > a {
 	color: var(--jc-primary);
+}
+
+/* Выпадающее подменю (десктоп: hover/focus, плавное появление) */
+.jc-menubar__nav .sub-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 60;
+	min-width: 250px;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 8px 0;
+	list-style: none;
+	background: var(--jc-white);
+	border: 1px solid var(--jc-border);
+	border-radius: var(--jc-radius-sm);
+	box-shadow: 0 14px 28px rgba(69, 75, 84, 0.14);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(6px);
+	transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+
+.jc-menubar__nav li:hover > .sub-menu,
+.jc-menubar__nav li:focus-within > .sub-menu,
+.jc-menubar__nav li.is-sub-open > .sub-menu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.jc-menubar__nav .sub-menu a {
+	padding: 10px 20px;
+	font-size: 14.5px;
+	font-weight: 600;
+	white-space: nowrap;
 }
 
 /* Гамбургер (только мобильные) */
@@ -681,6 +737,16 @@ body.home .entry-header {
 /* --------------------------------------------------------------------------
    Секции: карточки и колонки
    -------------------------------------------------------------------------- */
+
+/* Astra даёт .entry-content > .wp-block-group padding 49.5px со всех
+   сторон — из-за него текст главной «ступенькой» правее шапки и логотипа.
+   Горизонтальный отступ убираем: контент секций на одной оси с контентом
+   страниц (120px на 1440) и с полосой меню/шапкой. Вертикаль не трогаем. */
+body .entry-content > .jc-hero,
+body .entry-content > .jc-sec {
+	padding-left: 0;
+	padding-right: 0;
+}
 
 .jc-sec {
 	margin-top: 54px;
@@ -1510,14 +1576,14 @@ body.home .entry-header {
 }
 
 .jc-footer .menu a,
-.jc-footer a {
+.jc-footer a:not(.jc-btn) {
 	color: var(--jc-text);
 }
 
 .jc-footer .menu a:hover,
 .jc-footer .menu a:focus,
-.jc-footer a:hover,
-.jc-footer a:focus {
+.jc-footer a:not(.jc-btn):hover,
+.jc-footer a:not(.jc-btn):focus {
 	color: var(--jc-primary);
 }
 
@@ -1587,6 +1653,13 @@ body.home .entry-header {
 	height: 17px;
 	flex: 0 0 auto;
 	color: var(--jc-primary);
+}
+
+/* Пустая обёртка Astra «below footer» (padding 20px + пустая секция) —
+   давала ~100px белого пространства между футером и копирайтом. */
+#colophon .site-below-footer-wrap,
+.site-footer .site-below-footer-wrap {
+	display: none !important;
 }
 
 .jc-copyright {
@@ -2102,7 +2175,34 @@ body.jc-modal-open {
 
 	.jc-menubar__nav ul {
 		flex-direction: column;
+		justify-content: flex-start;
 		width: 100%;
+	}
+
+	/* Подменю на мобильных: аккордеон (раскрытие классом is-sub-open из JS) */
+	.jc-menubar__nav .sub-menu {
+		position: static;
+		display: none;
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
+		background: transparent;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		transition: none;
+	}
+
+	.jc-menubar__nav li.is-sub-open > .sub-menu {
+		display: flex;
+	}
+
+	.jc-menubar__nav .sub-menu a {
+		padding: 10px 4px 10px 18px;
+		font-size: 14px;
 	}
 
 	.jc-menubar__nav a {
