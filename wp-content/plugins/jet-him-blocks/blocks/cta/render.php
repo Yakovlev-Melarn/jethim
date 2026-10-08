@@ -48,37 +48,30 @@ if ( ! function_exists( 'jhb_cta_icon' ) ) {
 			<?php endif; ?>
 		</div>
 
-		<?php if ( $show_phone || $show_social ) : ?>
-			<div class="jc-cta__actions">
-				<?php if ( $show_phone && ! empty( $contacts['phone_href'] ) ) : ?>
-					<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( $contacts['phone_href'] ); ?>">
-						<?php echo jhb_cta_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<span><?php echo esc_html( $button_label ); ?></span>
-					</a>
-					<a class="jc-cta__phone" href="<?php echo esc_url( $contacts['phone_href'] ); ?>">
-						<?php echo esc_html( $contacts['phone_display'] ); ?>
-					</a>
-				<?php else : ?>
-					<span class="jc-btn jc-btn--primary" aria-hidden="true">
-						<?php echo esc_html( $button_label ); ?>
-					</span>
-				<?php endif; ?>
+		<div class="jc-cta__actions">
+			<a class="jc-btn jc-btn--primary" href="<?php echo esc_url( home_url( '/kalkulyator/#calc' ) ); ?>">
+				<span><?php echo esc_html( $button_label ); ?></span>
+			</a>
+			<?php if ( $show_phone && ! empty( $contacts['phone_href'] ) ) : ?>
+				<a class="jc-cta__phone" href="<?php echo esc_url( $contacts['phone_href'] ); ?>">
+					<?php echo esc_html( $contacts['phone_display'] ); ?>
+				</a>
+			<?php endif; ?>
 
-				<?php if ( $show_social ) : ?>
-					<?php if ( ! empty( $contacts['telegram'] ) ) : ?>
-						<a class="jc-btn jc-btn--tg" href="<?php echo esc_url( $contacts['telegram'] ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo jhb_cta_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<span>Telegram</span>
-						</a>
-					<?php endif; ?>
-					<?php if ( ! empty( $contacts['vk'] ) ) : ?>
-						<a class="jc-btn jc-btn--vk" href="<?php echo esc_url( $contacts['vk'] ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo jhb_cta_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<span>ВКонтакте</span>
-						</a>
-					<?php endif; ?>
+			<?php if ( $show_social ) : ?>
+				<?php if ( ! empty( $contacts['telegram'] ) ) : ?>
+					<a class="jc-btn jc-btn--tg" href="<?php echo esc_url( $contacts['telegram'] ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php echo jhb_cta_icon( 'telegram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<span>Telegram</span>
+					</a>
 				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+				<?php if ( ! empty( $contacts['vk'] ) ) : ?>
+					<a class="jc-btn jc-btn--vk" href="<?php echo esc_url( $contacts['vk'] ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php echo jhb_cta_icon( 'vk' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<span>ВКонтакте</span>
+					</a>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
 	</div>
 </div>

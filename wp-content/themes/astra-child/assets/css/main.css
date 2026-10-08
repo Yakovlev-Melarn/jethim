@@ -395,11 +395,11 @@ a.jc-btn--red:focus {
 	color: var(--jc-dark);
 }
 
-.jc-menubar__nav > ul > li:last-child a {
+.jc-menubar__nav > ul > li:last-child > a {
 	padding-right: 0;
 }
 
-.jc-menubar__nav > ul > li:first-child a {
+.jc-menubar__nav > ul > li:first-child > a {
 	padding-left: 0;
 }
 
@@ -1177,9 +1177,18 @@ body .entry-content > .jc-sec {
 	transform: translateY(-2px);
 }
 
+.ast-separate-container .ast-blog-layout-4-grid .jc-posts .jc-card,
+.ast-blog-layout-4-grid .jc-posts .jc-card,
+.jc-posts > .jc-card {
+	width: 100%;
+	margin-bottom: 0;
+	padding: 0;
+	background-color: var(--jc-white);
+}
+
 .jc-card__thumb {
 	display: block;
-	overflow: margin;
+	overflow: hidden;
 	margin: 0;
 	border-bottom: 0;
 }

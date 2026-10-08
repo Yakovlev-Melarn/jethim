@@ -47,25 +47,27 @@ $jc_cats  = get_categories(
 				</a>
 			<?php endif; ?>
 
-			<h2 class="jc-card__title">
-				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-			</h2>
+			<div class="jc-card__body">
+				<h2 class="jc-card__title">
+					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				</h2>
 
-			<p class="jc-card__meta">
-				<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
-				<?php
-				$jc_in = get_the_category_list( ', ' );
-				if ( $jc_in ) {
-					echo ' · ' . $jc_in; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ссылки категорий.
-				}
-				?>
-			</p>
+				<p class="jc-card__meta">
+					<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+					<?php
+					$jc_in = get_the_category_list( ', ' );
+					if ( $jc_in ) {
+						echo ' · ' . $jc_in; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ссылки категорий.
+					}
+					?>
+				</p>
 
-			<div class="jc-card__excerpt"><?php the_excerpt(); ?></div>
+				<div class="jc-card__excerpt"><?php the_excerpt(); ?></div>
 
-			<a class="jc-card__more" href="<?php the_permalink(); ?>">
-				<?php esc_html_e( 'Читать статью', 'astra-child' ); ?> →
-			</a>
+				<a class="jc-card__more" href="<?php the_permalink(); ?>">
+					<?php esc_html_e( 'Читать статью', 'astra-child' ); ?> →
+				</a>
+			</div>
 		</article>
 	<?php endwhile; ?>
 </div>
