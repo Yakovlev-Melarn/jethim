@@ -195,7 +195,7 @@ function jc_footer_columns() {
 		<div class="jc-footer__inner">
 			<div class="jc-footer__col">
 				<span class="jc-footer__brand"><?php jc_logo(); ?></span>
-				<p class="jc-footer__text"><?php esc_html_e( 'Химчистка мебели, штор и ковров с выездом по Москве и области. Работаем с 2010 года.', 'astra-child' ); ?></p>
+				<p class="jc-footer__text"><?php esc_html_e( 'Химчистка мягкой мебели, штор, ковров и матрасов с выездом по Москве и Московской области. Работаем с 2010 года. Профессиональное оборудование, сертифицированная химия, безопасная для детей и животных.', 'astra-child' ); ?></p>
 			</div>
 
 			<div class="jc-footer__col jc-footer__col--nav">
@@ -577,6 +577,53 @@ function jc_photo_upload() {
 }
 
 /* =====================================================================
- * 10. Точки расширения для следующих этапов:
+ * 10. og:image — превью ссылок в Telegram/ВК (картинка из e7_img_import.php).
+ * ================================================================== */
+add_action( 'wp_head', 'jc_og_meta', 5 );
+function jc_og_meta() {
+	$url = '';
+	$id  = (int) get_option( 'jc_og_image_id' );
+
+	if ( $id ) {
+		$url = (string) wp_get_attachment_image_url( $id, 'full' );
+	}
+
+	if ( ! $url ) {
+		$found = get_posts(
+			array(
+				'post_type'      => 'attachment',
+				'post_status'    => 'inherit',
+				'numberposts'    => 1,
+				'meta_key'       => '_wp_attached_file',
+				'meta_compare'   => 'LIKE',
+				'meta_value'     => 'jc-og.jpg',
+			)
+		);
+		$url = $found ? (string) wp_get_attachment_image_url( (int) $found[0]->ID, 'full' ) : '';
+	}
+
+	if ( ! $url ) {
+		return;
+	}
+
+	$req      = isset( $GLOBALS['wp'] ) ? trim( (string) $GLOBALS['wp']->request, '/' ) : '';
+	$page_url = $req ? home_url( '/' . $req . '/' ) : home_url( '/' );
+	$desc     = (string) get_bloginfo( 'description' );
+	$title    = (string) wp_get_document_title();
+
+	echo '<meta property="og:image" content="' . esc_url( $url ) . '" />' . "\n";
+	echo '<meta property="og:image:width" content="1200" />' . "\n";
+	echo '<meta property="og:image:height" content="630" />' . "\n";
+	echo '<meta property="og:image:alt" content="' . esc_attr( $title ) . '" />' . "\n";
+	echo '<meta property="og:url" content="' . esc_url( $page_url ) . '" />' . "\n";
+	echo '<meta property="og:type" content="' . ( is_singular() && ! is_front_page() ? 'article' : 'website' ) . '" />' . "\n";
+	echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name' ) ) . '" />' . "\n";
+	echo '<meta property="og:title" content="' . esc_attr( $title ) . '" />' . "\n";
+	echo '<meta property="og:description" content="' . esc_attr( $desc ) . '" />' . "\n";
+	echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+}
+
+/* =====================================================================
+ * 11. Точки расширения для следующих этапов:
  *    - Этап 5 (формы) — контакты брать через jc_contacts() / фильтр jc_contacts.
  * ================================================================== */

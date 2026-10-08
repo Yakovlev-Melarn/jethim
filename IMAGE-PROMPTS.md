@@ -1,282 +1,412 @@
-# IMAGE-PROMPTS.md — Изображения JetHim: план размещения и промпты генерации
+# IMAGE-PROMPTS.md — промпты для генерации изображений JetHim
 
-**Статус:** план + промпты готовы (ждём генерации и загрузки).
-**Задача:** промпты для генерации всех изображений сайта + схема вставки, которая не ломает дизайн.
+## Как пользоваться (4 шага)
 
-Текущее состояние (снято 07.10.2026):
-- на сайта **нет ни одной фотограﬁи** — только логотип `jethim-logo.svg`, схема `zone.svg`
-  и 5 брендовых обложек блога (синий градиент, рисует GD в `e6_posts.php`);
-- слайдер «до/после» (главная и `/do-posle/`) показывает **плейсхолдеры** — градиенты
-  `jhb-before.png` / `jhb-after.png` (960×640);
-- **нет `og:image`, нет favicon/site-icon** — ссылки в Telegram/ВК выглядят пустыми;
-- 14 страниц услуг — без единой картинки, хаб `/uslugi/` — сплошной текст.
+1. Берёшь промпт из разделов ниже — он **полный**, копируется целиком, ничего подставлять не надо.
+2. В генераторе задаёшь **соотношение сторон** и **размер** из карточки.
+3. Сохраняешь файлом из поля **«Файл»** в папку **`D:\dev\projects\.scripts\img\`**
+   (для контейнера это `/srv/projects/.scripts/img/`).
+4. Говоришь мне — я сам загружаю картинки в медиатеку и вставляю их в нужные места сайта.
 
----
-
-## 0. Общий стиль (база для ВСЕХ промптов)
-
-Подставлять в начало каждого промпта. Обеспечивает единый вид: светлый, чистый,
-«премиум-клининг» под палитру сайта (синий `#1b88d8`, фон `#f9f9f9`, Montserrat/Inter).
-
-**База (EN):**
-```
-photorealistic advertising photography for a premium upholstery cleaning service,
-modern Moscow apartment interior, bright soft natural daylight from a large window,
-light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents,
-clean uncluttered composition, shallow depth of field, high detail,
-no text, no logos, no watermarks
-```
-
-**Негатив (для SD/Flux/Кандинский):**
-```
-text, letters, watermark, logo, brand names, clutter, dark moody lighting,
-oversaturated colors, distorted furniture, extra limbs, jpeg artifacts
-```
-
-**Параметры:** Midjourney — добавить `--ar <соотношение> --style raw`;
-DALL-E/Flux — указать размер в запросе; Шедеврум/Кандинский — промпт перевести
-на русский по смыслу (сути ниже хватает).
-
-**Правило лиц:** людей не генерируем крупным планом — только руки в перчатках,
-вид со спины, силуэт за работой. Реальные лица мастеров даст клиент (Этап 6).
+Если генератор не даёт нужное соотношение — бери ближайшее и обрезай до размера из карточки.
 
 ---
 
-## 1. Карта размещения (что куда вставляем)
+## Общие правила (читать один раз)
 
-| Приор | Изображение | Куда | Размер | Соотн. |
-|---|---|---|---|---|
-| P1 | og:image фон | `<head>`, шaring | 1200×630 | 1.91:1 |
-| P1 | Favicon / site-icon | **не ИИ**: из `jethim-logo.svg` → PNG 512 | 512×512 | 1:1 |
-| P1 | «До» + «После» (кухонный уголок) | слайдер главной + `/do-posle/` (заменяет плейсхолдеры) | 1536×1024, экспорт 960×640 | 3:2 |
-| P1 | 3 карточки: Мебель / Шторы / Ковры | секция «Услуги и цены» (главная), позже хаб `/uslugi/` | 800×600 | 4:3 |
-| P2 | 14 страниц услуг (по 1) | под вступительным абзацем каждой страницы | 1600×900 | 16:9 |
-| P2 | 2-я пара «до/после» (ковёр) | `/do-posle/` (второй слайдер) | 1536×1024 | 3:2 |
-| P3 | «Знакомая проблема» | главная: секция → 2 колонки (текст 60% / фото 40%) | 1000×750 | 4:3 |
-| P3 | «Безопасная химия» | главная: та же 2-колоночная схема | 1000×750 | 4:3 |
-| P3 | «Кто мы» | главная (2 колонки) + `/o-kompanii/` | 1000×750 | 4:3 |
-| P3 | Раскладка оборудования | `/o-kompanii/` (второе фото) | 1000×750 | 4:3 |
-
-Приоритеты: **P1** — без этого сайт выглядит незаконченным (соцсети, слайдер-плейсхолдеры);
-**P2** — главный визуальный выигрыш (14 пустых страниц); **P3** — оживление секций главной.
-
-**Сознательно НЕ вставляем** (чтобы не сломать дизайн): фото на первом экране
-(hero остаётся текстовым — скорость + панель статов), фон под CTA-блок и футер,
-картинки в FAQ, таблицы цен, калькулятор, секции «Почему это стоит своих денег»,
-«Отзывы», «Прайс и пакеты» (текстовые, убеждающие — photo только разбавит),
-шаги «Как мы работаем» (5 карточек с цифрами — фото их убьют).
+- **Единый стиль:** светлый, чистый, «премиум-клининг» — дневной свет из окна, светлая нейтральная палитра (белый, светло-серый, светлое дерево) с бледно-голубыми акцентами. Каждый промпт ниже уже содержит эту базу.
+- **Негатив** (вставить в negative prompt, если генератор его спрашивает: SD / Flux / Кандинский):
+  `text, letters, watermark, logo, brand names, clutter, dark moody lighting, oversaturated colors, distorted furniture, extra limbs, jpeg artifacts`
+- **Лица не генерируем** крупным планом: только руки в перчатках, вид со спины, силуэт за работой. Реальные фото мастеров даст клиент.
+- **Текст и логотипы внутри картинки запрещены** — надписи накладывает сайт отдельными блоками.
+- **Формат:** JPEG, качество 82, вес < 300 КБ, длинная сторона не больше 1600 px.
+- **Midjourney:** добавить в конец `--ar <соотношение> --style raw`. **DALL-E / Flux / Ideogram** — задать размер прямо в запросе. **Шедеврум / Кандинский** — суть промпта перевести на русский.
 
 ---
 
-## 2. Промпты
+## Чего НЕ генерируем
 
-### A. Служебные
-
-**A1. og:image (1200×630)** — фон под текст, который накладывает наш GD-скрипт
-(как в обложках блога). Копирайт слева, правая треть — «воздух»:
-```
-wide horizontal banner photo, close-up of a freshly cleaned light-gray fabric sofa
-with soft even folds filling the right two-thirds of the frame, generous empty
-light-gray wall space on the left for text overlay, bright daylight,
-191:100 aspect ratio, no text, no logos
-```
-Альтернатива (быстрее, без ИИ): GD-карточка в стиле обложек блога — синий градиент
-`#0b6e99 → #08597b` + надпись «JetHim — химчистка с выездом по Москве» (паттерн уже
-есть в `p6_cover_png()`).
-
-**A2. Favicon / site-icon** — **не генерируем**: конвертировать `jethim-logo.svg`
-в PNG 512×512 и выставить через «Настройки → Общие → Пиктограмма сайта».
-
-### B. Слайдер «до / после» (замена плейсхолдеров)
-
-Важно: кадры слайдера должны быть **пиксель-в-пиксель одним ракурсом**.
-Порядок генерации: (1) сгенерировать «ПОСЛЕ» — чистый; (2) **img2img / редактированием
-по этой же картинке** добавить пятна → «ДО». Одинаковый кадр, одинаковый свет.
-
-**B1. После — кухонный уголок** (`jc-ba-after.jpg`, 1536×1024, `--ar 3:2`):
-```
-photorealistic advertising photography for a premium upholstery cleaning service,
-a freshly cleaned beige kitchen corner sofa (corner bench with dining table) in a
-bright modern kitchen, spotless even fabric color, crisp cushions, soft daylight
-from a window, light neutral palette, clean composition, no text, no logos, no people
-```
-
-**B2. До — та же картинка, испачканная** (`jc-ba-before.jpg`, генерировать из B1):
-```
-same image and exact same composition, but the sofa fabric is visibly soiled:
-greasy stains along the armrest and seat edges, yellowed discoloration, dull faded
-upholstery, crumbs in the seams, realistic heavy household soiling, same lighting, same angle
-```
-*alt:* «Кухонный уголок до чистки» / «…после чистки».
-
-**B3. Вторая пара — ковёр** (`jc-ba-rug-before/after.jpg`, 1536×1024):
-после — `a large light-gray patterned area rug freshly deep-cleaned in a living
-room, fluffy even pile, bright colors, ...`; до — из той же картинки:
-`the same rug heavily soiled: matted gray pile, spilled coffee stain in the center,
-dull faded pattern, ground-in dirt along the walkway, same angle and lighting`.
-
-### C. Карточки «Услуги и цены» (главная, 4:3, 800×600)
-
-Вставляются **внутрь карточки** `.jc-services .wp-block-column` над `h3`
-(см. §3). Все три — руки/процесс без лиц.
-
-**C1. Мебель** `jc-svc-mebel.jpg`:
-```
-{БАЗА} close-up of a professional upholstery extraction wand cleaning a light-gray
-fabric sofa, visible clean stripe on the cushion, water spray and suction,
-cleaner's gloved hands only, 4:3
-```
-*alt:* «Экстрактор чистит диван — видна полоса чистой ткани».
-
-**C2. Шторы** `jc-svc-shtory.jpg`:
-```
-{БАЗА} sheer white and beige curtains hanging by a tall window being cleaned in
-place with a professional steam wand, fabric glowing in soft daylight,
-gloved hand holding the nozzle, 4:3
-```
-*alt:* «Чистка штор на весу у окна».
-
-**C3. Ковры** `jc-svc-kovry.jpg`:
-```
-{БАЗА} close-up of a patterned area rug being deep cleaned with an extraction
-machine, foam and water spray, half of the pile visibly brighter than the other,
-light wooden floor around, 4:3
-```
-*alt:* «Глубокая чистка ковра экстрактором».
-
-### D. Секции главной (4:3, 1000×750) — P3, в 2-колоночную схему (§3.3)
-
-**D1. Знакомая проблема** `jc-problem.jpg`:
-```
-{БАЗА} close-up of a worn light-gray sofa cushion showing real household soiling:
-dull fabric, faint stains, pet hair in the seams, soft daylight, honest realistic
-detail without grime exaggeration, no people, 4:3
-```
-*alt:* «Изношенная ткань дивана: пятна и шерсть в швах».
-
-**D2. Безопасная химия** `jc-safe-chem.jpg`:
-```
-{БАЗА} still life on a light wooden table: unbranded spray bottles with clear
-liquid, purple nitrile gloves, a soft brush and a folded white towel, a child's
-teddy bear softly blurred in the background near a bright window, calm airy mood,
-no text on labels, 4:3
-```
-*alt:* «Безопасные средства ухода: перчатки, распылитель, мягкая щётка».
-
-**D3. Кто мы** `jc-team.jpg`:
-```
-{БАЗА} a professional cleaner in a plain blue uniform using an upholstery
-extractor on a sofa, seen from behind at a slight angle, face not visible,
-equipment and hoses neatly arranged, modern apartment, 4:3
-```
-*alt:* «Мастер JetHim за работой с экстрактором».
-
-**D4. Раскладка оборудования** `jc-gear.jpg` (для `/o-kompanii/`):
-```
-{БАЗА} overhead flat lay of professional upholstery cleaning equipment on a light
-gray floor: compact extractor machine, coiled hoses, nozzles, brushes, unbranded
-bottles, purple gloves, tidy symmetrical arrangement, 4:3
-```
-*alt:* «ОборудованиеJetHim: экстрактор, насадки, средства».
-
-### E. Страницы услуг (16:9, 1600×900) — P2
-
-Все — под вступительным абзацем, над «Что входит». Список = 14 слагов из `$services`
-(`e6_pages.php`). Общая база + уточнение:
-
-| Слаг | Файл | Уточнение к `{БАЗА}` (16:9) | alt (кратко) |
-|---|---|---|---|
-| `himchistka-myagkoy-mebeli` | `jc-p-mebel.jpg` | `macro of an extraction nozzle lifting dirt from a sofa armrest, visible clean stripe, gloved hands` | Чистка мягкой мебели экстрактором |
-| `divany` | `jc-p-divany.jpg` | `a freshly cleaned three-seat fabric sofa as the centerpiece of a bright living room, even color, crisp cushions` | Чистый диван после химчистки |
-| `kresla-stulya-pufy` | `jc-p-kresla.jpg` | `cleaning a fabric dining chair seat with a small hand tool, wooden legs, bright dining area` | Чистка стульев и кресел |
-| `krovati-podgolovniki` | `jc-p-krovati.jpg` | `a fabric headboard being cleaned above crisp white bed linen, bedroom with soft daylight` | Чистка подголовников и кроватей |
-| `mebel-iz-kozhi` | `jc-p-kozha.jpg` | `a gloved hand conditioning a rich brown leather armchair with a soft cloth, supple leather texture, warm sheen` | Уход за мебелью из кожи |
-| `himchistka-shtor` | `jc-p-shtory.jpg` | `tall sheer curtains being steam cleaned in place by a window, wand and gloved hand, glowing daylight` | Химчистка штор на весу |
-| `himchistka-kovrov` | `jc-p-kovry.jpg` | `an extraction wand deep cleaning a patterned wool rug, clean trail through the pile` | Химчистка ковров |
-| `himchistka-kovrolina` | `jc-p-kovrolin.jpg` | `a professional carpet cleaning machine leaving clean stripes on wall-to-wall carpet in an office corridor` | Чистка ковролина |
-| `himchistka-matrasov` | `jc-p-matras.jpg` | `close-up of a white quilted mattress surface being extraction-cleaned, foam and suction, spotless fabric` | Химчистка матрасов |
-| `udalenie-zapahov` | `jc-p-zapah.jpg` | `a spray bottle and cloth treating a sofa armrest next to an open window with sheer curtains, fresh airy light` | Удаление запахов: обработка очага |
-| `udalenie-katyshkov` | `jc-p-katyshki.jpg` | `macro of a fabric shaver removing pills from knitted upholstery, half the surface already smooth and restored` | Удаление катышков, восстановление ворса |
-| `zashchitnaya-propitka-tkani` | `jc-p-propitka.jpg` | `macro of water droplets beading up on a protected light fabric surface, hydrophobic effect, crisp refraction` | Гидрофобная пропитка ткани |
-| `sushka-mebeli` | `jc-p-sushka.jpg` | `a professional air mover dryer aimed at a freshly cleaned sofa, machine on the floor, bright room` | Профессиональная сушка мебели |
-| `dlya-yurlic` | `jc-p-b2b.jpg` | `interior of a stylish empty cafe with clean upholstered banquettes and chairs, tables set, ready for guests` | Чистка мебели для кафе и офисов |
-
-### F. Хаб `/uslugi/` и прочее
-
-- **F1.** Хаб: переиспользовать C1–C3 как три карточки-категории (Мебель/Шторы/Ковры) —
-  новых генераций не нужно.
-- **F2.** `/do-posle/`: B1+B2 (уголок) + B3-пара (ковёр); позже — реальные пары от клиента.
-- **F3.** Блог: **оставляем текущие GD-обложки** (дешёвые, консистентные, с текстом);
-  опционально позже — фотофон из A1 + наложение заголовка скриптом.
+- **«До и после»** (слайдер на главной и страница `/do-posle/`) — ставим **реальные фото из портфолио клиента**.
+- **Логотип и favicon** — SVG уже есть (`jethim-logo.svg`), нужна только конвертация в PNG 512×512.
+- **Карта зоны выезда** — `zone.svg` уже готов.
+- **FAQ, таблицы цен, калькулятор, шаги «Как мы работаем», «Отзывы», «Прайс и пакеты»** — остаются текстовыми, фото их ухудшит.
+- **Hero первого экрана** — остаётся текстовым (скорость + панель статов).
+- **Скриншоты отзывов, QR-коды.**
 
 ---
 
-## 3. Как вставляем, чтобы не сломать дизайн
+## 1. Обложки блога — 5 штук (каждой статье своя)
 
-### 3.1 Общие правила вёрстки
-- **Радиус 10px** (`--jc-radius`) у всех фото — как у карточек и панелей.
-- **Фиксированное соотношение сторон** (`aspect-ratio` в CSS + `width`/`height`
-  атрибута у `<img>`) — нулевой CLS, страница не «прыгает».
-- `object-fit: cover`, `loading="lazy"` (кроме самой первой картинки на странице),
-  `decoding="async"`, осмысленный **русский alt**.
-- Формат: JPEG quality 82 (WebP по желанию), длинная сторона не больше 1600,
-  вес < 300 КБ. Имена файлов — `jc-*.jpg`, как в таблицах выше.
-- Никакого текста поверх фото — подписи только отдельным блоком
-  (стиль `.jc-ba__caption`: 14px, opacity .75).
+Сейчас у статей однотипные синие градиенты от GD — нужны 5 **разных** живых картинок.
+Показываются в карточке блога (кроп `1200/630`) и в шапке статьи.
 
-### 3.2 Куда писать код
-Контент страниц генерируется `D:\dev\projects\.scripts\e6_pages.php` →
-**ручные правки в WP затрутся при регенерации**. Значит:
-1. загрузить картинки в медиатеку (или скриптом, паттерн загрузки уже есть в
-   `e6_pages.php` рядом с `e6_svg_url()`); подключать по имени, как `e6_pair_images()`;
-2. вставить разметку в `e6_pages.php` (секции помечены комментариями);
-3. регенерация: `wsl -d Ubuntu -- bash -c "docker exec dev_php wp eval-file /srv/projects/.scripts/e6_pages.php --allow-root --path=/srv/projects/jc"`;
-4. при необходимости — сброс opcache (`opcache_reset.sh`);
-5. автоприёмка: `e6_check.sh` (текстовые проверки не пострадают) + `shot/rd_verify.js`.
+### 1.1 «Как чистить диван в домашних условиях и когда нужен мастер»
 
-### 3.3 Схемы вставки
-
-**a) Карточки услуг (C1–C3)** — картинка первой внутри колонки, над `h3`,
-во всю внутреннюю ширину карточки, `border-radius: 10px`, `margin: 0 0 14px`.
-Карточки `text-align:center` — картинка будет по центру, ничего не ломает.
-
-**b) Страницы услуг (E)** — `<figure class="wp-block-image size-full jc-img">`
-сразу после вступительного `e6_paragraph()` перед `e6_heading('Что входит')`.
-
-**c) Секции главной D1–D3** — переупаковать секцию в колонки по образцу hero
-(текст 60% / фото 40%, как `jc-hero__cols` 57/43):
-```html
-<!-- wp:columns {"className":"jc-sec__split"} -->
-  <div class="wp-block-column"> …текст секции… </div>
-  <div class="wp-block-column"><figure class="jc-img">…</figure></div>
-<!-- /wp:columns -->
+**ПРОМПТ:**
 ```
-CSS в `main.css`:
-```css
-.jc-sec__split { align-items: center; gap: 32px; }
-.jc-sec__split .jc-img { margin: 0; }
-.jc-img img { width: 100%; height: auto; border-radius: var(--jc-radius); display: block; }
-@media (max-width: 782px) { .jc-sec__split { flex-direction: column; } }
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal shot: close-up of a gloved hand vacuuming a light-gray fabric sofa with the soft brush attachment of a modern handheld vacuum, visible crumbs and pet hair lifting off the weave, bright modern Moscow apartment living room, soft natural daylight from a large window, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, shallow depth of field, high detail, no faces, no text, no logos, no watermarks
 ```
-На мобильном колонки WP и так складываются в стек (текст → фото) — поведение
-соответствует текущему стеку hero.
 
-**d) og:image** — вывод в `<head>` (му-плагин или тема) + мета `og:type/title/description`;
-сейчас `og:image` отсутствует полностью.
+- Соотношение сторон: **191:100** (≈1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-cover-kak-chistit-divan.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → изображение записи статьи `kak-chistit-divan-doma`
 
-### 3.4 Контроль
-- `e6_check.sh` — зелёный (текст главной/услуг не меняется);
-- `shot/rd_verify.js` + `shot/rd_fix2_check.js` — зелёные (ось 120, меню, футер не трогаем);
-- визуально: главная 1440/390, 2–3 страницы услуг, `/do-posle/`.
+### 1.2 «Сколько стоит химчистка дивана: из чего складывается цена»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal shot: a freshly cleaned light-gray fabric sofa in a bright modern living room, a compact professional upholstery extractor machine with neatly coiled hoses standing on the pale wood floor in front of it, gloved cleaner's hands resting on the handle, ready-to-work arrangement, soft natural daylight from a large window, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no faces, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **191:100** (≈1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-cover-skolko-stoit-himchistka-divana.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → изображение записи статьи `skolko-stoit-himchistka-divana`
+
+### 1.3 «Чем отличается сухая химчистка от влажной»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal still life on a light wooden table: two square upholstery fabric samples side by side — the left one dry-cleaned with a soft brush resting on it, the right one damp after wet extraction with fine water droplets and the edge of a small nozzle, same fabric, even soft daylight from a large window, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no people, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **191:100** (≈1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-cover-suhaya-i-vlazhnaya-himchistka.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → изображение записи статьи `suhaya-i-vlazhnaya-himchistka`
+
+### 1.4 «Как ухаживать за шторами между чистками»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal shot: tall sheer white curtains by a tall window, a gloved hand gliding a soft brush vacuum attachment down the fabric, sunlight glowing through the sheer, fine dust motes floating in the beam, bright modern apartment, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no face, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **191:100** (≈1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-cover-uhod-za-shtorami-mezhdu-chistkami.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → изображение записи статьи `uhod-za-shtorami-mezhdu-chistkami`
+
+### 1.5 «Почему матрас нужно чистить раз в год»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal macro shot: white quilted mattress surface with a vacuum brush head lifting dust along the stitching, crisp folded bed linen at the edge of the frame, bright bedroom with soft daylight from a large window, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no people, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **191:100** (≈1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-cover-pochemu-matras-nuzhno-chistit.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → изображение записи статьи `pochemu-matras-nuzhno-chistit`
 
 ---
 
-## 4. Чего НЕ генерируем
+## 2. Служебные
 
-- **Логотип и favicon** — SVG уже есть (конвертация, не ИИ).
-- **Карта зоны выезда** — `zone.svg` готов (Этап 4).
-- **Обложки блога** — рисует GD (`e6_posts.php`), с текстом и консистентные.
-- **Реальные фото «до/после» и отзывы** — ждём от клиента (Этап 6);
-  сгенерированные B1–B3 — временные заглушки до их прихода.
-- **Скриншоты отзывов Юды, QR-коды, фото офиса** (офиса нет — только выезд),
-  изображения в FAQ, таблицах и калькуляторе.
+### 2.1 og:image (картинка для ссылок в Telegram / ВК)
+
+Фон под текст, который накладывает наш GD-скрипт: копирайт слева, правая треть — «воздух».
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, wide horizontal banner: close-up of a freshly cleaned light-gray fabric sofa with soft even folds filling the right two-thirds of the frame, generous empty light-neutral wall space on the left for text overlay, bright soft natural daylight, light neutral palette with subtle sky-blue accents, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **191:100** (1.91:1)
+- Размер: **1200×630**
+- Файл: **`jc-og.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → мета `og:image` в `<head>` (му-плагин/тема)
+
+### 2.2 Favicon / site-icon — **не генерируем**
+
+Конвертировать `wp-content/uploads/…/jethim-logo.svg` в PNG 512×512 и выставить
+в «Настройки → Общие → Пиктограмма сайта».
+
+---
+
+## 3. Главная → секция «Услуги и цены» — 3 карточки
+
+Встают внутрь карточки `.jc-services .wp-block-column`, **над заголовком `h3`**.
+
+### 3.1 Мебель
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, close-up of a professional upholstery extraction wand cleaning a light-gray fabric sofa, visible clean stripe on the cushion, fine water spray and suction, only the cleaner's gloved hands in frame, bright modern Moscow apartment interior, soft natural daylight from a large window, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, clean uncluttered composition, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **800×600**
+- Файл: **`jc-svc-mebel.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → карточка «Мебель» на главной (позже — хаб `/uslugi/`)
+
+### 3.2 Шторы
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, sheer white and beige curtains hanging by a tall window being cleaned in place with a professional steam wand, fabric glowing in soft daylight, gloved hand holding the nozzle, bright modern Moscow apartment interior, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, clean uncluttered composition, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **800×600**
+- Файл: **`jc-svc-shtory.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → карточка «Шторы» на главной (позже — хаб `/uslugi/`)
+
+### 3.3 Ковры
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, close-up of a patterned area rug being deep cleaned with an extraction machine, foam and water spray, half of the pile visibly brighter than the other half, light wooden floor around, bright modern Moscow apartment interior, soft natural daylight, light neutral palette with subtle sky-blue accents, clean uncluttered composition, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **800×600**
+- Файл: **`jc-svc-kovry.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → карточка «Ковры» на главной (позже — хаб `/uslugi/`)
+
+---
+
+## 4. Главная → секции с фото — 3 картинки
+
+Встают во **вторую колонку** 2-колоночной схемы (текст ~60% / фото ~40%).
+
+### 4.1 «Знакомая проблема?»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, close-up of a worn light-gray sofa cushion showing honest real household soiling: dull fabric, faint stains, pet hair in the seams, soft natural daylight from a large window, bright modern Moscow apartment interior, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, shallow depth of field, high detail, no people, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **1000×750**
+- Файл: **`jc-problem.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → главная, секция «Знакомая проблема?» (правая колонка)
+
+### 4.2 «Безопасная химия: дети, аллергики, животные»
+
+**ПРОМПТ:**
+```
+photorealistic still life for a premium upholstery cleaning service, unbranded spray bottles with clear liquid, purple nitrile gloves, a soft brush and a folded white towel arranged on a light wooden table, a child's teddy bear softly blurred in the background near a bright window, calm airy mood, bright modern Moscow apartment interior, light neutral palette (white, light gray, pale wood) with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **1000×750**
+- Файл: **`jc-safe-chem.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → главная, секция «Безопасная химия: дети, аллергики, животные» (правая колонка)
+
+### 4.3 «Кто мы»
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a professional cleaner in a plain blue uniform using an upholstery extractor on a light-gray sofa, seen from behind at a slight angle, face not visible, equipment and hoses neatly arranged, bright modern Moscow apartment interior, soft natural daylight from a large window, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **1000×750**
+- Файл: **`jc-team.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → главная, секция «Кто мы» (правая колонка; при необходимости — и на `/o-kompanii/`)
+
+---
+
+## 5. `/o-kompanii/` — оборудование
+
+### 5.1 Раскладка оборудования
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, overhead flat lay of professional upholstery cleaning equipment on a light gray floor: compact extractor machine, coiled hoses, nozzles, brushes, unbranded bottles, purple nitrile gloves, tidy symmetrical arrangement, soft even daylight, light neutral palette with subtle sky-blue accents, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **4:3**
+- Размер: **1000×750**
+- Файл: **`jc-gear.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → страница `/o-kompanii/` (секция «Наше главное преимущество»)
+
+---
+
+## 6. Страницы услуг — 14 картинок
+
+Встают **после вступительного абзаца, перед заголовком «Что входит»** каждой страницы.
+
+### 6.1 Мягкая мебель (каталог)
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, macro of an extraction nozzle lifting dirt from a sofa armrest, visible clean stripe on the fabric, fine water spray, gloved hands only, bright modern Moscow apartment interior, soft natural daylight from a large window, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-mebel.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-myagkoy-mebeli/`
+
+### 6.2 Диваны
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a freshly cleaned three-seat light-gray fabric sofa as the centerpiece of a bright modern living room, even clean fabric color, crisp cushions, soft natural daylight from a large window, light neutral palette (white, light gray, pale wood floor) with subtle sky-blue accents, clean uncluttered composition, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-divany.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-myagkoy-mebeli/divany/`
+
+### 6.3 Кресла, стулья, пуфы
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, cleaning a fabric dining chair seat with a small hand tool, wooden legs, bright dining area of a modern Moscow apartment, gloved hands only, soft natural daylight from a large window, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-kresla.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-myagkoy-mebeli/kresla-stulya-pufy/`
+
+### 6.4 Кровати, подголовники
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a fabric headboard being extraction-cleaned above crisp white bed linen, bright bedroom with soft natural daylight from a large window, gloved hands only, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-krovati.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-myagkoy-mebeli/krovati-podgolovniki/`
+
+### 6.5 Мебель из кожи
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a gloved hand conditioning a rich brown leather armchair with a soft cloth, supple leather texture and warm sheen, bright modern apartment, soft natural daylight from a large window, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-kozha.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-myagkoy-mebeli/mebel-iz-kozhi/`
+
+### 6.6 Химчистка штор
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, tall sheer curtains being steam cleaned in place by a tall window, professional wand and gloved hand, fabric glowing in soft daylight, bright modern Moscow apartment, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-shtory.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-shtor/`
+
+### 6.7 Химчистка ковров
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, an extraction wand deep cleaning a patterned wool rug, a clean bright trail through the pile, fine water spray, light wooden floor around, bright modern apartment, soft natural daylight, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-kovry.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-kovrov/`
+
+### 6.8 Химчистка ковролина
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a professional carpet cleaning machine leaving clean bright stripes on wall-to-wall carpet in a bright office corridor, soft even daylight, light neutral palette with subtle sky-blue accents, clean composition, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-kovrolin.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-kovrolina/`
+
+### 6.9 Химчистка матрасов
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, macro of a white quilted mattress surface being extraction-cleaned, fine foam and suction at the nozzle, spotless fabric, bright bedroom with soft natural daylight, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-matras.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/himchistka-matrasov/`
+
+### 6.10 Удаление запахов
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a spray bottle and a cloth treating a sofa armrest next to an open window with sheer curtains, fresh airy daylight, gloved hand only, bright modern Moscow apartment, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-zapah.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/udalenie-zapahov/`
+
+### 6.11 Удаление катышков
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, macro of a fabric shaver removing pills from knitted upholstery, half of the surface already smooth and restored, gloved hand holding the device, soft natural daylight, light neutral palette with subtle sky-blue accents, shallow depth of field, high detail, no text, no logos, no watermarks
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-katyshki.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/udalenie-katyshkov/`
+
+### 6.12 Защитная пропитка ткани
+
+**ПРОМПТ:**
+```
+photorealistic macro advertising photography for a premium upholstery cleaning service, water droplets beading up on a protected light-gray fabric surface, hydrophobic effect with crisp refraction, soft natural daylight from a window, light neutral palette with subtle sky-blue accents, very shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-propitka.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/zashchitnaya-propitka-tkani/`
+
+### 6.13 Сушка мебели
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, a professional air mover dryer aimed at a freshly cleaned light-gray sofa, machine standing on the pale wood floor, bright modern apartment room, soft natural daylight from a large window, light neutral palette with subtle sky-blue accents, clean composition, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-sushka.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/sushka-mebeli/`
+
+### 6.14 Для юрлиц
+
+**ПРОМПТ:**
+```
+photorealistic advertising photography for a premium upholstery cleaning service, interior of a stylish empty cafe with clean upholstered banquettes and chairs, tables neatly set, ready for guests, large windows with soft daylight, light neutral palette (white, light gray, pale wood) with subtle sky-blue accents, clean uncluttered composition, shallow depth of field, high detail, no text, no logos, no watermarks, no people
+```
+
+- Соотношение сторон: **16:9**
+- Размер: **1600×900**
+- Файл: **`jc-p-b2b.jpg`**
+- Куда: `D:\dev\projects\.scripts\img\` → `/uslugi/dlya-yurlic/`
+
+---
+
+## Технические заметки (для меня же)
+
+- Всё, что лежит в `D:\dev\projects\.scripts\img\`, я загружаю скриптом в медиатеку
+  (`wp_upload_bits()` / `wp_insert_attachment()`), ручные правки в WP не нужны.
+- Контент страниц и постов генерируют `e6_pages.php` и `e6_posts.php` → вставлять
+  картинки нужно **в эти скрипты**, иначе регенерация перезапишет разметку.
+- Обложки блога: `e6_posts.php::p6_set_cover()` сейчас ищет файл `jc-cover-<slug>.png`
+  и, не найдя его, рисует GD-градиент. Перед загрузкой новых обложек поиск нужно
+  расширить на `.jpg`, чтобы скрипт подставил нашу картинку, а не нарисовал свою.
+- Проверка после вставки: `e6_check.sh`, `shot/rd_verify.js`, визуально главная 1440/390,
+  2–3 страницы услуг, блог.

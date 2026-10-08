@@ -689,6 +689,39 @@ body.home .entry-header {
 	padding: 34px 30px;
 }
 
+/* Правая колонка идёт в рост: пока текста слева больше, чем высота карточки,
+   панель занимает всю высоту героя, а её содержимое держится по центру. */
+.jc-hero__cols > .wp-block-column:last-child {
+	display: flex;
+}
+
+/* column + stretch: карточка (и картинка) тянутся на всю ширину панели,
+   персонаж центрируется сам через align-self — раньше row + align-items:center
+   центрировало карточку по вертикали, в column этим занимается justify-content. */
+.jc-hero__panel {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	gap: 18px;
+}
+
+/* Персонаж выше карточки со статистикой: высота задаётся в px (см. адаптив),
+   ширина идёт от пропорций PNG 462×520 — картинка не распирает панель. */
+.jc-hero__char {
+	margin: 0;
+	align-self: center;
+	line-height: 0;
+}
+
+.jc-hero__char img {
+	display: block;
+	height: 240px;
+	width: auto;
+	max-width: 100%;
+}
+
 .jc-hero__card {
 	background: var(--jc-white);
 	border-radius: var(--jc-radius);
@@ -808,8 +841,29 @@ body .entry-content > .jc-sec {
 	opacity: 0.9;
 }
 
+.jc-services .wp-block-column {
+	display: flex;
+	flex-direction: column;
+}
+
 .jc-services .wp-block-column .wp-block-buttons {
 	margin-top: auto;
+}
+
+/* Фото в карточке услуги: во всю ширину карточки сверху — отрицательные
+   поля компенсируют padding карточки, 4:3 + cover, чтобы не растягивалось. */
+.jc-services .jc-svc__img {
+	margin: -26px -24px 18px;
+	border-radius: var(--jc-radius) var(--jc-radius) 0 0;
+	overflow: hidden;
+	aspect-ratio: 4 / 3;
+}
+
+.jc-services .jc-svc__img img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .jc-services .wp-block-buttons .wp-block-button__link {
@@ -2266,6 +2320,10 @@ body.jc-modal-open {
 
 	.jc-hero__panel {
 		padding: 24px 20px;
+	}
+
+	.jc-hero__char img {
+		height: 170px;
 	}
 
 	.jc-sec {
