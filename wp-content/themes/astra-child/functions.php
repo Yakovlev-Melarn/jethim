@@ -103,6 +103,60 @@ function jc_enqueue_assets() {
 	}
 }
 
+/**
+ * Лайтбокс фотогалереи — только там, где он есть в контенте
+ * (.jc-gallery ставит e6_case_gallery() на странице «Примеры работ»).
+ */
+add_action( 'wp_enqueue_scripts', 'jc_enqueue_gallery', 30 );
+function jc_enqueue_gallery() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	$content = (string) get_post_field( 'post_content', get_queried_object_id() );
+	if ( false === strpos( $content, 'jc-gallery' ) ) {
+		return;
+	}
+
+	$js = get_stylesheet_directory() . '/assets/js/gallery.js';
+	if ( ! file_exists( $js ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'jc-gallery',
+		get_stylesheet_directory_uri() . '/assets/js/gallery.js',
+		array(),
+		filemtime( $js ),
+		true
+	);
+}
+
+/**
+ * Все ссылки на Юду открываются в новой вкладке — страховка поверх
+ * генераторов (.scripts/e6_pages.php): ловит и кнопки, и ссылки в тексте.
+ */
+add_filter( 'the_content', 'jc_youdo_blank', 99 );
+function jc_youdo_blank( $html ) {
+	if ( false === stripos( $html, 'youdo.com' ) ) {
+		return $html;
+	}
+
+	return preg_replace_callback(
+		'/<a\b([^>]*?)href=(["\'])(https?:\/\/youdo\.com[^"\']*)\2([^>]*)>/i',
+		function ( $m ) {
+			$attrs = $m[1] . $m[4];
+			if ( false !== stripos( $attrs, 'target=' ) ) {
+				return $m[0];
+			}
+
+			return '<a' . $m[1] . 'href=' . $m[2] . $m[3] . $m[2] . $m[4]
+				. ' target="_blank" rel="noopener noreferrer">';
+		},
+		$html
+	);
+}
+
 /* =====================================================================
  * Тема: всегда светлая (референс клиента — himchistka-kaplya.ru).
  * ================================================================== */

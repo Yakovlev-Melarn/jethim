@@ -841,6 +841,29 @@ body .entry-content > .jc-sec {
 	opacity: 0.9;
 }
 
+/* Шаги «Как мы работаем»: сетка 3 + 2 вместо пяти плиток в ряд —
+   меньше давит на глаз, больше воздуха между карточками.
+   6 колонок: первые три по 2, вторые две сдвигаем к центру. */
+.jc-sec .jc-steps {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 26px;
+}
+
+.jc-sec .jc-steps > .wp-block-column {
+	grid-column: span 2;
+	margin-bottom: 0;
+	padding: 30px 26px;
+}
+
+.jc-sec .jc-steps > .wp-block-column:nth-child(4) {
+	grid-column: 2 / span 2;
+}
+
+.jc-sec .jc-steps > .wp-block-column:nth-child(5) {
+	grid-column: 4 / span 2;
+}
+
 .jc-services .wp-block-column {
 	display: flex;
 	flex-direction: column;
@@ -2183,6 +2206,302 @@ body.jc-modal-open {
 }
 
 /* --------------------------------------------------------------------------
+   Фотогалерея примеров работ (/do-posle/) и её лайтбокс
+   -------------------------------------------------------------------------- */
+
+.jc-gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 16px;
+	margin: 24px 0;
+}
+
+.jc-gallery__item {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	border-radius: var(--jc-radius);
+	background: var(--jc-soft);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.jc-gallery__item:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.14);
+	transform: translateY(-2px);
+}
+
+.jc-gallery__item a {
+	display: block;
+	line-height: 0;
+}
+
+.jc-gallery__item img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.jc-gallery__item:hover img {
+	transform: scale(1.05);
+}
+
+/* значок лупы: появляется на hover, исчезает пока галерея пуста */
+.jc-gallery__item::after {
+	content: '';
+	position: absolute;
+	right: 12px;
+	bottom: 12px;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.94) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23454b54' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='M20 20l-4.3-4.3M11 8.4v5.2M8.4 11h5.2'/></svg>") center / 18px no-repeat;
+	box-shadow: 0 4px 12px rgba(69, 75, 84, 0.25);
+	opacity: 0;
+	transform: translateY(6px);
+	transition: opacity 0.25s ease, transform 0.25s ease;
+	pointer-events: none;
+}
+
+.jc-gallery__item:hover::after {
+	opacity: 1;
+	transform: none;
+}
+
+.jc-gallery__empty {
+	margin: 24px 0;
+	padding: 28px 26px;
+	border: 1px dashed var(--jc-border-2);
+	border-radius: var(--jc-radius);
+	background: var(--jc-soft);
+	color: var(--jc-text);
+	font-size: 15.5px;
+	line-height: 1.6;
+	text-align: center;
+}
+
+/* Лайтбокс: полноэкранный просмотр с навигацией и зумом */
+.jc-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba(16, 22, 28, 0.95);
+	opacity: 1;
+	transition: opacity 0.2s ease;
+}
+
+.jc-lightbox[hidden] {
+	display: none;
+}
+
+.jc-lightbox__img {
+	display: block;
+	max-width: min(92vw, 1400px);
+	max-height: 80vh;
+	border-radius: 6px;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+	object-fit: contain;
+	cursor: zoom-in;
+	transform-origin: center center;
+	transition: transform 0.25s ease;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.jc-lightbox__img.is-zoomed {
+	transform: scale(2.2);
+	cursor: zoom-out;
+}
+
+.jc-lightbox__btn {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.14);
+	color: #fff;
+	font-size: 26px;
+	line-height: 1;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+.jc-lightbox__btn:hover {
+	background: rgba(255, 255, 255, 0.28);
+}
+
+.jc-lightbox__close {
+	top: 20px;
+	right: 20px;
+}
+
+.jc-lightbox__prev,
+.jc-lightbox__next {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.jc-lightbox__prev {
+	left: 20px;
+}
+
+.jc-lightbox__next {
+	right: 20px;
+}
+
+.jc-lightbox__meta {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 18px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	padding: 0 70px;
+	text-align: center;
+	pointer-events: none;
+}
+
+.jc-lightbox__caption {
+	max-width: 700px;
+	color: rgba(255, 255, 255, 0.9);
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.jc-lightbox__counter {
+	color: rgba(255, 255, 255, 0.6);
+	font-size: 13px;
+	letter-spacing: 0.04em;
+}
+
+.jc-lightbox__hint {
+	position: absolute;
+	left: 20px;
+	bottom: 18px;
+	color: rgba(255, 255, 255, 0.45);
+	font-size: 12.5px;
+}
+
+/* --------------------------------------------------------------------------
+   Отзывы с Юды (карточки: звёзды, задание, текст, заказчик)
+   -------------------------------------------------------------------------- */
+
+.jc-reviews {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 18px;
+	margin: 24px 0 4px;
+}
+
+.jc-review {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 0;
+	padding: 22px 24px;
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	box-shadow: 0 2px 8px rgba(69, 75, 84, 0.06);
+	text-align: left;
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.jc-review:hover {
+	box-shadow: 0 11px 22px rgba(69, 75, 84, 0.12);
+	transform: translateY(-2px);
+}
+
+.jc-review__stars {
+	color: #f2b01e;
+	font-size: 17px;
+	line-height: 1;
+	letter-spacing: 2px;
+}
+
+.jc-review__task {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #8a919a;
+	line-height: 1.45;
+}
+
+.jc-review__text {
+	margin: 0;
+	font-size: 15.5px;
+	line-height: 1.62;
+	color: var(--jc-text);
+	white-space: pre-line;
+}
+
+.jc-review__author {
+	margin-top: auto;
+	padding-top: 6px;
+	font-size: 13.5px;
+	font-weight: 700;
+	color: var(--jc-heading);
+	border-top: 1px dashed var(--jc-border-2);
+}
+
+.jc-review__source {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--jc-primary);
+	text-decoration: none;
+}
+
+.jc-review__source:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 782px) {
+	.jc-gallery {
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		gap: 10px;
+	}
+
+	.jc-lightbox {
+		padding: 12px;
+	}
+
+	.jc-lightbox__img {
+		max-width: 96vw;
+		max-height: 72vh;
+	}
+
+	.jc-lightbox__prev {
+		left: 8px;
+	}
+
+	.jc-lightbox__next {
+		right: 8px;
+	}
+
+	.jc-lightbox__btn {
+		width: 40px;
+		height: 40px;
+		font-size: 22px;
+	}
+
+	.jc-lightbox__hint {
+		display: none;
+	}
+}
+
+/* --------------------------------------------------------------------------
    Адаптив
    -------------------------------------------------------------------------- */
 
@@ -2334,6 +2653,17 @@ body.jc-modal-open {
 	.jc-steps .wp-block-column,
 	.jc-services .wp-block-column {
 		text-align: left;
+	}
+
+	.jc-sec .jc-steps {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	/* :nth-child(n) — чтобы перебить десктопные span-правила той же
+	   специфичности (иначе колонка из 6-колоночной сетки тащится сюда). */
+	.jc-sec .jc-steps > .wp-block-column:nth-child(n) {
+		grid-column: auto;
 	}
 
 	.entry-content .wp-block-latest-posts {
