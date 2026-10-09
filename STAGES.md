@@ -557,8 +557,10 @@ bash /mnt/d/dev/projects/.scripts/opcache_reset.sh                     # пос�
 
 **Открытые ожидания клиента:**
 - файл с 10 последними отзывами Юды → `.scripts/e6_reviews_data.php` (формат в шапке файла);
-- реальные фото «до/после» → `.scripts/img/jc-case-01.jpg…` (импорт `e7_img_import.php`,
-  спецификация — `IMAGE-PROMPTS.md` §7).
+- ~~реальные фото «до/после»~~ ✅ получены 2026-10-09: 12 квадратных фото (1080×1080)
+  импортированы и размещены на `/do-posle/` (сетка 4×3 / 2 колонки, лайтбокс 1/12…12/12;
+  workflow — `IMAGE-PROMPTS.md` §7: `e8_case_prep.sh` → `e7_img_import.php` → регенерация
+  `e6_pages.php` → `e8_check.sh` + `shot/e8_gallery_probe.js` + `shot/e8_lightbox_check.js`).
 
 ---
 

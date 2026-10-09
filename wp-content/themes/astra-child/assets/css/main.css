@@ -2239,7 +2239,7 @@ body.jc-modal-open {
 .jc-gallery__item img {
 	display: block;
 	width: 100%;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 1 / 1; /* фото квадратные (1080×1080) — сетка без обрезки */
 	object-fit: cover;
 	transition: transform 0.4s ease;
 }
