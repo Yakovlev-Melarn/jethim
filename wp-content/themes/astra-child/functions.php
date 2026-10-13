@@ -28,6 +28,13 @@ define( 'JC_VK_URL_ALT', 'https://vk.ru/jetcleaningprom' ); // вторая гр
 define( 'JC_YOUDO_URL', 'https://youdo.com/u1933829' );
 
 /**
+ * SEO-заголовок хаба услуг (/uslugi/): его показываем в <title> документа
+ * и в H1 страницы (см. uslugi.php), а в меню, крошках и ссылках остаётся
+ * короткое «Услуги» — имя страницы в БД не трогаем.
+ */
+define( 'JC_HUB_SEO_TITLE', 'Профессиональная химчистка мягкой мебели, ковров и штор в Москве — JetHim' );
+
+/**
  * Единая точка правки контактов — используется в шапке, подвале
  * и позже в формах (Этап 5) и разметке LocalBusiness (Этап 8).
  *
@@ -662,7 +669,7 @@ function jc_og_meta() {
 
 	$req      = isset( $GLOBALS['wp'] ) ? trim( (string) $GLOBALS['wp']->request, '/' ) : '';
 	$page_url = $req ? home_url( '/' . $req . '/' ) : home_url( '/' );
-	$desc     = (string) get_bloginfo( 'description' );
+	$desc     = jc_seo_description();
 	$title    = (string) wp_get_document_title();
 
 	echo '<meta property="og:image" content="' . esc_url( $url ) . '" />' . "\n";
@@ -675,6 +682,380 @@ function jc_og_meta() {
 	echo '<meta property="og:title" content="' . esc_attr( $title ) . '" />' . "\n";
 	echo '<meta property="og:description" content="' . esc_attr( $desc ) . '" />' . "\n";
 	echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+}
+
+/* =====================================================================
+ * 12. SEO (Этап 8): title/description по страницам, схемы, robots.
+ *
+ * Карта jc_seo_map() — единая точка правки SEO-строк. Заголовки в
+ * <title> подставляются без хвоста «— JetHim»: его добавляет название
+ * сайта. H1 страницы меняется отдельно (ключ h1) — крошки и меню
+ * продолжают короткие имена страниц из БД (get_the_title не трогаем).
+ * Description страницы: карта → post_excerpt → blogdescription.
+ * ================================================================== */
+function jc_seo_map() {
+	return array(
+		'glavnaya'                     => array(
+			'description' => 'Профессиональная химчистка мягкой мебели, штор, ковров и матрасов с выездом по Москве и области. Безопасная химия, сушка на месте, расчёт по фото за 15 минут. Работаем с 2011 года.',
+		),
+		'uslugi'                       => array(
+			'description' => 'Все услуги JetHim: химчистка диванов, кресел, штор, ковров, ковролина и матрасов с выездом по Москве. Профессиональное оборудование, безопасные составы, сушка на месте.',
+		),
+		'tseny'                        => array(
+			'title'       => 'Цены на химчистку мебели, штор и ковров в Москве',
+			'h1'          => 'Цены на химчистку мебели, штор и ковров',
+			'description' => 'Прайс на химчистку: диван от 3 000 ₽, кресло от 1 500 ₽, ковёр от 400 ₽/м², шторы от 250 ₽/м². Пакеты «Гостиная/Спальня/Кухня», скидка постоянным клиентам 10%.',
+		),
+		'kalkulyator'                  => array(
+			'title'       => 'Калькулятор стоимости химчистки — рассчитать онлайн',
+			'h1'          => 'Калькулятор стоимости химчистки',
+			'description' => 'Соберите состав заказа в калькуляторе и сразу увидите предварительную стоимость химчистки. Расчёт бесплатный и ни к чему не обязывает — подтвердим цену по фото.',
+		),
+		'otzyvy'                       => array(
+			'title'       => 'Отзывы о химчистке JetHim — реальные отзывы клиентов',
+			'h1'          => 'Отзывы о химчистке JetHim',
+			'description' => 'Реальные отзывы клиентов о химчистке JetHim: 600+ отзывов на Юду с именами и датами. Негатив не прячем — на каждый отзыв отвечаем.',
+		),
+		'do-posle'                     => array(
+			'title'       => 'Примеры работ до и после — химчистка мебели и ковров',
+			'h1'          => 'Примеры работ: до и после',
+			'description' => 'Фотографии заказов до и после химчистки: диваны, шторы, ковры и матрасы из реальных выездов мастеров JetHim по Москве.',
+		),
+		'kontakty'                     => array(
+			'title'       => 'Контакты химчистки JetHim — Москва и МО',
+			'h1'          => 'Контакты химчистки JetHim',
+			'description' => 'Телефон, Telegram и ВКонтакте химчистки JetHim: +7 (916) 249-34-99. Работаем ежедневно 9:00–21:00 по Москве и области, офиса-приёмки нет.',
+		),
+		'o-kompanii'                   => array(
+			'title'       => 'О компании JetHim — химчистка с 2011 года',
+			'h1'          => 'О компании JetHim',
+			'description' => 'JetHim — московская химчистка с выездом с 2011 года. Мастера из Международного центра клининга, работа с антиквариатом и дорогими тканями.',
+		),
+		'zona-vyezda'                  => array(
+			'title'       => 'Зона выезда химчистки — Москва до 10 км от МКАД бесплатно',
+			'h1'          => 'Зона выезда химчистки',
+			'description' => 'Выезжаем по всей Москве и области. Бесплатный выезд до 10 км от МКАД, дальше — 45 ₽/км по фактическому маршруту. Частые районы: ЗАО, ЮЗАО, СЗАО.',
+		),
+		'faq'                          => array(
+			'title'       => 'Частые вопросы о химчистке — цены, сроки, гарантии',
+			'h1'          => 'Частые вопросы о химчистке',
+			'description' => 'Ответы на вопросы о химчистке: цены, сроки сушки, безопасность химии для детей и животных, гарантии, оплата и выезд мастера.',
+		),
+		'garantii'                     => array(
+			'title'       => 'Гарантии на химчистку — бесплатная переделка',
+			'h1'          => 'Гарантии на химчистку',
+			'description' => 'Цена фиксируется до выезда, бесплатная переделка по нашей вине, профессиональная химия и оборудование. Честно говорим, какие пятна уже не вернуть.',
+		),
+		'kak-my-rabotaem'              => array(
+			'title'       => 'Как мы работаем — 5 шагов до чистой мебели',
+			'description' => 'Пять шагов от заявки до чистой мебели: расчёт по фото, выезд, чистка экстрактором, сушка 3–6 часов и приёмка результата. Без сюрпризов в счёте.',
+		),
+		'blog'                         => array(
+			'title'       => 'Блог о химчистке — советы по уходу за мебелью',
+			'h1'          => 'Блог о химчистке JetHim',
+			'description' => 'Статьи о химчистке: как ухаживать за мебелью, из чего складывается цена, чем отличаются технологии чистки. Советы мастеров JetHim.',
+		),
+		'zapis-na-vyezd'               => array(
+			'title'       => 'Запись на выезд химчистки — выбрать дату',
+			'h1'          => 'Запись на выезд',
+			'description' => 'Выберите дату и время — мастер JetHim приедет в указанный интервал. Выезд до 10 км от МКАД бесплатный.',
+		),
+		'divany'                       => array(
+			'title' => 'Химчистка диванов в Москве с выездом на дом',
+			'h1'    => 'Химчистка диванов',
+		),
+		'kresla-stulya-pufy'           => array(
+			'title' => 'Химчистка кресел, стульев и пуфов в Москве',
+			'h1'    => 'Химчистка кресел, стульев и пуфов',
+		),
+		'krovati-podgolovniki'         => array(
+			'title' => 'Химчистка кроватей и подголовников',
+			'h1'    => 'Химчистка кроватей и подголовников',
+		),
+		'mebel-iz-kozhi'               => array(
+			'title' => 'Химчистка кожаной мебели в Москве',
+			'h1'    => 'Химчистка кожаной мебели',
+		),
+		'himchistka-myagkoy-mebeli'    => array(
+			'title' => 'Химчистка мягкой мебели на дому в Москве',
+		),
+		'himchistka-shtor'             => array(
+			'title' => 'Химчистка штор на весу в Москве',
+		),
+		'himchistka-kovrov'            => array(
+			'title' => 'Химчистка ковров на дому в Москве',
+		),
+		'himchistka-kovrolina'         => array(
+			'title' => 'Химчистка ковролина с выездом по Москве',
+		),
+		'himchistka-matrasov'          => array(
+			'title' => 'Химчистка матрасов на дому в Москве',
+		),
+		'udalenie-zapahov'             => array(
+			'title' => 'Удаление запахов из мебели и ковров',
+		),
+		'udalenie-katyshkov'           => array(
+			'title' => 'Удаление катышков с мебели',
+		),
+		'zashchitnaya-propitka-tkani'  => array(
+			'title' => 'Защитная пропитка ткани после чистки',
+		),
+		'sushka-mebeli'                => array(
+			'title' => 'Сушка мебели после химчистки',
+		),
+		'dlya-yurlic'                  => array(
+			'title' => 'Химчистка для юрлиц — офисы, кафе, гостиницы',
+			'h1'    => 'Химчистка для юрлиц',
+		),
+	);
+}
+
+/**
+ * Description текущей страницы: карта → post_excerpt → blogdescription.
+ *
+ * @return string
+ */
+function jc_seo_description() {
+	$map = jc_seo_map();
+
+	if ( is_front_page() ) {
+		return isset( $map['glavnaya']['description'] ) ? $map['glavnaya']['description'] : (string) get_bloginfo( 'description' );
+	}
+
+	if ( is_home() ) {
+		return isset( $map['blog']['description'] ) ? $map['blog']['description'] : (string) get_bloginfo( 'description' );
+	}
+
+	if ( is_singular() ) {
+		$obj = get_queried_object();
+		if ( $obj instanceof WP_Post ) {
+			$slug = (string) $obj->post_name;
+			if ( isset( $map[ $slug ]['description'] ) ) {
+				return $map[ $slug ]['description'];
+			}
+			$excerpt = trim( (string) $obj->post_excerpt );
+			if ( '' !== $excerpt ) {
+				return $excerpt;
+			}
+		}
+	}
+
+	return (string) get_bloginfo( 'description' );
+}
+
+// <meta name="description"> — раньше og-тегов (приоритет 1).
+add_action( 'wp_head', 'jc_seo_meta_description', 1 );
+function jc_seo_meta_description() {
+	$desc = jc_seo_description();
+	if ( '' !== $desc ) {
+		echo '<meta name="description" content="' . esc_attr( $desc ) . '" />' . "\n";
+	}
+}
+
+// <title> из карты; хаб услуг по-прежнему через JC_HUB_SEO_TITLE.
+add_filter( 'document_title_parts', 'jc_hub_seo_title' );
+function jc_hub_seo_title( $parts ) {
+	if ( is_front_page() ) {
+		return $parts; // «JetHim — {tagline}» уже хороший заголовок главной.
+	}
+
+	if ( is_home() ) {
+		$map = jc_seo_map();
+		if ( isset( $map['blog']['title'] ) ) {
+			$parts['title'] = $map['blog']['title'];
+		}
+		return $parts;
+	}
+
+	$obj = get_queried_object();
+	if ( $obj instanceof WP_Post && 'page' === $obj->post_type ) {
+		if ( 'uslugi' === $obj->post_name && defined( 'JC_HUB_SEO_TITLE' ) ) {
+			$parts['title'] = preg_replace( '/\s*—\s*JetHim$/u', '', JC_HUB_SEO_TITLE );
+			return $parts;
+		}
+
+		$map = jc_seo_map();
+		$slug = (string) $obj->post_name;
+		if ( isset( $map[ $slug ]['title'] ) ) {
+			$parts['title'] = $map[ $slug ]['title'];
+		}
+	}
+
+	return $parts;
+}
+
+// H1 из карты (страница-запроситель или блог; крошки/меню не затронуты).
+add_filter( 'astra_the_title', 'jc_seo_h1', 10, 2 );
+function jc_seo_h1( $title, $post_id = 0 ) {
+	$map  = jc_seo_map();
+	$slug = '';
+
+	if ( is_singular() ) {
+		// $post_id = 0 означает «текущий пост» (astra_the_title без аргумента).
+		$obj = get_queried_object();
+		if ( ! ( $obj instanceof WP_Post ) || ( $post_id && (int) $post_id !== (int) $obj->ID ) ) {
+			return $title;
+		}
+		$slug = (string) $obj->post_name;
+	} elseif ( is_home() && ! is_front_page() ) {
+		// Страница записей (Blog): H1 рендерится как archive-title, не singular.
+		$slug = 'blog';
+	} else {
+		return $title;
+	}
+
+	if ( isset( $map[ $slug ]['h1'] ) ) {
+		return $map[ $slug ]['h1'];
+	}
+
+	return $title;
+}
+
+// На главной прячем H1 «Главная» из шаблона Astra — в контенте есть
+// настоящий H1 «Химчистка мягкой мебели, штор и ковров…».
+add_filter( 'astra_the_title_enabled', 'jc_seo_hide_front_title' );
+function jc_seo_hide_front_title( $enabled ) {
+	if ( is_front_page() ) {
+		return false;
+	}
+
+	return $enabled;
+}
+
+// Архив блога: H1 вместо сухого «Блог».
+add_filter( 'the_archive_title', 'jc_seo_archive_title' );
+function jc_seo_archive_title( $title ) {
+	if ( is_home() ) {
+		return 'Блог о химчистке JetHim';
+	}
+
+	return $title;
+}
+
+// Страница «Страница не найдена» — по-русски.
+add_filter( 'astra_the_404_page_title', 'jc_seo_404_title' );
+function jc_seo_404_title() {
+	return 'Страница не найдена';
+}
+
+add_filter( 'astra_default_strings', 'jc_seo_404_strings' );
+function jc_seo_404_strings( $strings ) {
+	$strings['string-404-sub-title'] = 'Возможно, ссылка устарела или страница была перемещена. Вернитесь на главную или посмотрите услуги и цены.';
+
+	return $strings;
+}
+
+// Дымовую страницу (тест блоков) не индексируем и убираем из sitemap.
+add_filter( 'wp_robots', 'jc_seo_robots' );
+function jc_seo_robots( $robots ) {
+	if ( is_page( 'jhb-smoke' ) ) {
+		$robots['noindex'] = true;
+		$robots['follow']  = true;
+	}
+
+	return $robots;
+}
+
+add_filter( 'wp_sitemaps_posts_query_args', 'jc_seo_sitemap_skip', 10, 2 );
+function jc_seo_sitemap_skip( $args, $post_type ) {
+	if ( 'page' !== $post_type ) {
+		return $args;
+	}
+
+	$smoke = get_page_by_path( 'jhb-smoke', OBJECT, 'page' );
+	if ( $smoke ) {
+		$args['post__not_in'][] = (int) $smoke->ID;
+	}
+
+	return $args;
+}
+
+// LocalBusiness — на всех страницах (адрес/гео — Москва, Кутузовский).
+add_action( 'wp_head', 'jc_seo_local_business', 6 );
+function jc_seo_local_business() {
+	$contacts = jc_contacts();
+	$og_id    = (int) get_option( 'jc_og_image_id' );
+	$image    = $og_id ? (string) wp_get_attachment_image_url( $og_id, 'full' ) : '';
+
+	$data = array(
+		'@context'      => 'https://schema.org',
+		'@type'         => 'LocalBusiness',
+		'name'          => 'JetHim',
+		'description'   => 'Химчистка мягкой мебели, штор, ковров и матрасов с выездом по Москве и Московской области.',
+		'url'           => home_url( '/' ),
+		'telephone'     => '+79162493499',
+		'priceRange'    => '₽₽',
+		'address'       => array(
+			'@type'           => 'PostalAddress',
+			'streetAddress'   => 'Кутузовский проспект',
+			'addressLocality' => 'Москва',
+			'addressCountry'  => 'RU',
+		),
+		'geo'           => array(
+			'@type'     => 'GeoCoordinates',
+			'latitude'  => 55.744,
+			'longitude' => 37.43,
+		),
+		'openingHoursSpecification' => array(
+			'@type'     => 'OpeningHoursSpecification',
+			'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ),
+			'opens'     => '09:00',
+			'closes'    => '21:00',
+		),
+		'areaServed'   => array(
+			array(
+				'@type' => 'City',
+				'name'  => 'Москва',
+			),
+			array(
+				'@type' => 'AdministrativeArea',
+				'name'  => 'Московская область',
+			),
+		),
+		'sameAs'        => array( $contacts['vk'], $contacts['telegram'], $contacts['youdo'] ),
+	);
+
+	if ( $image ) {
+		$data['image'] = $image;
+	}
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+}
+
+// FAQPage — на /faq/ и на главной (опции пишет e6_pages.php).
+add_action( 'wp_head', 'jc_seo_faq_schema', 7 );
+function jc_seo_faq_schema() {
+	$items = array();
+
+	if ( is_page( 'faq' ) ) {
+		$items = (array) get_option( 'jc_faq_items', array() );
+	} elseif ( is_front_page() ) {
+		$items = (array) get_option( 'jc_faq_home', array() );
+	}
+
+	if ( empty( $items ) ) {
+		return;
+	}
+
+	$questions = array();
+	foreach ( $items as $q => $a ) {
+		$questions[] = array(
+			'@type'          => 'Question',
+			'name'           => (string) $q,
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => (string) $a,
+			),
+		);
+	}
+
+	$data = array(
+		'@context'   => 'https://schema.org',
+		'@type'      => 'FAQPage',
+		'mainEntity' => $questions,
+	);
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }
 
 /* =====================================================================
