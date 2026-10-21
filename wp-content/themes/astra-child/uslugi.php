@@ -83,9 +83,9 @@ $children = get_pages(
 			<section class="jc-block jc-block--why">
 				<h2><?php esc_html_e( 'Почему выбирают JetHim?', 'astra-child' ); ?></h2>
 				<ul class="jc-list">
-					<li><?php esc_html_e( 'Работаем с 2010 года: 15 лет чистой работы и сотни заказов в Москве и области.', 'astra-child' ); ?></li>
+					<li><?php esc_html_e( 'Работаем с 2011 года: 15 лет чистой работы и тысячи заказов в Москве и области.', 'astra-child' ); ?></li>
 					<li><?php esc_html_e( 'Профессиональное оборудование и сертифицированная химия — безопасны для детей, аллергиков и домашних животных.', 'astra-child' ); ?></li>
-					<li><?php esc_html_e( 'Цену называем до выезда по фотографии — на месте она не меняется.', 'astra-child' ); ?></li>
+					<li><?php esc_html_e( 'Цену называем до выезда по фото и параметрам (метраж, ткань, загрязнение) — если данных не хватает, точную назовём на месте. Согласованная цена не меняется.', 'astra-child' ); ?></li>
 					<li><?php esc_html_e( 'Выезд по Москве и области; до 10 км от МКАД — бесплатно.', 'astra-child' ); ?></li>
 				</ul>
 				<p><?php esc_html_e( 'Закажите профессиональную химчистку сегодня:', 'astra-child' ); ?> <a href="<?php echo esc_url( JC_PHONE_HREF ); ?>"><?php echo esc_html( JC_PHONE_DISPLAY ); ?></a> <?php esc_html_e( 'или оставьте заявку — перезвоним в течение 15 минут и назовём точную цену по фото.', 'astra-child' ); ?></p>
@@ -96,7 +96,7 @@ $children = get_pages(
 				<p>
 					<?php esc_html_e( 'Позвоните:', 'astra-child' ); ?>
 					<a href="<?php echo esc_url( JC_PHONE_HREF ); ?>"><?php echo esc_html( JC_PHONE_DISPLAY ); ?></a>
-					<?php esc_html_e( '(ежедневно с 9:00 до 21:00) или оставьте заявку — ответим в течение 15 минут.', 'astra-child' ); ?>
+					<?php esc_html_e( '(ежедневно с 10:00 до 21:00) или оставьте заявку — ответим в течение 15 минут.', 'astra-child' ); ?>
 				</p>
 				<div class="jc-block__actions">
 					<a class="jc-btn jc-btn--primary" href="#" data-jc-modal-open="visit"><?php esc_html_e( 'Записаться на чистку', 'astra-child' ); ?></a>

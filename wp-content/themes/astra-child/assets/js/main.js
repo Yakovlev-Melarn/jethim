@@ -452,3 +452,239 @@
 		} );
 	} )();
 } )();
+
+/* Cookie consent: плашка до нажатия «Принимаю»; ответ — в cookie на год. */
+( function () {
+	var bar = document.getElementById( 'jc-cookie' );
+	if ( ! bar ) {
+		return;
+	}
+	var COOKIE = 'jc_cookie_consent';
+	function accepted() {
+		return ( '; ' + document.cookie + '; ' ).indexOf( '; ' + COOKIE + '=1;' ) !== -1;
+	}
+	if ( ! accepted() ) {
+		bar.hidden = false;
+	}
+	var btn = document.getElementById( 'jc-cookie-accept' );
+	if ( btn ) {
+		btn.addEventListener( 'click', function () {
+			document.cookie = COOKIE + '=1; path=/; max-age=31536000; SameSite=Lax';
+			bar.hidden = true;
+		} );
+	}
+} )();
+
+/* Cookie consent: при видимой плашке поднимаем низ документа на её высоту,
+   чтобы контент внизу не прятался под фиксированной плашкой. */
+( function () {
+	var bar = document.getElementById( 'jc-cookie' );
+	if ( ! bar ) { return; }
+	function apply() {
+		if ( bar.hasAttribute( 'hidden' ) ) {
+			document.body.style.paddingBottom = '';
+		} else {
+			document.body.style.paddingBottom = bar.offsetHeight + 'px';
+		}
+	}
+	apply();
+	window.addEventListener( 'resize', apply );
+	var btn = document.getElementById( 'jc-cookie-accept' );
+	if ( btn ) {
+		btn.addEventListener( 'click', function () { setTimeout( apply, 0 ); } );
+	}
+} )();
+
+/* Документы в модалке: ссылки data-jc-modal-open="doc" (подвал, cookie-плашка,
+   согласие в формах) открывают #jc-modal-doc — контент страницы подгружаем
+   через REST, страница не перезагружается и заполненная форма сохраняется.
+   Без JS ссылки ведут на страницы как обычно. */
+( function jcDocModal() {
+	var TITLES = {
+		'politika-konfidencialnosti': 'Политика конфиденциальности',
+		'obrabotka-personalnyh-dannyh': 'Обработка персональных данных'
+	};
+	var cache = {};
+
+	function slugFrom( href ) {
+		try {
+			var path = new URL( href, location.href ).pathname;
+			return path.replace( /\/+$/, '' ).split( '/' ).pop();
+		} catch ( e ) {
+			return '';
+		}
+	}
+
+	document.addEventListener( 'click', function ( e ) {
+		var a = e.target && e.target.closest ? e.target.closest( 'a[data-jc-modal-open="doc"][href]' ) : null;
+		if ( ! a ) {
+			return;
+		}
+		var slug = slugFrom( a.href );
+		var modal = document.getElementById( 'jc-modal-doc' );
+		if ( ! slug || ! modal || ! TITLES[ slug ] ) {
+			return; // не наш документ — обычное поведение ссылки
+		}
+		var titleEl = modal.querySelector( '.jc-modal__title' );
+		var body = modal.querySelector( '.jc-modal__doc' );
+		var card = modal.querySelector( '.jc-modal__card' );
+		if ( titleEl ) {
+			titleEl.textContent = TITLES[ slug ];
+		}
+		if ( cache[ slug ] ) {
+			body.innerHTML = cache[ slug ];
+			if ( card ) { card.scrollTop = 0; }
+			return;
+		}
+		body.innerHTML = '<p class="jc-modal__doc-loading">Загружаем документ…</p>';
+		var origin = new URL( a.href, location.href ).origin;
+		fetch( origin + '/wp-json/wp/v2/pages?slug=' + encodeURIComponent( slug ) + '&_fields=content', { credentials: 'same-origin' } )
+			.then( function ( r ) {
+				return r.ok ? r.json() : Promise.reject( new Error( 'http ' + r.status ) );
+			} )
+			.then( function ( data ) {
+				var html = ( data && data[ 0 ] && data[ 0 ].content && data[ 0 ].content.rendered ) || '';
+				if ( ! html ) {
+					throw new Error( 'empty' );
+				}
+				cache[ slug ] = html;
+				body.innerHTML = html;
+				if ( card ) { card.scrollTop = 0; }
+			} )
+			.catch( function () {
+				// Сеть подвела — открываем в новой вкладке, форма на месте.
+				body.innerHTML = '<p class="jc-modal__doc-loading">Не удалось загрузить документ — <a href="' + a.href + '" target="_blank" rel="noopener">открыть отдельной вкладкой</a>.</p>';
+			} );
+	} );
+} )();
+
+/* Промо-баннер расчёта (jc_promo_banner): через 15 секунд новым
+   пользователям (нет cookie jc_promo_seen). Cookie пишется при закрытии
+   крестиком/по фону, переходе в калькулятор и успешной отправке формы
+   обратного звонка — после этого баннер не показывается при следующих
+   визитах. */
+( function jcPromo() {
+	var el = document.getElementById( 'jc-promo' );
+	if ( ! el ) {
+		return;
+	}
+	var COOKIE = 'jc_promo_seen';
+
+	function seen() {
+		return ( '; ' + document.cookie + '; ' ).indexOf( '; ' + COOKIE + '=1;' ) !== -1;
+	}
+
+	function dismiss() {
+		document.cookie = COOKIE + '=1; path=/; max-age=31536000; SameSite=Lax';
+		el.hidden = true;
+	}
+
+	if ( seen() ) {
+		return;
+	}
+
+	// Первый показ — через 15 секунд. Если в этот момент открыта модалка,
+	// ждём её закрытия (повторяем каждые 2 секунды).
+	setTimeout( function tick() {
+		if ( seen() || ! el.hasAttribute( 'hidden' ) ) {
+			return;
+		}
+		if ( document.querySelector( '.jc-modal.is-open' ) ) {
+			window.setTimeout( tick, 2000 );
+			return;
+		}
+		el.hidden = false;
+	}, 15000 );
+
+	// Крестик и фон закрывают баннер и пишут cookie.
+	el.addEventListener( 'click', function ( e ) {
+		var t = e.target;
+		if ( ! t || ! t.closest ) {
+			return;
+		}
+		if ( t.closest( '#jc-promo-close' ) || t.closest( '[data-jc-promo-close]' ) ) {
+			dismiss();
+		}
+	} );
+
+	// Переход в калькулятор — тоже закраниваем (ссылка ведёт на /kalkulyator/).
+	var calc = document.getElementById( 'jc-promo-calc' );
+	if ( calc ) {
+		calc.addEventListener( 'click', function () {
+			dismiss();
+		} );
+	}
+
+	// Успешная отправка формы обратного звонка (модалка #jc-modal-callback):
+	// Fluent Forms добавляет .ff-message-success — поднимаем за ним наблюдатель.
+	var modal = document.getElementById( 'jc-modal-callback' );
+	if ( modal && window.MutationObserver ) {
+		window.jcPromoObserver = new MutationObserver( function ( records ) {
+			for ( var i = 0; i < records.length; i++ ) {
+				var nodes = records[ i ].addedNodes;
+				for ( var j = 0; j < nodes.length; j++ ) {
+					var n = nodes[ j ];
+					if ( n.nodeType !== 1 ) {
+						continue;
+					}
+					var hit = ( n.classList && n.classList.contains( 'ff-message-success' ) ) ||
+						( n.querySelector && n.querySelector( '.ff-message-success' ) );
+					if ( hit ) {
+						dismiss();
+						return;
+					}
+				}
+			}
+		} );
+		jcPromoObserver.observe( modal, { childList: true, subtree: true } );
+	}
+} )();
+
+/* Видеоплеер «строго по клику» ([data-jc-video], см. jc_video_player):
+   автовоспроизведения нет — первый клик запускает и включает нативные
+   контролы; на ended оверлей возвращается (повтор). */
+( function jcVideoPlayers() {
+	var boxes = document.querySelectorAll( '[data-jc-video]' );
+	if ( ! boxes.length ) {
+		return;
+	}
+	Array.prototype.forEach.call( boxes, function ( box ) {
+		var v = box.querySelector( 'video' );
+		if ( ! v ) {
+			return;
+		}
+		var started = false;
+
+		v.removeAttribute( 'autoplay' );
+		v.addEventListener( 'play', function () {
+			started = true;
+			box.classList.add( 'is-playing' );
+			box.classList.remove( 'is-error' );
+			v.controls = true;
+		} );
+		v.addEventListener( 'ended', function () {
+			// Оверлей-повтор: контролы прячем, клик начнёт с начала.
+			box.classList.remove( 'is-playing' );
+			v.controls = false;
+			started = false;
+		} );
+		v.addEventListener( 'error', function () {
+			box.classList.add( 'is-error' );
+		} );
+
+		box.addEventListener( 'click', function ( e ) {
+			if ( started || box.classList.contains( 'is-playing' ) || box.classList.contains( 'is-error' ) ) {
+				return; // клики во время просмотра — браузеру и контролам
+			}
+			if ( e.target && e.target.closest && e.target.closest( 'video' ) && v.paused === false ) {
+				return;
+			}
+			var p = v.play();
+			if ( p && p.catch ) {
+				p.catch( function () {
+					box.classList.add( 'is-error' );
+				} );
+			}
+		} );
+	} );
+} )();

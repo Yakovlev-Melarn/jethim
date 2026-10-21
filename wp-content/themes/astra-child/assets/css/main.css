@@ -2759,3 +2759,366 @@ body.jc-modal-open {
 		max-height: 40px;
 	}
 }
+
+/* Cookie consent — плашка снизу (jc_cookie_banner в functions.php) */
+.jc-cookie {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	padding: 16px 24px;
+	background: #ffffff;
+	border-top: 1px solid #e4e8ee;
+	box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.12);
+	font-size: 14px;
+	line-height: 1.45;
+	color: #1f2a33;
+}
+
+.jc-cookie[hidden] {
+	display: none !important;
+}
+
+.jc-cookie__text {
+	margin: 0;
+	max-width: 760px;
+}
+
+.jc-cookie__text a {
+	color: #0b6e99;
+	text-decoration: underline;
+}
+
+.jc-cookie__btn {
+	flex: none;
+	padding: 10px 22px;
+	border: 0;
+	border-radius: 8px;
+	background: #0b6e99;
+	color: #ffffff;
+	font-weight: 600;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.jc-cookie__btn:hover {
+	background: #095a7e;
+}
+
+@media (max-width: 640px) {
+	.jc-cookie {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		padding: 14px 16px;
+	}
+
+	.jc-cookie__btn {
+		width: 100%;
+	}
+}
+
+/* Промо-баннер расчёта — по центру через 15 с (jc_promo_banner) */
+.jc-promo {
+	position: fixed;
+	inset: 0;
+	z-index: 9998;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.jc-promo[hidden] {
+	display: none !important;
+}
+
+.jc-promo__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(24, 30, 36, 0.5);
+}
+
+.jc-promo__card {
+	position: relative;
+	display: flex;
+	width: 40vw;
+	min-width: 520px;
+	max-width: 760px;
+	background: var(--jc-white);
+	border-radius: var(--jc-radius);
+	overflow: hidden;
+	box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+	animation: jc-modal-in 0.18s ease;
+}
+
+.jc-promo__close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	z-index: 2;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	border-radius: 50%;
+	background: #eef1f4;
+	color: var(--jc-dark);
+	font-size: 26px;
+	line-height: 1;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.jc-promo__close:hover,
+.jc-promo__close:focus-visible {
+	background: var(--jc-primary);
+	color: var(--jc-white);
+}
+
+.jc-promo__media {
+	flex: 0 0 42%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--jc-white);
+}
+
+.jc-promo__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.jc-promo__body {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 30px 26px 26px;
+}
+
+.jc-promo__title {
+	margin: 0 34px 0 0;
+	font-size: 21px;
+	font-weight: 800;
+	line-height: 1.25;
+	color: var(--jc-heading);
+}
+
+.jc-promo__text {
+	margin: 0;
+	font-size: 14.5px;
+	line-height: 1.5;
+	color: var(--jc-text);
+}
+
+.jc-promo__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 6px;
+}
+
+.jc-promo__actions .jc-btn {
+	width: 100%;
+}
+
+@media (max-width: 900px) {
+	.jc-promo {
+		padding: 12px;
+	}
+
+	.jc-promo__card {
+		flex-direction: column;
+		width: 92vw;
+		min-width: 0;
+		max-width: none;
+	}
+
+	.jc-promo__media {
+		flex: 0 0 auto;
+		height: 160px;
+	}
+
+	.jc-promo__body {
+		padding: 18px 18px 20px;
+		gap: 8px;
+	}
+
+	.jc-promo__title {
+		font-size: 18px;
+	}
+
+	.jc-promo__actions {
+		margin-top: 4px;
+	}
+}
+
+/* Видеоплеер «по клику» (jc_video_player в functions.php) */
+.jc-video {
+	position: relative;
+	margin: 20px auto 8px;
+	max-width: 960px;
+	border-radius: var(--jc-radius);
+	overflow: hidden;
+	background: #000000;
+	box-shadow: 0 18px 44px rgba(15, 23, 42, 0.2);
+}
+
+.jc-video__el {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	background: #000000;
+}
+
+.jc-video__play {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 0;
+	border: 0;
+	background: rgba(15, 23, 42, 0.38);
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.jc-video__play:hover,
+.jc-video__play:focus-visible {
+	background: rgba(15, 23, 42, 0.52);
+}
+
+.jc-video__play-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 84px;
+	height: 84px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.96);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jc-video__play:hover .jc-video__play-icon,
+.jc-video__play:focus-visible .jc-video__play-icon {
+	transform: scale(1.07);
+	box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+
+.jc-video__play-icon svg {
+	width: 36px;
+	height: 36px;
+	margin-left: 5px; /* оптический центр треугольника */
+	fill: var(--jc-dark);
+}
+
+.jc-video__label {
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Идёт просмотр: оверлей убран, контролы включает JS */
+.jc-video.is-playing .jc-video__play {
+	display: none;
+}
+
+/* Ошибка загрузки: показываем подпись вместо кнопки */
+.jc-video__error {
+	margin: 0;
+	padding: 18px 20px;
+	background: #10151a;
+	color: #e6e9ec;
+	font-size: 14.5px;
+	text-align: center;
+}
+
+.jc-video.is-error .jc-video__play {
+	display: none;
+}
+
+.jc-video.is-error .jc-video__error {
+	display: block;
+}
+
+@media (max-width: 640px) {
+	.jc-video {
+		margin-top: 14px;
+	}
+
+	.jc-video__play {
+		gap: 12px;
+	}
+
+	.jc-video__play-icon {
+		width: 64px;
+		height: 64px;
+	}
+
+	.jc-video__play-icon svg {
+		width: 28px;
+		height: 28px;
+	}
+
+	.jc-video__label {
+		font-size: 13.5px;
+	}
+}
+
+/* Типографика документа внутри #jc-modal-doc */
+.jc-modal__doc {
+	margin-top: 6px;
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--jc-text);
+}
+
+.jc-modal__doc h2 {
+	margin: 18px 0 8px;
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--jc-dark);
+}
+
+.jc-modal__doc h2:first-child {
+	margin-top: 0;
+}
+
+.jc-modal__doc p {
+	margin: 0 0 10px;
+}
+
+.jc-modal__doc ul {
+	margin: 0 0 10px;
+	padding-left: 20px;
+}
+
+.jc-modal__doc li {
+	margin-bottom: 4px;
+}
+
+.jc-modal__doc a {
+	color: var(--jc-primary);
+	text-decoration: underline;
+}
+
+.jc-modal__doc-loading {
+	margin: 0;
+	color: var(--jc-text);
+}

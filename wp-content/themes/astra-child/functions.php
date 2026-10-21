@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'JC_PHONE_DISPLAY', '+7 (916) 249-34-99' );
 define( 'JC_PHONE_HREF', 'tel:+79162493499' );
 define( 'JC_ADDRESS', 'Кутузовский проспект, Москва' );
-define( 'JC_TELEGRAM_URL', 'https://t.me/jethim' );
+define( 'JC_TELEGRAM_URL', 'https://t.me/Nyankosen' );
 define( 'JC_VK_URL', 'https://vk.ru/jetcleaning' );        // группа Jet-Cleaning
 define( 'JC_VK_URL_ALT', 'https://vk.ru/jetcleaningprom' ); // вторая группа
 define( 'JC_YOUDO_URL', 'https://youdo.com/u1933829' );
@@ -71,6 +71,43 @@ function jc_fluentform( $key ) {
 	}
 
 	return do_shortcode( '[fluentform id="' . (int) $forms[ $key ] . '"]' );
+}
+
+/**
+ * Видеоплеер «строго по клику»: обложка + кнопка play, автовоспроизведения
+ * нет. Логика — jcVideoPlayers() в main.js (клик по кнопке/оверлею запускает
+ * и включает нативные контролы; на ended оверлей возвращается как «повтор»).
+ * Файлы: wp-content/uploads/2026/10/record.mp4 + record-poster.jpg
+ * (клонируются из .scripts/img/record.mp4, кадр постера — video_probe.js).
+ */
+function jc_video_player() {
+	$upload = wp_upload_dir();
+	if ( empty( $upload['baseurl'] ) ) {
+		return '';
+	}
+	$src        = $upload['baseurl'] . '/2026/10/record.mp4';
+	$poster_url = $upload['baseurl'] . '/2026/10/record-poster.jpg';
+	$poster     = $upload['basedir'] . '/2026/10/record-poster.jpg';
+	if ( ! file_exists( $upload['basedir'] . '/2026/10/record.mp4' ) ) {
+		return '';
+	}
+
+	$html  = '<figure class="jc-video" data-jc-video>';
+	$html .= '<video class="jc-video__el" preload="metadata" playsinline';
+	if ( file_exists( $poster ) ) {
+		$html .= ' poster="' . esc_url( $poster_url ) . '"';
+	}
+	$html .= ' src="' . esc_url( $src ) . '"></video>';
+	$html .= '<button class="jc-video__play" type="button" aria-label="' . esc_attr__( 'Смотреть видео', 'astra-child' ) . '">';
+	$html .= '<span class="jc-video__play-icon" aria-hidden="true">'
+		. '<svg viewBox="0 0 24 24" focusable="false"><path d="M8 5v14l11-7z"/></svg>'
+		. '</span>';
+	$html .= '<span class="jc-video__label">Видео о нашей работе — 1 минута</span>';
+	$html .= '</button>';
+	$html .= '<figcaption class="jc-video__error" hidden>Не удалось загрузить видео — обновите страницу или позвоните ' . esc_html( JC_PHONE_DISPLAY ) . '.</figcaption>';
+	$html .= '</figure>';
+
+	return $html;
 }
 
 /* =====================================================================
@@ -256,7 +293,7 @@ function jc_footer_columns() {
 		<div class="jc-footer__inner">
 			<div class="jc-footer__col">
 				<span class="jc-footer__brand"><?php jc_logo(); ?></span>
-				<p class="jc-footer__text"><?php esc_html_e( 'Химчистка мягкой мебели, штор, ковров и матрасов с выездом по Москве и Московской области. Работаем с 2010 года. Профессиональное оборудование, сертифицированная химия, безопасная для детей и животных.', 'astra-child' ); ?></p>
+				<p class="jc-footer__text"><?php esc_html_e( 'Химчистка мягкой мебели, штор, ковров и матрасов с выездом по Москве и Московской области. Работаем с 2011 года. Профессиональное оборудование, сертифицированная химия, безопасная для детей и животных.', 'astra-child' ); ?></p>
 			</div>
 
 			<div class="jc-footer__col jc-footer__col--nav">
@@ -321,7 +358,7 @@ function jc_footer_columns() {
 						<?php esc_html_e( 'Вызов мастера', 'astra-child' ); ?>
 					</a>
 				</div>
-				<p class="jc-footer__text"><?php esc_html_e( 'Отвечаем ежедневно с 9:00 до 21:00.', 'astra-child' ); ?></p>
+				<p class="jc-footer__text"><?php esc_html_e( 'Отвечаем ежедневно с 10:00 до 21:00.', 'astra-child' ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -343,7 +380,8 @@ function jc_footer_copyright() {
 				);
 				?>
 			</span>
-			<a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Политика конфиденциальности', 'astra-child' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/politika-konfidencialnosti/' ) ); ?>" data-jc-modal-open="doc"><?php esc_html_e( 'Политика конфиденциальности', 'astra-child' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/obrabotka-personalnyh-dannyh/' ) ); ?>" data-jc-modal-open="doc"><?php esc_html_e( 'Обработка персональных данных', 'astra-child' ); ?></a>
 		</div>
 	</div>
 	<?php
@@ -424,7 +462,7 @@ function jc_service_shared_sections( $content ) {
 	// Заявка по услуге — модальное окно (форма живёт в подвале страницы).
 	$append  = '<section class="jc-block jc-block--form">';
 	$append .= '<h2>' . esc_html__( 'Оставить заявку по этой услуге', 'astra-child' ) . '</h2>';
-	$append .= '<p>' . esc_html__( 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену. Форма откроется в окне.', 'astra-child' ) . '</p>';
+	$append .= '<p>' . esc_html__( 'Опишите задачу, укажите размеры и приложите фото — ответим в течение 15 минут и назовём предварительную цену. Данных не хватит — точную стоимость назовёт мастер на месте. Форма откроется в окне.', 'astra-child' ) . '</p>';
 	$append .= '<div class="jc-block__actions">';
 	$append .= '<a class="jc-btn jc-btn--primary" href="#" data-jc-modal-open="service">' . esc_html__( 'Оставить заявку', 'astra-child' ) . '</a>';
 	$append .= '<a class="jc-btn jc-btn--outline" href="' . esc_url( $hub_url ) . '">' . esc_html__( 'Все услуги', 'astra-child' ) . '</a>';
@@ -432,7 +470,7 @@ function jc_service_shared_sections( $content ) {
 
 	$append .= '<section class="jc-block jc-block--calc">';
 	$append .= '<h2>' . esc_html__( 'Считаем по прайсу', 'astra-child' ) . '</h2>';
-	$append .= '<p>' . esc_html__( 'Цены на сайте — «от»: на итог влияют размер, загрязнение и выезд. Соберите расчёт в калькуляторе за минуту — покажем предварительную сумму до выезда мастера.', 'astra-child' ) . '</p>';
+	$append .= '<p>' . esc_html__( 'Цены на сайте — «от»: на итог влияют размер и метраж, ткань, загрязнение и выезд. Соберите расчёт в калькуляторе за минуту — покажем предварительную сумму до выезда мастера.', 'astra-child' ) . '</p>';
 	$append .= '<div class="jc-block__actions">';
 	$append .= '<a class="jc-btn jc-btn--primary" href="' . esc_url( $prices_url ) . '">' . esc_html__( 'Рассчитать стоимость', 'astra-child' ) . '</a>';
 	$append .= '<a class="jc-btn jc-btn--outline" href="' . esc_url( $hub_url ) . '">' . esc_html__( 'Все услуги', 'astra-child' ) . '</a>';
@@ -510,7 +548,7 @@ function jc_modals() {
 		'service'  => array(
 			'form' => 'service',
 			'title' => 'Оставить заявку',
-			'text'  => 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену.',
+			'text'  => 'Опишите задачу и приложите фото — ответим в течение 15 минут и назовём предварительную цену. Есть паспорт изделия или ярлык с составом ткани — пришлите фото и их; деталей не хватает — точную цену назовём на месте.',
 		),
 		'callback' => array(
 			'form' => 'callback',
@@ -520,7 +558,7 @@ function jc_modals() {
 		'photo'    => array(
 			'form' => 'photo',
 			'title' => 'Отправить фото для расчёта',
-			'text'  => 'Приложите фото загрязнения — по ним назовём предварительную цену до выезда мастера.',
+			'text'  => 'Приложите фото загрязнения, размеры (метраж) и известные детали — назовём предварительную цену до выезда. Не знаете, что за пятно и как давно оно — не страшно: точную оценку даст мастер на месте. Фото паспорта или ярлыка ткани, если есть, тоже пригодится — на коврах он обычно на обратной стороне, на мебели — вшит или приклеен.',
 		),
 	);
 
@@ -544,6 +582,85 @@ function jc_modals() {
 		</div>
 		<?php
 	}
+}
+
+/* =====================================================================
+ * 8.5 Cookie consent: плашка снизу на всех страницах, пока пользователь
+ *     не нажмёт «Принимаю» (ответ хранится в cookie jc_cookie_consent).
+ * ================================================================== */
+add_action( 'wp_footer', 'jc_cookie_banner', 10 );
+function jc_cookie_banner() {
+	?>
+	<div class="jc-cookie" id="jc-cookie" hidden>
+		<p class="jc-cookie__text">
+			<?php
+			printf(
+				wp_kses_post(
+					'Используя сайт jethim.ru, вы соглашаете на использование файлов cookie и сторонних сервисов, а также принимаете условия <a href="%1$s" data-jc-modal-open="doc">Политики конфиденциальности</a> и <a href="%2$s" data-jc-modal-open="doc">Обработки персональных данных</a>.'
+				),
+				esc_url( home_url( '/politika-konfidencialnosti/' ) ),
+				esc_url( home_url( '/obrabotka-personalnyh-dannyh/' ) )
+			);
+			?>
+		</p>
+		<button type="button" class="jc-cookie__btn" id="jc-cookie-accept"><?php esc_html_e( 'Принимаю', 'astra-child' ); ?></button>
+	</div>
+	<?php
+}
+
+/* =====================================================================
+ * 8.6 Модалка документов (политика / обработка ПД): ссылки с
+ *     data-jc-modal-open="doc" открывают текст в модалке (main.js
+ *     подгружает контент через REST), чтобы не терять заполненную форму.
+ * ================================================================== */
+add_action( 'wp_footer', 'jc_doc_modal', 6 );
+function jc_doc_modal() {
+	?>
+	<div class="jc-modal" id="jc-modal-doc" role="dialog"
+		aria-modal="true" aria-hidden="true" aria-label="<?php esc_attr_e( 'Документы', 'astra-child' ); ?>">
+		<div class="jc-modal__backdrop" data-jc-modal-close></div>
+		<div class="jc-modal__card" role="document" tabindex="-1">
+			<button type="button" class="jc-modal__close" data-jc-modal-close aria-label="<?php esc_attr_e( 'Закрыть', 'astra-child' ); ?>">
+				&times;
+			</button>
+			<h3 class="jc-modal__title"><?php esc_html_e( 'Документы', 'astra-child' ); ?></h3>
+			<div class="jc-modal__doc"></div>
+		</div>
+	</div>
+	<?php
+}
+
+/* =====================================================================
+ * 8.7 Промо-баннер расчёта: через 15 сек новым пользователям (без
+ *     cookie jc_promo_seen) по центру экрана. Закрытие крестиком /
+ *     по фону, переход в калькулятор или успешная отправка формы
+ *     обратного звонка пишут cookie — баннер больше не показывается.
+ *     Логика — в конце main.js (jcPromo).
+ * ================================================================== */
+add_action( 'wp_footer', 'jc_promo_banner', 7 );
+function jc_promo_banner() {
+	?>
+	<div class="jc-promo" id="jc-promo" hidden>
+		<div class="jc-promo__backdrop" data-jc-promo-close></div>
+		<div class="jc-promo__card" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Рассчитать стоимость', 'astra-child' ); ?>">
+			<button class="jc-promo__close" id="jc-promo-close" type="button" aria-label="<?php esc_attr_e( 'Закрыть', 'astra-child' ); ?>">
+				&times;
+			</button>
+			<div class="jc-promo__media">
+				<img src="<?php echo esc_url( get_theme_file_uri( 'assets/img/bannerbg.jpg' ) ); ?>"
+					alt="" width="900" height="849" loading="lazy" />
+			</div>
+			<div class="jc-promo__body">
+				<p class="jc-promo__title"><?php esc_html_e( 'Узнайте стоимость чистки за минуту', 'astra-child' ); ?></p>
+				<p class="jc-promo__text"><?php esc_html_e( 'Калькулятор посчитает цену онлайн — или оставьте номер, и мы перезвоним в течение 15 минут.', 'astra-child' ); ?></p>
+				<div class="jc-promo__actions">
+					<a class="jc-btn jc-btn--red" id="jc-promo-calc" href="<?php echo esc_url( home_url( '/kalkulyator/' ) ); ?>"><?php esc_html_e( 'Рассчитать стоимость', 'astra-child' ); ?></a>
+					<button class="jc-btn jc-btn--outline" id="jc-promo-callback" type="button" data-jc-modal-open="callback"><?php esc_html_e( 'Заказать обратный звонок', 'astra-child' ); ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
 }
 
 /* =====================================================================
@@ -724,7 +841,7 @@ function jc_seo_map() {
 		'kontakty'                     => array(
 			'title'       => 'Контакты химчистки JetHim — Москва и МО',
 			'h1'          => 'Контакты химчистки JetHim',
-			'description' => 'Телефон, Telegram и ВКонтакте химчистки JetHim: +7 (916) 249-34-99. Работаем ежедневно 9:00–21:00 по Москве и области, офиса-приёмки нет.',
+			'description' => 'Телефон, Telegram и ВКонтакте химчистки JetHim: +7 (916) 249-34-99. Работаем ежедневно 10:00–21:00 по Москве и области, офиса-приёмки нет.',
 		),
 		'o-kompanii'                   => array(
 			'title'       => 'О компании JetHim — химчистка с 2011 года',
@@ -734,7 +851,7 @@ function jc_seo_map() {
 		'zona-vyezda'                  => array(
 			'title'       => 'Зона выезда химчистки — Москва до 10 км от МКАД бесплатно',
 			'h1'          => 'Зона выезда химчистки',
-			'description' => 'Выезжаем по всей Москве и области. Бесплатный выезд до 10 км от МКАД, дальше — 45 ₽/км по фактическому маршруту. Частые районы: ЗАО, ЮЗАО, СЗАО.',
+			'description' => 'Выезжаем по всей Москве и области — без ограничений по направлению. Бесплатный выезд до 10 км от МКАД, дальше — 45 ₽/км по фактическому маршруту.',
 		),
 		'faq'                          => array(
 			'title'       => 'Частые вопросы о химчистке — цены, сроки, гарантии',
@@ -744,7 +861,7 @@ function jc_seo_map() {
 		'garantii'                     => array(
 			'title'       => 'Гарантии на химчистку — бесплатная переделка',
 			'h1'          => 'Гарантии на химчистку',
-			'description' => 'Цена фиксируется до выезда, бесплатная переделка по нашей вине, профессиональная химия и оборудование. Честно говорим, какие пятна уже не вернуть.',
+			'description' => 'Цена фиксируется до выезда, бесплатная переделка по нашей вине, профессиональная химия и оборудование. Честно говорим, какие пятна не убрать.',
 		),
 		'kak-my-rabotaem'              => array(
 			'title'       => 'Как мы работаем — 5 шагов до чистой мебели',
@@ -999,7 +1116,7 @@ function jc_seo_local_business() {
 		'openingHoursSpecification' => array(
 			'@type'     => 'OpeningHoursSpecification',
 			'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ),
-			'opens'     => '09:00',
+			'opens'     => '10:00',
 			'closes'    => '21:00',
 		),
 		'areaServed'   => array(
